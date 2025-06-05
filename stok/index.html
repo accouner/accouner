@@ -48,18 +48,21 @@
             border-bottom: none;
         }
 
+        /* --- PERBAIKAN FINAL CSS MENGGUNAKAN GRID --- */
         .accordion-header {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 16px;
+            align-items: center;
             width: 100%;
+            box-sizing: border-box;
             background-color: #fff;
             border: none;
             padding: 20px 24px;
             text-align: left;
             font-size: 16px;
             font-weight: 500;
-            display: flex;
-            align-items: center;
             transition: background-color 0.2s;
-            gap: 16px; /* Perbaikan CSS */
         }
         
         .accordion-header.clickable {
@@ -75,8 +78,6 @@
         }
         
         .category-name {
-            flex: 1; /* Perbaikan CSS */
-            min-width: 0; /* Perbaikan CSS */
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -149,6 +150,7 @@
     </div>
 
     <script>
+        // PASTIKAN ANDA MENGGUNAKAN URL CSV ANDA DI SINI
         const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSBjfcGV-VYqzITmSA73CLmfhf6hC74t6iUWO0-t0RX-Z5r0oiJ_qNeNLtJIR8kv96mJ-7ZOhbyPW3O/pub?output=csv';
 
         const loadingDiv = document.getElementById('loading');
