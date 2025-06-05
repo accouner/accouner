@@ -35,6 +35,7 @@
         }
         .header {
             padding: 24px;
+            text-align: center; /* Membuat semua isi header di tengah */
             border-bottom: 1px solid #e9ecef;
         }
         h1 {
@@ -42,6 +43,20 @@
             font-size: 24px;
             font-weight: 600;
         }
+
+        /* --- STYLE BARU UNTUK DESKRIPSI --- */
+        .page-description {
+            font-size: 15px;
+            color: #6c757d;
+            margin-top: 8px;
+            margin-bottom: 0;
+            line-height: 1.5;
+            max-width: 500px; /* Agar tidak terlalu lebar di layar besar */
+            margin-left: auto;
+            margin-right: auto;
+        }
+        /* --- AKHIR STYLE BARU --- */
+
         #loading {
             text-align: center;
             padding: 40px;
@@ -152,7 +167,10 @@
 <body>
 
     <div class="container">
-        <div class="header"><h1>Daftar Stok Akun</h1></div>
+        <div class="header">
+            <h1>Daftar Stok Akun</h1>
+            <p class="page-description">Akun yang kami jual semuanya masuk HT, tidak ada minus.</p>
+        </div>
         <div id="loading">Memuat data stok...</div>
         <div id="accordion-container"></div>
     </div>
@@ -162,34 +180,38 @@
 
         const loadingDiv = document.getElementById('loading');
         const accordionContainer = document.getElementById('accordion-container');
-
-        // --- FUNGSI BARU UNTUK FORMAT HARGA ---
+        
         function formatPriceWithK(priceString) {
-            if (!priceString) return ''; // Jika harga kosong, kembalikan string kosong
-
-            // Bersihkan input dari karakter non-angka
+            if (!priceString) return '';
             const numericPrice = parseInt(priceString.replace(/\D/g, ''), 10);
-
-            if (isNaN(numericPrice)) {
-                return priceString; // Jika bukan angka, kembalikan apa adanya
-            }
-
-            // Format angka dengan titik pemisah ribuan (contoh: 30.000)
+            if (isNaN(numericPrice)) { return priceString; }
             const formattedFullPrice = numericPrice.toLocaleString('id-ID');
-
             let finalPrice = formattedFullPrice;
-
-            // Jika harga 1000 atau lebih, tambahkan format /K
             if (numericPrice >= 1000) {
                 const kValue = numericPrice / 1000;
                 finalPrice += ` / ${kValue}K`;
             }
-
             return finalPrice;
         }
         
-        function setupAccordionListeners() { /* ... (fungsi ini tidak berubah) ... */ }
-        
+        function setupAccordionListeners() {
+            const headers = document.querySelectorAll('.accordion-header.clickable');
+            headers.forEach(header => {
+                header.addEventListener('click', () => {
+                    const panel = header.nextElementSibling;
+                    if (panel.style.maxHeight) {
+                        panel.style.maxHeight = null;
+                    } else {
+                        headers.forEach(otherHeader => {
+                            const otherPanel = otherHeader.nextElementSibling;
+                            if (otherPanel !== panel) otherPanel.style.maxHeight = null;
+                        });
+                        panel.style.maxHeight = panel.scrollHeight + "px";
+                    }
+                });
+            });
+        }
+
         fetch(sheetUrl)
             .then(response => response.ok ? response.text() : Promise.reject(response.statusText))
             .then(csvText => {
@@ -218,7 +240,6 @@
                     const items = groupedData[kategori] || [];
                     
                     if (items.length > 0) {
-                        // Gunakan fungsi formatPriceWithK saat menampilkan harga
                         const linkListHtml = items.map(item => `
                             <li class="link-item">
                                 <div class="link-details">
@@ -256,23 +277,6 @@
                 console.error('Error:', error);
             });
         
-        function setupAccordionListeners() {
-            const headers = document.querySelectorAll('.accordion-header.clickable');
-            headers.forEach(header => {
-                header.addEventListener('click', () => {
-                    const panel = header.nextElementSibling;
-                    if (panel.style.maxHeight) {
-                        panel.style.maxHeight = null;
-                    } else {
-                        headers.forEach(otherHeader => {
-                            const otherPanel = otherHeader.nextElementSibling;
-                            if (otherPanel !== panel) otherPanel.style.maxHeight = null;
-                        });
-                        panel.style.maxHeight = panel.scrollHeight + "px";
-                    }
-                });
-            });
-        }
     </script>
 </body>
 </html>
