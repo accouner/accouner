@@ -57,9 +57,9 @@
             font-size: 16px;
             font-weight: 500;
             display: flex;
-            justify-content: space-between;
             align-items: center;
             transition: background-color 0.2s;
+            gap: 16px; /* Perbaikan CSS */
         }
         
         .accordion-header.clickable {
@@ -74,13 +74,12 @@
             cursor: not-allowed;
         }
         
-        /* CSS BARU UNTUK MEMPERBAIKI LAYOUT */
         .category-name {
-            flex-grow: 1; /* Biarkan nama kategori memanjang */
-            padding-right: 16px; /* Beri jarak ke badge */
-            white-space: nowrap; /* Jangan biarkan teks turun baris */
-            overflow: hidden; /* Sembunyikan jika terlalu panjang */
-            text-overflow: ellipsis; /* Tampilkan ... jika terlalu panjang */
+            flex: 1; /* Perbaikan CSS */
+            min-width: 0; /* Perbaikan CSS */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
         .stock-count {
@@ -88,7 +87,7 @@
             border-radius: 16px;
             font-size: 13px;
             font-weight: 500;
-            flex-shrink: 0; /* Jangan biarkan badge menyusut */
+            flex-shrink: 0;
         }
 
         .stock-count.available {
@@ -178,7 +177,6 @@
             .then(csvText => {
                 loadingDiv.style.display = 'none';
                 
-                // LOGIKA BARU UNTUK URUTAN KATEGORI
                 const masterCategoryOrder = ["F100", "F200", "F300", "F500", "F1000"];
                 const allRows = csvText.trim().split('\n').slice(1);
                 
@@ -194,7 +192,6 @@
                     }
                 });
                 
-                // Menggunakan masterCategoryOrder untuk loop
                 masterCategoryOrder.forEach(kategori => {
                     const itemDiv = document.createElement('div');
                     itemDiv.className = 'accordion-item';
