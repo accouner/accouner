@@ -35,7 +35,7 @@
         }
         .header {
             padding: 24px;
-            text-align: center; /* Membuat semua isi header di tengah */
+            text-align: center;
             border-bottom: 1px solid #e9ecef;
         }
         h1 {
@@ -43,20 +43,16 @@
             font-size: 24px;
             font-weight: 600;
         }
-
-        /* --- STYLE BARU UNTUK DESKRIPSI --- */
         .page-description {
             font-size: 15px;
             color: #6c757d;
             margin-top: 8px;
             margin-bottom: 0;
             line-height: 1.5;
-            max-width: 500px; /* Agar tidak terlalu lebar di layar besar */
+            max-width: 500px;
             margin-left: auto;
             margin-right: auto;
         }
-        /* --- AKHIR STYLE BARU --- */
-
         #loading {
             text-align: center;
             padding: 40px;
@@ -176,6 +172,7 @@
     </div>
 
     <script>
+        // Link Google Sheets dipertahankan sesuai permintaan
         const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSBjfcGV-VYqzITmSA73CLmfhf6hC74t6iUWO0-t0RX-Z5r0oiJ_qNeNLtJIR8kv96mJ-7ZOhbyPW3O/pub?output=csv';
 
         const loadingDiv = document.getElementById('loading');
@@ -194,6 +191,13 @@
             return finalPrice;
         }
         
+        // --- FUNGSI BARU UNTUK MENGECEK URL (diambil dari kode patokan) ---
+        function isUrl(str) {
+            if (!str) return false;
+            // Pengecekan sederhana apakah string diawali http:// atau https://
+            return str.toLowerCase().startsWith('http://') || str.toLowerCase().startsWith('https://');
+        }
+
         function setupAccordionListeners() {
             const headers = document.querySelectorAll('.accordion-header.clickable');
             headers.forEach(header => {
@@ -240,15 +244,27 @@
                     const items = groupedData[kategori] || [];
                     
                     if (items.length > 0) {
-                        const linkListHtml = items.map(item => `
-                            <li class="link-item">
-                                <div class="link-details">
-                                    <span class="link-text" title="${item.link}">${item.link}</span>
-                                    <span class="link-price">Rp ${formatPriceWithK(item.harga)}</span>
-                                </div>
-                                <a href="${item.link}" target="_blank" rel="noopener noreferrer" class="copy-btn">Buka</a>
-                            </li>
-                        `).join('');
+                        // --- LOGIKA PEMBUATAN LIST DISAMAKAN DENGAN KODE PATOKAN ---
+                        const linkListHtml = items.map(item => {
+                            // Cek apakah item.link adalah URL
+                            const hasLink = isUrl(item.link);
+                            
+                            // Buat tombol hanya jika itu adalah URL, jika tidak, string kosong
+                            const buttonHtml = hasLink 
+                                ? `<a href="${item.link}" target="_blank" rel="noopener noreferrer" class="copy-btn">Buka</a>`
+                                : '';
+
+                            // Kembalikan HTML untuk setiap item
+                            return `
+                                <li class="link-item">
+                                    <div class="link-details">
+                                        <span class="link-text" title="${item.link}">${item.link}</span>
+                                        <span class="link-price">Rp ${formatPriceWithK(item.harga)}</span>
+                                    </div>
+                                    ${buttonHtml} 
+                                </li>
+                            `;
+                        }).join('');
                         
                         itemDiv.innerHTML = `
                             <button class="accordion-header clickable">
