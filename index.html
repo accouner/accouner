@@ -232,7 +232,23 @@
         #stok-container { max-width: 800px; margin: 20px auto; background-color: var(--primary-bg); border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid var(--border-color); }
         #stok .header { position: static; padding: 24px; text-align: center; border-bottom: 1px solid var(--border-color); background: none; backdrop-filter: none; }
         #stok h1 { font-size: 1.5rem; font-weight: 600; margin: 0; }
-        #stok .page-description { font-size: 1rem; color: var(--text-light); margin-top: 8px; margin-bottom: 0; line-height: 1.5; max-width: 500px; margin-left: auto; margin-right: auto; }
+        
+        /* === PERUBAHAN CSS: DESKRIPSI STOK MENJADI RATA KIRI === */
+        #stok .page-description { 
+            font-size: 1rem; 
+            color: var(--text-light); 
+            margin-top: 8px; 
+            margin-bottom: 0; 
+            line-height: 1.5; 
+            max-width: 500px; 
+            margin-left: auto; 
+            margin-right: auto;
+            text-align: left; /* Kunci perbaikan: membuat teks rata kiri */
+            padding: 0 1rem; /* Memberi sedikit ruang di sisi kiri dan kanan */
+        }
+        /* Style untuk .points-grid telah dihapus karena tidak lagi digunakan */
+        /* ========================================================= */
+
         #stok #loading { text-align: center; padding: 40px; color: var(--text-light); }
         #stok .accordion-item { border-bottom: 1px solid var(--border-color); }
         #stok .accordion-item:last-child { border-bottom: none; }
@@ -387,9 +403,9 @@
                 <h2 class="fade-in">Cek Stok Akun Real-Time</h2>
                 <div id="stok-container">
                     <div class="header">
-                        <h1>Daftar Stok Akun</h1>
-                        <p class="page-description">Akun yang kami jual memiliki followers asli, masuk HT, akun sehat.</p>
-                    </div>
+                        <h1>Stok Akun</h1>
+                        <p class="page-description">Akun yang kami jual memiliki followers aktif, masuk HT, akun sehat, go green.</p>
+                         </div>
                     <div id="loading">Memuat data stok...</div>
                     <div id="accordion-container"></div>
                 </div>
@@ -482,11 +498,9 @@
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         
-        // === PERUBAHAN 2: MEMASTIKAN HALAMAN SELALU DI ATAS SAAT REFRESH ===
         if ('scrollRestoration' in history) {
             history.scrollRestoration = 'manual';
         }
-        // ================================================================
 
         // --- Logika untuk Navigasi Mobile ---
         const navToggle = document.querySelector('.nav-toggle');
