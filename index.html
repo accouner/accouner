@@ -205,14 +205,11 @@
             color: var(--accent-blue);
         }
         
-        /* === PERUBAHAN: MENAMBAH JARAK BAGIAN HERO DENGAN HEADER === */
         .hero { 
-            /* Jarak atas diubah dari 5rem menjadi 7.5rem */
             padding-top: 7.5rem;
             padding-bottom: 2.5rem;
             text-align: center; 
         }
-        /* ======================================================== */
 
         .hero .container { max-width: 800px; }
         .hero p.hero-description { font-size: 1.125rem; color: var(--text-light); max-width: 650px; margin: 1.5rem auto 2.5rem; }
@@ -391,7 +388,7 @@
                 <div id="stok-container">
                     <div class="header">
                         <h1>Daftar Stok Akun</h1>
-                        <p class="page-description">Akun yang kami jual semuanya memiliki followers asli, masuk HT, Go Green, tidak ada minus</p>
+                        <p class="page-description">Akun yang kami jual memiliki followers asli, masuk HT, akun sehat.</p>
                     </div>
                     <div id="loading">Memuat data stok...</div>
                     <div id="accordion-container"></div>
@@ -485,6 +482,12 @@
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         
+        // === PERUBAHAN 2: MEMASTIKAN HALAMAN SELALU DI ATAS SAAT REFRESH ===
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        // ================================================================
+
         // --- Logika untuk Navigasi Mobile ---
         const navToggle = document.querySelector('.nav-toggle');
         navToggle.addEventListener('click', function() {
