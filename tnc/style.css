@@ -10,19 +10,18 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    /* PERUBAHAN 2: Mencegah teks di-copy */
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
 }
 
-/* PERUBAHAN 1: Menghilangkan warna highlight saat disentuh di mobile */
+/* Menghilangkan warna highlight saat disentuh di mobile */
 * {
     -webkit-tap-highlight-color: transparent;
 }
 
-/* PERUBAHAN 2.1: Mengizinkan teks pada link untuk di-copy */
+/* Mengizinkan teks pada link dan highlight untuk di-copy */
 a, .highlight {
     user-select: text;
     -webkit-user-select: text;
@@ -75,8 +74,8 @@ p, ul {
     margin-bottom: 20px;
     border: 1px solid #444;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    /* PERUBAHAN 1.1: Transisi dinonaktifkan karena efek hover dihilangkan */
-    transition: none;
+    /* --- EFEK ANIMASI DIKEMBALIKAN --- */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 p {
@@ -85,10 +84,10 @@ p {
     letter-spacing: 0.3px;
 }
 
-/* PERUBAHAN 1.2: Efek hover melayang dihilangkan */
+/* --- EFEK HOVER MELAYANG DIKEMBALIKAN --- */
 p:hover, ul:hover {
-    transform: none;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Dibuat sama seperti state normal */
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 ul {
@@ -185,13 +184,11 @@ em {
     color: #d4af37;
 }
 
-/* Efek hover untuk semua tombol */
 .contact-button:hover {
     transform: translateY(-3px) scale(1.05);
     box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
 }
 
-/* Efek hover spesifik untuk tombol email */
 .email-button:hover {
     background-color: #d4af37;
     color: #1e1e1e;
