@@ -10,6 +10,24 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    /* PERUBAHAN 2: Mencegah teks di-copy */
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+/* PERUBAHAN 1: Menghilangkan warna highlight saat disentuh di mobile */
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* PERUBAHAN 2.1: Mengizinkan teks pada link untuk di-copy */
+a, .highlight {
+    user-select: text;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
 }
 
 /* Main Container */
@@ -25,7 +43,6 @@ body {
 /* Judul Utama */
 h1 {
     font-family: 'Merriweather', serif;
-    /* Ukuran font dibuat lebih agresif mengecil agar muat 1 baris */
     font-size: clamp(1.5rem, 7vw, 2.5rem); 
     text-align: center;
     margin-bottom: 25px;
@@ -34,7 +51,7 @@ h1 {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     line-height: 1.2;
-    white-space: nowrap; /* Memaksa teks untuk tidak turun baris */
+    white-space: nowrap;
 }
 
 /* Judul Bagian */
@@ -47,7 +64,7 @@ h2 {
     padding-bottom: 10px;
     font-weight: 700;
     line-height: 1.3;
-    text-align: center; /* Dibuat center agar lebih rapi tanpa nomor */
+    text-align: center;
 }
 
 /* Section Wrapper Box Style */
@@ -58,7 +75,8 @@ p, ul {
     margin-bottom: 20px;
     border: 1px solid #444;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* PERUBAHAN 1.1: Transisi dinonaktifkan karena efek hover dihilangkan */
+    transition: none;
 }
 
 p {
@@ -67,9 +85,10 @@ p {
     letter-spacing: 0.3px;
 }
 
+/* PERUBAHAN 1.2: Efek hover melayang dihilangkan */
 p:hover, ul:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    transform: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Dibuat sama seperti state normal */
 }
 
 ul {
@@ -162,8 +181,8 @@ em {
 
 .email-button {
     background: transparent;
-    border-color: #d4af37; /* Garis batas emas */
-    color: #d4af37;       /* Teks emas */
+    border-color: #d4af37;
+    color: #d4af37;
 }
 
 /* Efek hover untuk semua tombol */
