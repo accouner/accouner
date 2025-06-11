@@ -1,215 +1,135 @@
-/* Variabel CSS untuk Warna */
-:root {
-    --primary-color: #007bff; /* Biru terang untuk highlight/utama */
-    --primary-color-darker: #0056b3; /* Biru lebih gelap untuk hover */
-    --secondary-color: #6c757d; /* Abu-abu untuk teks sekunder */
-    --background-light: #f8f9fa; /* Latar belakang terang */
-    --text-dark: #212529; /* Teks utama gelap (lebih gelap dari #343a40) */
-    --text-light: #495057; /* Teks isi yang sedikit lebih terang dari text-dark */
-    --border-light: #e0e0e0; /* Garis pembatas lebih halus */
-    --shadow-color: rgba(0, 0, 0, 0.07); /* Warna bayangan lebih lembut */
-    --highlight-attention-text: #dc3545; /* Warna teks merah untuk peringatan/penting, jika BUKAN untuk .highlight */
-    --success-color: #28a745; /* Hijau WhatsApp */
-    --success-color-darker: #1e7e34; /* Hijau WhatsApp lebih gelap */
-    --uniform-section-spacing: 25px; /* Nilai seragam baru untuk jarak antar bagian */
-}
-
-/* Gaya Dasar & Reset */
-*, *::before, *::after {
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth; /* Untuk scrolling halus jika ada internal link */
-}
-
+/* General Body Styling */
 body {
-    font-family: 'Open Sans', Arial, sans-serif;
-    font-weight: 400; /* Berat font default */
-    line-height: 1.75; /* Sedikit lebih lega untuk readability */
-    letter-spacing: 0.01em; /* Sedikit letter spacing untuk readability */
+    font-family: 'Open Sans', sans-serif;
+    background-color: #121212;
+    color: #e0e0e0; 
+    line-height: 1.7;
     margin: 0;
-    padding: 0;
-    background-color: var(--background-light);
-    color: var(--text-light); /* Default text color */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    opacity: 0;
-    animation: fadeInBody 0.8s 0.2s forwards cubic-bezier(0.2, 0.8, 0.2, 1);
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
-/* Animasi Fade-in untuk Body */
-@keyframes fadeInBody {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Focus visible global */
-*:focus-visible {
-    outline: 2px solid var(--primary-color);
-    outline-offset: 3px;
-    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.2);
-}
-/* Khusus untuk button agar outline tidak tertutup elemen lain */
-.contact-button:focus-visible {
-    position: relative; /* Agar outline tidak terpotong */
-    z-index: 1;
-}
-
-
+/* Main Container */
 .container {
-    max-width: 820px; /* Sedikit lebih ramping */
-    margin: 40px auto; /* Margin atas/bawah container tetap, atau bisa disesuaikan jika perlu */
-    background-color: #ffffff;
-    padding: 35px 45px; /* Padding sedikit disesuaikan */
-    border-radius: 16px; /* Border radius lebih besar untuk kesan modern */
-    box-shadow: 0 12px 35px var(--shadow-color), 0 3px 8px rgba(0,0,0,0.04); /* Shadow lebih kompleks dan halus */
-    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+    max-width: 800px;
+    background-color: #1e1e1e;
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 15px 35px rgba(212, 175, 55, 0.1), 0 5px 15px rgba(0, 0, 0, 0.2);
+    border: 1px solid #d4af37;
 }
 
-.container:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 18px 45px var(--shadow-color), 0 5px 12px rgba(0,0,0,0.06);
-}
-
+/* --- PERUBAHAN PADA JUDUL --- */
 h1 {
     font-family: 'Merriweather', serif;
-    color: var(--primary-color);
+    /* Ukuran font responsif: min, ideal, max */
+    font-size: clamp(2rem, 6vw, 2.5rem); 
     text-align: center;
-    margin-top: 0; /* Hapus margin atas jika padding container sudah cukup */
-    margin-bottom: var(--uniform-section-spacing); /* PENYESUAIAN */
-    font-size: 2.7em;
+    margin-bottom: 25px;
     font-weight: 700;
-    letter-spacing: -0.025em;
-    line-height: 1.25;
+    background: -webkit-linear-gradient(45deg, #b38728, #fbf5b7, #b38728);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.2; /* Menjaga agar judul tetap rapat */
 }
 
 h2 {
     font-family: 'Merriweather', serif;
-    color: var(--text-dark);
-    margin-top: var(--uniform-section-spacing); /* PENYESUAIAN */
-    padding-bottom: 10px; /* Jarak internal h2 ke garis bawahnya */
-    font-size: 1.75em;
+    /* Ukuran font responsif untuk subjudul */
+    font-size: clamp(1.5rem, 4vw, 1.8rem);
+    color: #c5a438;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
     font-weight: 700;
-    position: relative;
-    margin-bottom: 18px; /* Jarak h2 ke konten di bawahnya (paragraf/list) tetap */
+    line-height: 1.3; /* Menjaga agar subjudul tetap rapat */
+}
+/* ----------------------------- */
+
+
+/* --- PERUBAHAN PADA TEKS KONTEN --- */
+/* Section Wrapper Box Style */
+p, ul {
+    background-color: #2b2b2b;
+    padding: 25px; /* Sedikit padding lebih untuk ruang napas */
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #444;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-h2::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 0; /* Mulai dari 0 untuk animasi */
-    height: 3.5px; /* Sedikit lebih tebal */
-    background-color: var(--primary-color);
-    border-radius: 2px;
-    transition: width 0.45s cubic-bezier(0.23, 1, 0.32, 1.05); /* Easing lebih dinamis */
-}
-
-h2:hover::before {
-    width: 70px; /* Lebar saat hover */
-}
-
+/* Aturan spesifik untuk Paragraf demi keterbacaan */
 p {
-    margin-bottom: 14px; /* Jarak antar paragraf (internal section) tetap */
-    font-size: 1em;
-    color: var(--text-light); /* Warna teks isi */
+    text-align: left; /* Teks rata kiri lebih mudah dibaca di web */
+    line-height: 1.8; /* Menambah jarak antar baris */
+    letter-spacing: 0.3px; /* Menambah sedikit jarak antar huruf */
+}
+/* --------------------------------- */
+
+
+p:hover, ul:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 ul {
     list-style-type: none;
-    margin-left: 0;
-    padding-left: 0;
-    margin-bottom: 18px; /* Jarak bawah list (internal section) tetap */
+    padding-left: 25px; 
 }
 
-li {
+ul li {
+    padding-left: 25px;
     position: relative;
-    margin-bottom: 10px;
-    font-size: 0.98em;
-    color: var(--text-dark);
-    padding-left: 28px; /* Lebih banyak ruang untuk ikon */
-    line-height: 1.7;
-    transition: transform 0.2s ease-out, color 0.2s ease-out; /* Animasi hover list */
+    margin-bottom: 12px; /* Memberi jarak lebih antar poin list */
 }
 
-li:hover {
-    transform: translateX(3px); /* Sedikit geser saat hover */
-    color: var(--primary-color);
-}
-
-li::before {
-    content: '✓'; /* Ikon centang default */
-    color: var(--primary-color);
+ul li::before {
+    content: '✔';
     position: absolute;
     left: 0;
-    top: 1px; /* Sesuaikan posisi vertikal */
-    font-weight: 700; /* Lebih tebal */
-    font-size: 1.15em;
-    transition: color 0.2s ease-out;
-}
-li:hover::before {
-    color: var(--primary-color-darker);
-}
-
-.highlight {
-    font-weight: 600;
-    color: var(--text-dark);
-    background-color: #ffe0e0;
-    padding: 0.2em 0.4em;
-    border-radius: 3px;
-    display: inline;
-    -webkit-box-decoration-break: clone;
-    box-decoration-break: clone;
+    color: #d4af37;
+    font-weight: bold;
 }
 
 hr {
-    border: none;
+    border: 0;
     height: 1px;
-    background-color: var(--border-light);
-    margin: var(--uniform-section-spacing) 0; /* PENYESUAIAN */
+    background-image: linear-gradient(to right, rgba(212, 175, 55, 0), rgba(212, 175, 55, 0.6), rgba(212, 175, 55, 0));
+    margin: 50px 0;
 }
 
-.footer-note {
-    text-align: center;
-    margin-top: var(--uniform-section-spacing); /* PENYESUAIAN */
-    padding-top: 25px; /* Padding internal footer note tetap */
-    border-top: 1px solid var(--border-light);
-    color: var(--secondary-color);
-    font-size: 0.9em;
+.highlight {
+    background-color: rgba(212, 175, 55, 0.1);
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+    color: #fbf5b7;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+em {
     font-style: italic;
+    color: #bfa860;
 }
 
-/* Bagian Kontak */
 .contact-section {
     text-align: center;
-    margin-top: var(--uniform-section-spacing); /* PENYESUAIAN */
-    padding: 25px 20px;
-    background-color: #ffffff;
-    border: 1px solid var(--border-light);
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.03);
-}
-
-.contact-section p {
-    font-size: 1.05em;
-    margin-bottom: 20px;
-    color: var(--text-dark);
-    font-weight: 600;
+    margin-top: 30px;
+    background-color: #2b2b2b;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #444;
 }
 
 .contact-buttons {
     display: flex;
     justify-content: center;
-    align-items: stretch;
-    gap: 12px;
+    gap: 15px;
+    margin-top: 15px;
     flex-wrap: wrap;
 }
 
@@ -217,140 +137,40 @@ hr {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 12px 24px;
-    border: 2px solid transparent;
-    border-radius: 8px;
-    font-size: 0.95em;
-    font-weight: 600;
+    padding: 12px 25px;
+    border-radius: 50px;
     text-decoration: none;
-    color: #ffffff;
-    cursor: pointer;
-    transition: all 0.25s ease-out;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.08);
-    min-height: 48px;
-    line-height: 1.5;
-}
-
-.contact-button svg {
-    margin-right: 8px;
-    width: 18px;
-    height: 18px;
-    vertical-align: middle;
+    font-weight: 700;
+    font-size: 1em;
+    color: #1a1a1a;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
 }
 
 .contact-button:hover {
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 5px 12px rgba(0,0,0,0.12);
-}
-.contact-button:active {
-    transform: translateY(0) scale(0.98);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
 }
 
 .whatsapp-button {
-    background-color: var(--success-color);
-}
-.whatsapp-button:hover {
-    background-color: var(--success-color-darker);
+    background: linear-gradient(45deg, #b38728, #d4af37);
 }
 
-.email-button {
-    background-color: var(--primary-color);
-}
-.email-button:hover {
-    background-color: var(--primary-color-darker);
+.footer-note {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 0.9em;
+    color: #aaa;
 }
 
-.outline-button {
+.footer-note p {
     background-color: transparent;
-    border-color: var(--primary-color);
-    color: var(--primary-color);
+    box-shadow: none;
+    border: none;
+    padding: 10px;
+    border-left: 4px solid #d4af37;
+    display: inline-block;
 }
-.outline-button:hover {
-    background-color: var(--primary-color);
-    color: #ffffff;
-    border-color: var(--primary-color);
-}
-.outline-button svg path {
-    fill: var(--primary-color);
-    transition: fill 0.25s ease-out;
-}
-.outline-button:hover svg path {
-    fill: #ffffff;
-}
-
-
-/* --- Media Queries untuk Responsivitas --- */
-@media (max-width: 992px) {
-   .container {
-        margin: 30px auto;
-        padding: 30px 35px;
-    }
-    h1 { font-size: 2.4em; }
-    h2 { font-size: 1.6em; }
-}
-
-@media (max-width: 768px) {
-    body { line-height: 1.7; }
-   .container {
-        margin: 20px auto;
-        padding: 25px 20px;
-        border-radius: 12px;
-    }
-    h1 {
-        font-size: 2.1em;
-        margin-bottom: var(--uniform-section-spacing); /* Tetap gunakan variabel */
-    }
-    h2 {
-        font-size: 1.5em;
-        margin-top: var(--uniform-section-spacing); /* Tetap gunakan variabel */
-        margin-bottom: 15px; /* Jarak h2 ke konten di bawahnya bisa disesuaikan untuk mobile */
-    }
-    p { font-size: 0.95em; }
-    li { font-size: 0.92em; padding-left: 25px; }
-
-   .contact-section {
-        padding: 20px 15px;
-        margin-top: var(--uniform-section-spacing); /* Tetap gunakan variabel */
-    }
-   .contact-buttons {
-        flex-direction: column;
-        gap: 10px;
-        align-items: stretch;
-    }
-   .contact-button {
-        width: 100%;
-        max-width: 320px;
-        margin-left: auto;
-        margin-right: auto;
-        font-size: 0.9em;
-    }
-    hr {
-        margin: var(--uniform-section-spacing) 0; /* Tetap gunakan variabel */
-    }
-    .footer-note {
-        margin-top: var(--uniform-section-spacing); /* Tetap gunakan variabel */
-    }
-}
-
-@media (max-width: 480px) {
-    /* Jika perlu penyesuaian lebih lanjut untuk jarak di mobile kecil,
-       Anda bisa override --uniform-section-spacing di sini atau nilai margin individual */
-    /* :root { --uniform-section-spacing: 20px; } */ /* Contoh jika ingin lebih rapat di mobile */
-
-    .container {
-        padding: 20px 15px;
-        margin: 15px auto;
-        border-radius: 8px;
-    }
-    h1 { font-size: 1.8em; line-height: 1.25; }
-    h2 { font-size: 1.35em; }
-    p, li { font-size: 0.9em; }
-    li { padding-left: 22px; }
-    li::before { font-size: 1.1em; }
-
-   .contact-button {
-        padding: 10px 18px;
-        font-size: 0.88em;
-    }
+.footer-note p:hover {
+    transform: none;
 }
