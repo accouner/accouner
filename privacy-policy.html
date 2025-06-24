@@ -4,168 +4,195 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kebijakan Privasi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* CSS untuk Tata Letak Dasar */
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
+        /* Hapus height: 100vh dan overflow: hidden dari html, body */
+        html, body {
             margin: 0;
             padding: 0;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
             background-color: #f4f4f4;
             color: #333;
+            /* display: flex; dan flex-direction: column; tetap dipertahankan untuk menata elemen secara vertikal */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Pastikan minimal mengisi 100% tinggi viewport */
         }
         header {
-            background-color: #333;
-            color: #fff;
-            padding: 1em 0;
+            background-color: #fff;
+            color: #333;
+            padding: 1.5em 0;
             text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            flex-shrink: 0; /* Mencegah header menyusut */
         }
         header h1 {
             margin: 0;
-            font-size: 1.8em;
-        }
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-        }
-        nav ul li {
-            margin: 0 15px;
-        }
-        nav ul li a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: bold;
+            font-size: 2em;
+            color: #1a202c;
         }
         main {
+            /* Hapus flex-grow: 1; dari main */
+            /* main akan memiliki tinggi alami sesuai kontennya */
             padding: 20px;
             max-width: 800px;
             margin: 20px auto;
+            width: 100%;
+            box-sizing: border-box;
+            /* Hapus overflow-y: auto; dari main karena seluruh body akan scrollable */
             background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            padding-top: 30px;
+            padding-bottom: 30px;
         }
-        h2 {
-            color: #333;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 10px;
-            margin-top: 30px;
+        main h2 {
+            font-size: 1.5em;
+            color: #2d3748;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: bold;
         }
-        h3 {
-            color: #555;
-            margin-top: 25px;
+        main p, main ul, main ol {
+            margin-bottom: 15px;
         }
-        ul {
-            list-style: disc;
-            margin-left: 20px;
-            padding: 0;
+        main ul, main ol {
+            padding-left: 20px;
         }
-        ul li {
-            margin-bottom: 8px;
+        main li {
+            margin-bottom: 5px;
         }
-        footer {
-            text-align: center;
+
+        /* Bagian Kontak */
+        .contact-card-container {
             padding: 20px;
-            margin-top: 40px;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            box-sizing: border-box;
+            flex-shrink: 0;
+        }
+        .contact-card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+        .contact-card h3 {
+            font-size: 1.4em;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .contact-card p {
+            margin-bottom: 10px;
+            color: #555;
+        }
+        .contact-card .whatsapp-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #25D366;
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.2s ease-in-out;
+            gap: 8px;
+        }
+        .contact-card .whatsapp-button:hover {
+            background-color: #1DA851;
+        }
+        .contact-card .whatsapp-button img {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Footer */
+        footer {
             background-color: #333;
             color: #fff;
+            padding: 20px;
+            text-align: center;
             font-size: 0.9em;
+            width: 100%;
+            box-sizing: border-box;
+            flex-shrink: 0;
+            margin-top: auto; /* Ini akan mendorong footer ke bawah */
+        }
+        .footer-links a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 5px;
+            font-weight: bold;
+        }
+        .footer-links a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-100">
     <header>
-        <h1>[Nama Organisasi Anda/Nama Layanan Anda]</h1>
-        <nav>
-            <ul>
-                <li><a href="index.html">Beranda</a></li>
-                <li><a href="privacy-policy.html">Kebijakan Privasi</a></li>
-                <li><a href="terms-conditions.html">Syarat & Ketentuan</a></li>
-            </ul>
-        </nav>
+        <h1>Kebijakan Privasi</h1>
     </header>
 
     <main>
-        <section id="privacy-policy-content">
-            <h2>Kebijakan Privasi</h2>
-            <p>Terakhir Diperbarui: 25 Juni 2025</p>
+        <h2>Pengantar</h2>
+        <p>Kebijakan Privasi ini menjelaskan bagaimana accouner.site mengumpulkan, menggunakan, dan melindungi informasi pribadi Anda saat Anda menggunakan layanan kami. Dengan menggunakan situs kami, Anda menyetujui praktik data yang dijelaskan dalam kebijakan ini.</p>
 
-            <p>Selamat datang di [Nama Organisasi Anda/Nama Layanan Anda]. Privasi Anda sangat penting bagi kami. Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, menyimpan, mengungkapkan, dan melindungi informasi kontak dan media sosial Anda terkait dengan proses pendaftaran dan verifikasi yang dilakukan di luar website kami.</p>
+        <h2>Informasi yang Kami Kumpulkan</h2>
+        <ul>
+            <li>**Informasi yang Anda Berikan:** Saat Anda menggunakan fungsi pencarian, kami tidak mengumpulkan informasi pribadi apa pun yang Anda masukkan (seperti nama, nomor, atau username). Semua pencarian diproses di sisi klien (browser Anda).</li>
+            <li>**Informasi Non-Pribadi:** Kami mungkin mengumpulkan data anonim dan agregat tentang penggunaan situs, seperti jumlah kunjungan, halaman yang dilihat, dan durasi sesi, untuk tujuan analisis dan peningkatan layanan. Data ini tidak dapat digunakan untuk mengidentifikasi Anda secara pribadi.</li>
+        </ul>
 
-            <p>Dengan memberikan informasi yang diperlukan kepada kami, Anda menyetujui praktik-praktik yang dijelaskan dalam Kebijakan Privasi ini.</p>
+        <h2>Bagaimana Kami Menggunakan Informasi Anda</h2>
+        <p>Informasi yang kami kumpulkan (yang mayoritas adalah data anonim) digunakan untuk:</p>
+        <ul>
+            <li>Meningkatkan fungsionalitas dan pengalaman pengguna situs kami.</li>
+            <li>Menganalisis tren penggunaan situs.</li>
+            <li>Memastikan keamanan dan integritas layanan kami.</li>
+        </ul>
 
-            <h3>1. Informasi yang Kami Kumpulkan</h3>
-            <p>Kami mengumpulkan informasi kontak dan media sosial yang Anda berikan secara langsung kepada kami selama proses pendaftaran dan verifikasi. Informasi ini meliputi:</p>
-            <ul>
-                <li><strong>Nomor WhatsApp:</strong> Nomor telepon yang terdaftar dan aktif di WhatsApp.</li>
-                <li><strong>Nomor Telegram:</strong> Nomor telepon yang terdaftar dan aktif di Telegram.</li>
-                <li><strong>Akun Twitter:</strong> Nama pengguna (username/handle) akun Twitter Anda.</li>
-                <li><strong>Nama Profil Twitter:</strong> Nama yang Anda gunakan pada profil akun Twitter Anda.</li>
-            </ul>
-            <p>Kami tidak mengumpulkan informasi kependudukan (seperti NIK), alamat fisik, data finansial, atau data pribadi sensitif lainnya dari Anda.</p>
+        <h2>Pembagian Informasi</h2>
+        <p>Kami tidak menjual, memperdagangkan, atau menyewakan informasi identifikasi pribadi pengguna kepada pihak lain. Kami mungkin membagikan informasi demografi agregat yang tidak terkait dengan informasi identifikasi pribadi pengunjung dan pengguna dengan mitra bisnis kami, afiliasi terpercaya, dan pengiklan untuk tujuan yang diuraikan di atas.</p>
 
-            <h3>2. Bagaimana Kami Mengumpulkan Informasi Anda</h3>
-            <p>Informasi Anda dikumpulkan melalui cara-cara berikut:</p>
-            <ul>
-                <li>Secara langsung dari Anda melalui formulir pendaftaran manual atau digital yang kami sediakan di luar website.</li>
-                <li>Melalui komunikasi langsung dengan tim moderator kami selama proses pendaftaran dan verifikasi.</li>
-            </ul>
+        <h2>Keamanan Data</h2>
+        <p>Kami menerapkan langkah-langkah keamanan yang wajar untuk melindungi informasi pribadi Anda dari akses tidak sah, perubahan, pengungkapan, atau penghancuran. Namun, harap dicatat bahwa tidak ada metode transmisi melalui Internet, atau metode penyimpanan elektronik, yang 100% aman.</p>
 
-            <h3>3. Tujuan Penggunaan Informasi Anda</h3>
-            <p>Kami menggunakan informasi kontak dan media sosial Anda untuk tujuan-tujuan berikut:</p>
-            <ul>
-                <li><strong>Proses Pendaftaran dan Verifikasi:</strong> Untuk memproses dan memverifikasi pendaftaran Anda sebagai pedagang, memastikan keaslian dan keberadaan akun WhatsApp, Telegram, dan Twitter yang Anda daftarkan.</li>
-                <li><strong>Komunikasi Terkait Pendaftaran:</strong> Untuk berkomunikasi dengan Anda mengenai status pendaftaran Anda, permintaan informasi tambahan yang berkaitan dengan verifikasi akun, atau untuk menanggapi pertanyaan yang Anda ajukan terkait proses pendaftaran.</li>
-                <li><strong>Administrasi Internal:</strong> Untuk keperluan administrasi dan pencatatan internal terkait daftar pedagang yang terverifikasi.</li>
-                <li><strong>Kepatuhan Hukum:</strong> Untuk memenuhi kewajiban hukum yang berlaku, seperti kepatuhan terhadap peraturan perundang-undangan terkait perlindungan data pribadi.</li>
-            </ul>
+        <h2>Perubahan pada Kebijakan Privasi Ini</h2>
+        <p>accouner.site memiliki keleluasaan untuk memperbarui kebijakan privasi ini kapan saja. Ketika kami melakukannya, kami akan merevisi tanggal "terakhir diperbarui" di bagian bawah halaman ini. Kami mendorong pengguna untuk sering memeriksa halaman ini untuk setiap perubahan agar tetap mendapat informasi tentang bagaimana kami membantu melindungi informasi pribadi yang kami kumpulkan. Anda mengakui dan menyetujui bahwa merupakan tanggung jawab Anda untuk meninjau kebijakan privasi ini secara berkala dan menjadi sadar akan modifikasi.</p>
 
-            <h3>4. Pengungkapan Informasi Anda</h3>
-            <p>Kami tidak akan menjual, menyewakan, atau memperdagangkan informasi kontak dan media sosial Anda kepada pihak ketiga. Informasi Anda hanya dapat diungkapkan dalam keadaan terbatas sebagai berikut:</p>
-            <ul>
-                <li><strong>Kepada Tim Moderator:</strong> Informasi Anda akan diakses oleh tim moderator kami yang berjumlah 8 (delapan) orang. Akses mereka terbatas pada data yang diperlukan untuk melaksanakan tugas verifikasi akun dan komunikasi terkait pendaftaran. Kami telah mengambil langkah-langkah untuk memastikan bahwa moderator memahami dan mematuhi kewajiban kerahasiaan data ini.</li>
-                <li><strong>Penyedia Layanan Pihak Ketiga:</strong> Kami dapat menggunakan penyedia layanan pihak ketiga untuk membantu kami dalam operasional, seperti layanan penyimpanan data. Pihak ketiga ini hanya akan memiliki akses ke informasi yang diperlukan untuk melakukan tugas mereka dan terikat oleh kewajiban kerahasiaan.</li>
-                <li><strong>Kewajiban Hukum:</strong> Kami dapat mengungkapkan informasi Anda jika diwajibkan oleh hukum, perintah pengadilan, atau permintaan dari lembaga pemerintah yang berwenang, sesuai dengan Undang-Undang Nomor 27 Tahun 2022 tentang Pelindungan Data Pribadi ("UU PDP").</li>
-                <li><strong>Persetujuan Anda:</strong> Dengan persetujuan eksplisit dari Anda.</li>
-            </ul>
+        <h2>Penerimaan Ketentuan Ini</h2>
+        <p>Dengan menggunakan situs ini, Anda menandakan penerimaan Anda terhadap kebijakan ini. Jika Anda tidak menyetujui kebijakan ini, mohon untuk tidak menggunakan situs kami. Penggunaan berkelanjutan Anda atas situs setelah posting perubahan pada kebijakan ini akan dianggap sebagai penerimaan Anda atas perubahan tersebut.</p>
 
-            <h3>5. Penyimpanan dan Keamanan Informasi Anda</h3>
-            <p>Kami berkomitmen untuk melindungi informasi kontak dan media sosial Anda. Kami menerapkan langkah-langkah keamanan fisik, teknis, dan administratif yang wajar untuk melindungi informasi yang kami kumpulkan dari akses tidak sah, penggunaan, pengungkapan, perubahan, atau penghancuran. Langkah-langkah ini meliputi:</p>
-            <ul>
-                <li>Penyimpanan data pada server atau sistem yang aman dengan kontrol akses yang ketat.</li>
-                <li>Pembatasan akses hanya kepada personel yang berwenang dan memiliki kebutuhan untuk mengetahui, yaitu tim moderator.</li>
-                <li>Pelatihan rutin kepada karyawan dan moderator mengenai pentingnya privasi dan keamanan data.</li>
-                <li>Prosedur backup data untuk mencegah kehilangan.</li>
-            </ul>
-            <p>Kami akan menyimpan informasi Anda selama diperlukan untuk memenuhi tujuan pengumpulan yang dijelaskan dalam Kebijakan Privasi ini, atau selama diwajibkan oleh hukum yang berlaku.</p>
+        <h2>Hubungi Kami</h2>
+        <p>Jika Anda memiliki pertanyaan tentang Kebijakan Privasi ini, praktik situs ini, atau interaksi Anda dengan situs ini, silakan hubungi kami melalui informasi kontak di bawah.</p>
 
-            <h3>6. Hak-Hak Anda sebagai Pemilik Data Pribadi</h3>
-            <p>Sesuai dengan UU PDP, Anda memiliki hak-hak tertentu terkait data pribadi Anda, termasuk namun tidak terbatas pada:</p>
-            <ul>
-                <li><strong>Hak untuk Memperoleh Informasi:</strong> Hak untuk mendapatkan informasi mengenai kejelasan identitas, dasar kepentingan hukum, tujuan kegiatan pemrosesan, dan relevansi Data Pribadi dalam pemrosesan Data Pribadi (Pasal 5 UU PDP).</li>
-                <li><strong>Hak untuk Mengakses Data Pribadi:</strong> Hak untuk mendapatkan akses terhadap Data Pribadi Anda dan salinannya (Pasal 5 UU PDP).</li>
-                <li><strong>Hak untuk Memperbaiki Data Pribadi:</strong> Hak untuk memperbaiki Data Pribadi Anda jika terdapat ketidakakuratan pada nomor kontak atau akun media sosial yang kami simpan (Pasal 6 UU PDP).</li>
-                <li><strong>Hak untuk Menunda atau Membatasi Pemrosesan Data Pribadi:</strong> Hak untuk menunda atau membatasi pemrosesan Data Pribadi Anda sesuai dengan ketentuan UU PDP (Pasal 7 UU PDP).</li>
-                <li><strong>Hak untuk Menarik Kembali Persetujuan:</strong> Hak untuk menarik kembali persetujuan Anda atas pemrosesan Data Pribadi Anda (Pasal 8 UU PDP).</li>
-                <li><strong>Hak untuk Menghapus Data Pribadi:</strong> Hak untuk meminta penghapusan Data Pribadi Anda (hak untuk dilupakan), dalam kondisi tertentu yang diatur oleh UU PDP (Pasal 7 UU PDP).</li>
-                <li><strong>Hak untuk Mengajukan Keberatan:</strong> Hak untuk mengajukan keberatan atas tindakan pengambilan keputusan yang hanya didasarkan pada pemrosesan otomatis, termasuk pemrofilan, yang menimbulkan akibat hukum atau dampak signifikan bagi Anda (Pasal 10 UU PDP).</li>
-                <li><strong>Hak untuk Menuntut Ganti Rugi:</strong> Hak untuk menuntut ganti rugi atas pelanggaran Pelindungan Data Pribadi (Pasal 12 UU PDP).</li>
-            </ul>
-            <p>Untuk menggunakan hak-hak ini, silakan hubungi kami melalui informasi kontak yang disediakan di bawah. Kami akan merespons permintaan Anda sesuai dengan hukum yang berlaku.</p>
-
-            <h3>7. Perubahan Kebijakan Privasi</h3>
-            <p>Kami dapat memperbarui Kebijakan Privasi ini dari waktu ke waktu untuk mencerminkan perubahan praktik data kami atau persyaratan hukum. Kami akan memberitahu Anda tentang perubahan signifikan dengan memposting versi terbaru atau melalui komunikasi langsung. Anda dianjurkan untuk meninjau Kebijakan Privasi ini secara berkala.</p>
-
-            <h3>8. Kontak Kami</h3>
-            <p>Jika Anda memiliki pertanyaan, komentar, atau keluhan mengenai Kebijakan Privasi ini atau praktik data kami, silakan hubungi kami di:</p>
-            <strong>[Nomor Telepon Anda, +62 812-XXXX-XXXX]</strong><br>
-        </section>
+        <p class="text-right text-gray-500 text-sm mt-8">Terakhir diperbarui: 25 Juni 2025</p>
     </main>
 
+    <div class="contact-card-container">
+        <div class="contact-card">
+            <h3>Hubungi Kami</h3>
+            <p>Untuk pertanyaan atau bantuan lebih lanjut, silakan hubungi kami melalui WhatsApp.</p>
+            <a href="https://wa.me/6281234567890" target="_blank" class="whatsapp-button">
+                <img src="images/wa.svg" alt="WhatsApp Icon" />
+                Hubungi via WhatsApp
+            </a>
+        </div>
+    </div>
+
     <footer>
-        <p>&copy; 2025 accouner.site. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="privacy-policy.html">Kebijakan Privasi</a> | 
+            <a href="terms-conditions.html">Syarat & Ketentuan</a>
+        </div>
+        <p>&copy; 2025 Accouner.site. All rights reserved.</p>
     </footer>
 </body>
 </html>
