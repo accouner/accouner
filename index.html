@@ -8,7 +8,7 @@
   <style>
     /* CSS Dasar */
     html, body {
-        height: 100vh; /* Memastikan html dan body mengambil 100% tinggi viewport */
+        height: 100vh; 
         margin: 0;
         padding: 0;
         font-family: Arial, sans-serif;
@@ -17,56 +17,85 @@
         color: #333;
         display: flex;
         flex-direction: column;
-        /* Hapus overflow: hidden; dari body/html */
     }
     
     /* Main content akan mengambil sisa ruang yang tersedia */
     main {
-        flex-grow: 1; /* Memastikan main content mengambil semua ruang yang tersedia */
+        flex-grow: 1; 
         display: flex;
         flex-direction: column;
-        align-items: center; /* Rata tengah horizontal */
+        align-items: center; 
         padding: 20px;
-        max-width: 800px; /* Lebar maksimum seperti sebelumnya */
-        width: 100%; /* Memastikan lebar responsif */
-        box-sizing: border-box; /* Memastikan padding tidak menambah lebar/tinggi total */
-        overflow-y: auto; /* Ini yang memungkinkan scrolling di dalam main jika kontennya melebihi tinggi */
-        -webkit-overflow-scrolling: touch; /* Untuk scrolling yang lebih halus di iOS */
+        max-width: 800px; 
+        width: 100%; 
+        box-sizing: border-box; 
+        overflow-y: auto; /* Memungkinkan scrolling di dalam main jika kontennya melebihi tinggi */
+        -webkit-overflow-scrolling: touch; 
     }
 
-    /* Bagian Kontak di atas Footer */
-    .contact-section {
-        background-color: #f4f4f4; /* Sesuaikan dengan background body */
-        color: #333; /* Warna teks sesuai body */
-        padding: 15px 20px;
-        text-align: center;
+    /* Bagian Kontak (diperbarui) */
+    .contact-card-container {
+        padding: 20px; /* Padding di luar kartu agar ada ruang */
         width: 100%;
+        max-width: 800px; /* Lebar maksimum mengikuti main */
+        margin: 0 auto; /* Tengah */
         box-sizing: border-box;
-        flex-shrink: 0; /* Mencegah contact-section menyusut */
+        flex-shrink: 0; /* Mencegah menyusut */
     }
-    .contact-section p {
-        margin-bottom: 5px;
+    .contact-card {
+        background-color: #fff;
+        border-radius: 12px; /* Lebih rounded dari sebelumnya */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Shadow yang lebih lembut */
+        padding: 25px;
+        text-align: center;
+        border: 1px solid #e2e8f0;
     }
-    .contact-section a {
-        color: #007bff; /* Warna link yang menonjol */
-        text-decoration: underline;
+    .contact-card h3 {
+        font-size: 1.4em;
+        color: #333;
+        margin-bottom: 15px;
+        font-weight: bold;
+    }
+    .contact-card p {
+        margin-bottom: 10px;
+        color: #555;
+    }
+    .contact-card .whatsapp-button {
+        display: inline-flex; /* Agar ikon dan teks sejajar */
+        align-items: center; /* Vertically center */
+        justify-content: center; /* Horizontally center */
+        background-color: #25D366; /* WhatsApp Green */
+        color: #fff;
+        padding: 12px 25px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.2s ease-in-out;
+        gap: 8px; /* Jarak antara ikon dan teks */
+    }
+    .contact-card .whatsapp-button:hover {
+        background-color: #1DA851; /* Darker green on hover */
+    }
+    .contact-card .whatsapp-button img {
+        width: 24px; /* Ukuran ikon WhatsApp */
+        height: 24px;
     }
 
     /* Footer */
     footer {
         background-color: #333;
         color: #fff;
-        padding: 20px; /* Padding disesuaikan */
+        padding: 20px; 
         text-align: center;
         font-size: 0.9em;
         width: 100%;
         box-sizing: border-box;
-        flex-shrink: 0; /* Mencegah footer menyusut */
+        flex-shrink: 0; 
     }
     .footer-links a {
         color: #fff;
         text-decoration: none;
-        margin: 0 5px; /* Jarak antar tautan lebih rapat */
+        margin: 0 5px; 
         font-weight: bold;
     }
     .footer-links a:hover {
@@ -175,10 +204,15 @@
     </template>
   </main>
 
-  <div class="contact-section">
-      <p>Untuk informasi pendaftaran dan pertanyaan lainnya, hubungi kami:</p>
-      <p>Email: <a href="mailto:info@accouner.site">info@accouner.site</a></p>
-      <p>WhatsApp: <a href="https://wa.me/6281234567890">+62 812-3456-7890</a></p>
+  <div class="contact-card-container">
+      <div class="contact-card">
+          <h3>Informasi Pendaftaran & Pertanyaan</h3>
+          <p>Untuk informasi lebih lanjut mengenai pendaftaran pedagang atau pertanyaan lainnya, silakan hubungi kami melalui WhatsApp.</p>
+          <a href="https://wa.me/6281234567890" target="_blank" class="whatsapp-button">
+              <img src="images/wa.svg" alt="WhatsApp Icon" />
+              Hubungi via WhatsApp
+          </a>
+      </div>
   </div>
 
   <footer>
@@ -186,7 +220,7 @@
           <a href="privacy-policy.html">Kebijakan Privasi</a> | 
           <a href="terms-conditions.html">Syarat & Ketentuan</a>
       </div>
-      <p>Copyright accouner.site</p>
+      <p>© 2025 Accouner.site. All rights reserved.</p>
   </footer>
 
   <script>
@@ -310,42 +344,13 @@
             } else {
                 filtered.forEach(createCard);
             }
-            // Setelah hasil ditampilkan, sesuaikan padding main untuk memastikan footer terlihat
-            adjustMainPadding();
           });
-          // Panggil sekali saat halaman dimuat (jika ada initial content)
-          adjustMainPadding();
         })
         .catch(err => {
           console.error("Gagal mengambil data:", err);
           results.innerHTML = "<p class='text-red-500 text-center mt-8'>Gagal memuat data. Coba lagi nanti.</p>";
         });
     }
-
-    // Fungsi baru untuk menyesuaikan padding main
-    function adjustMainPadding() {
-      const mainElement = document.querySelector('main');
-      const contactSectionHeight = document.querySelector('.contact-section').offsetHeight;
-      const footerHeight = document.querySelector('footer').offsetHeight;
-      const totalFixedElementHeight = contactSectionHeight + footerHeight;
-
-      // Atur min-height untuk main agar selalu mengisi ruang, mencegah footer naik
-      // dan pastikan ada ruang jika ada hasil pencarian
-      // Kita perlu memperhitungkan tinggi header (jika ada) dan elemen di atas input pencarian
-      // Untuk kasus ini, karena tidak ada header, kita hanya perlu memperhitungkan totalFixedElementHeight
-      // dan padding atas/bawah main.
-      
-      // Hitung tinggi yang tersedia untuk konten yang bisa digulir di dalam `main`
-      const viewportHeight = window.innerHeight;
-      const availableHeightForMainContent = viewportHeight - totalFixedElementHeight - (2 * 20); // 20px padding top/bottom main
-
-      // Jika hasil pencarian ada dan tingginya melebihi `availableHeightForMainContent`,
-      // `overflow-y: auto;` akan membuat scrollbar internal di `main`.
-      // Jika tidak, `main` akan menyesuaikan tingginya agar footer tetap di bawah.
-    }
-
-    // Panggil adjustMainPadding setiap kali ukuran jendela berubah
-    window.addEventListener('resize', adjustMainPadding);
 
     loadData();
   </script>
