@@ -31,16 +31,19 @@
 
     /* Gaya untuk popover info */
     .info-popover {
-        position: absolute; /* Penting untuk positioning relatif terhadap tombol */
-        top: calc(100% + 8px); /* 8px di bawah tombol */
-        right: 0; /* Sejajar kanan dengan tombol */
-        width: 250px; /* Lebar popover */
+        position: absolute;
+        /* Mengatur posisi relatif terhadap div .flex.items-start.justify-between */
+        /* Sesuaikan 'right' agar tepat di bawah tombol info */
+        right: 0; /* Mengatur ke kanan dari parent div */
+        top: calc(100% + 8px); /* 8px di bawah parent div (header) */
+        width: 250px; /* Lebar popover, bisa disesuaikan */
+        max-width: calc(100% - 20px); /* Batasi lebar agar tidak melebihi kartu */
         background-color: white;
         border: 1px solid #e2e8f0; /* border-gray-200 */
         border-radius: 0.75rem; /* rounded-xl */
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
         padding: 1rem; /* p-4 */
-        z-index: 10; /* Pastikan di atas elemen lain */
+        z-index: 10;
         opacity: 0;
         visibility: hidden;
         transform: translateY(10px);
@@ -51,12 +54,12 @@
         visibility: visible;
         transform: translateY(0);
     }
-    /* Arrow ke atas (opsional, bisa ditambah dengan pseudo-element) */
+    /* Arrow ke atas */
     .info-popover::before {
       content: "";
       position: absolute;
       top: -8px; /* Setengah dari tinggi border dan margin */
-      right: 15px; /* Sesuaikan posisi agar di tengah tombol info */
+      right: 16px; /* Sesuaikan posisi agar di tengah tombol info */
       border-width: 0 8px 8px 8px;
       border-color: transparent transparent #e2e8f0 transparent; /* Warna border atas */
     }
@@ -64,9 +67,14 @@
       content: "";
       position: absolute;
       top: -7px; /* Sedikit di atas border untuk "fill" */
-      right: 15px; /* Sesuaikan posisi agar di tengah tombol info */
+      right: 16px; /* Sesuaikan posisi agar di tengah tombol info */
       border-width: 0 8px 8px 8px;
       border-color: transparent transparent white transparent; /* Warna isi */
+    }
+
+    /* Perbaikan untuk ikon pencarian agar tidak menghalangi input */
+    .search-icon-inside-input {
+        pointer-events: none; /* Mencegah ikon menangkap event klik */
     }
   </style>
 </head>
@@ -79,14 +87,14 @@
   <div class="w-full max-w-xl mb-8 relative">
     <input id="searchInput" type="text" placeholder="Masukkan nama, nomor, atau username..."
       class="w-full pl-12 pr-4 py-3 rounded-xl shadow-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700" />
-    <img src="images/cari.svg" alt="Search Icon" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 opacity-60" />
+    <img src="images/cari.svg" alt="Search Icon" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 opacity-60 search-icon-inside-input" />
   </div>
 
   <div id="results" class="w-full max-w-xl space-y-6"></div>
 
   <template id="card-template">
-    <div class="bg-white shadow-lg rounded-2xl p-5 fade-in border border-gray-200 hover:shadow-xl transition-shadow duration-300 relative">
-      <div class="flex items-center justify-between pb-3 mb-3 border-b border-gray-200">
+    <div class="bg-white shadow-lg rounded-2xl p-5 fade-in border border-gray-200 hover:shadow-xl transition-shadow duration-300">
+      <div class="flex items-center justify-between pb-3 mb-3 border-b border-gray-200 relative">
         <div class="flex items-center gap-2">
           <span class="text-xl font-bold text-gray-800 name">Nama Penjual</span>
           <img src="images/verif.svg" alt="Terverifikasi" title="Akun Terverifikasi" class="w-6 h-6 hidden verified-icon animate-bounce-verified" />
@@ -96,9 +104,9 @@
             <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
           </svg>
         </button>
-      </div>
-      <div class="info-popover text-sm text-gray-700 hidden">
-        <p class="info-content"></p>
+        <div class="info-popover text-sm text-gray-700 hidden">
+          <p class="info-content"></p>
+        </div>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-3 buttons-container"></div>
     </div>
@@ -112,7 +120,9 @@
 
     function createCard(entry) {
       const clone = cardTemplate.content.cloneNode(true);
-      const cardDiv = clone.querySelector('.bg-white'); // Dapatkan div kartu utama
+      // Dapatkan div header yang kini jadi parent relatif untuk popover
+      const cardHeaderDiv = clone.querySelector('.pb-3.mb-3.border-b');
+
       clone.querySelector(".name").textContent = entry.Nama;
 
       // Verified badge
@@ -142,7 +152,7 @@
 
       if (entry.Catatan && entry.Catatan.trim() !== "") {
         infoContent.textContent = entry.Catatan;
-        infoPopover.classList.remove('hidden'); // Tampilkan popover jika ada catatan
+        infoPopover.classList.remove('hidden'); // Pastikan popover tidak tersembunyi oleh CSS 'hidden' awal
 
         infoBtn.onclick = (e) => {
           e.stopPropagation(); // Mencegah event klik menyebar ke document
@@ -154,9 +164,6 @@
           
           infoPopover.classList.toggle('active'); // Toggle class 'active'
           activePopover = infoPopover.classList.contains('active') ? infoPopover : null; // Update activePopover
-
-          // Atur posisi popover agar relatif terhadap kartu, bukan body
-          // cardDiv.style.position = 'relative'; // Sudah di set di template
         };
 
         infoBtn.style.opacity = 1; // Pastikan terlihat jika ada catatan
@@ -193,6 +200,7 @@
 
     // Menutup popover ketika mengklik di luar
     document.addEventListener('click', (e) => {
+        // Cek apakah yang diklik BUKAN popover, dan BUKAN tombol info
         if (activePopover && !activePopover.contains(e.target) && !e.target.closest('.info-button')) {
             activePopover.classList.remove('active');
             activePopover = null;
