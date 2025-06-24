@@ -6,7 +6,7 @@
   <title>Direktori Pedagang Twitter</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* CSS Dasar untuk Konsistensi dengan Halaman Lain */
+    /* CSS Dasar */
     body {
         font-family: Arial, sans-serif;
         line-height: 1.6;
@@ -14,39 +14,48 @@
         padding: 0;
         background-color: #f4f4f4;
         color: #333;
+        display: flex; /* Menggunakan flexbox untuk layout keseluruhan */
+        flex-direction: column; /* Mengatur item secara vertikal */
+        min-height: 100vh; /* Memastikan body mengisi seluruh tinggi viewport */
     }
-    header {
+    
+    /* Main content akan flex-grow untuk mengisi ruang kosong */
+    main {
+        flex-grow: 1; /* Memastikan main content mengambil semua ruang yang tersedia */
+        padding: 20px;
+        max-width: 800px; /* Lebar maksimum seperti sebelumnya */
+        margin: 20px auto; /* Centering */
+        width: 100%; /* Memastikan lebar responsif */
+    }
+
+    /* Footer */
+    footer {
         background-color: #333;
         color: #fff;
-        padding: 1em 0;
+        padding: 25px 20px; /* Padding lebih besar untuk konten footer */
         text-align: center;
+        font-size: 0.9em;
+        width: 100%; /* Memastikan footer selebar viewport */
     }
-    header h1 {
-        margin: 0;
-        font-size: 1.8em;
-    }
-    nav ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        justify-content: center;
-    }
-    nav ul li {
-        margin: 0 15px;
-    }
-    nav ul li a {
+    footer .footer-links a {
         color: #fff;
         text-decoration: none;
+        margin: 0 10px;
         font-weight: bold;
     }
-    footer {
-        text-align: center;
-        padding: 20px;
-        margin-top: 40px;
-        background-color: #333;
+    footer .footer-links a:hover {
+        text-decoration: underline;
+    }
+    footer .contact-info {
+        margin-top: 15px;
+        color: #ccc;
+    }
+    footer .contact-info p {
+        margin-bottom: 5px;
+    }
+    footer .contact-info a {
         color: #fff;
-        font-size: 0.9em;
+        text-decoration: underline;
     }
 
     /* CSS Khusus untuk Halaman Ini */
@@ -77,16 +86,15 @@
     .info-popover {
         position: absolute;
         /* Mengatur posisi relatif terhadap div .flex.items-start.justify-between */
-        /* Sesuaikan 'right' agar tepat di bawah tombol info */
-        right: 0; /* Mengatur ke kanan dari parent div */
-        top: calc(100% + 8px); /* 8px di bawah parent div (header) */
-        width: 250px; /* Lebar popover, bisa disesuaikan */
-        max-width: calc(100% - 20px); /* Batasi lebar agar tidak melebihi kartu */
+        right: 0; 
+        top: calc(100% + 8px); 
+        width: 250px; 
+        max-width: calc(100% - 20px); 
         background-color: white;
-        border: 1px solid #e2e8f0; /* border-gray-200 */
-        border-radius: 0.75rem; /* rounded-xl */
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
-        padding: 1rem; /* p-4 */
+        border: 1px solid #e2e8f0; 
+        border-radius: 0.75rem; 
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); 
+        padding: 1rem; 
         z-index: 10;
         opacity: 0;
         visibility: hidden;
@@ -102,82 +110,74 @@
     .info-popover::before {
       content: "";
       position: absolute;
-      top: -8px; /* Setengah dari tinggi border dan margin */
-      right: 16px; /* Sesuaikan posisi agar di tengah tombol info */
+      top: -8px; 
+      right: 16px; 
       border-width: 0 8px 8px 8px;
-      border-color: transparent transparent #e2e8f0 transparent; /* Warna border atas */
+      border-color: transparent transparent #e2e8f0 transparent; 
     }
      .info-popover::after {
       content: "";
       position: absolute;
-      top: -7px; /* Sedikit di atas border untuk "fill" */
-      right: 16px; /* Sesuaikan posisi agar di tengah tombol info */
+      top: -7px; 
+      right: 16px; 
       border-width: 0 8px 8px 8px;
-      border-color: transparent transparent white transparent; /* Warna isi */
+      border-color: transparent transparent white transparent; 
     }
 
     /* Perbaikan untuk ikon pencarian agar tidak menghalangi input */
     .search-icon-inside-input {
-        pointer-events: none; /* Mencegah ikon menangkap event klik */
-    }
-
-    /* Styling untuk bagian kontak di footer */
-    .contact-info {
-        margin-top: 20px;
-        color: #ccc; /* Warna teks yang lebih terang di footer */
-    }
-    .contact-info p {
-        margin-bottom: 5px;
-    }
-    .contact-info a {
-        color: #fff;
-        text-decoration: underline;
+        pointer-events: none; 
     }
   </style>
 </head>
-<body class="bg-gray-100 min-h-screen flex flex-col items-center py-10 px-4">
-  <header>
-      <h1>Direktori Pedagang Twitter</h1>
-      <nav>
-          <ul>
-              <li><a href="index.html">Beranda</a></li>
-              <li><a href="privacy-policy.html">Kebijakan Privasi</a></li>
-              <li><a href="terms-conditions.html">Syarat & Ketentuan</a></li>
-          </ul>
-      </nav>
-  </header>
-
-  <div class="flex items-center justify-center gap-3 mb-6 mt-8"> <h2 class="text-2xl md:text-3xl font-bold text-gray-800">Cari Pedagang Twitter</h2>
-    <img src="images/cari.svg" alt="Search Icon" class="w-7 h-7 md:w-8 md:h-8" title="Direktori Pencarian" />
-  </div>
-
-  <div class="w-full max-w-xl mb-8 relative">
-    <input id="searchInput" type="text" placeholder="Masukkan nama, nomor, atau username..."
-      class="w-full pl-12 pr-4 py-3 rounded-xl shadow-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700" />
-    <img src="images/cari.svg" alt="Search Icon" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 opacity-60 search-icon-inside-input" />
-  </div>
-
-  <div id="results" class="w-full max-w-xl space-y-6"></div>
-
-  <template id="card-template">
-    <div class="bg-white shadow-lg rounded-2xl p-5 fade-in border border-gray-200 hover:shadow-xl transition-shadow duration-300">
-      <div class="flex items-center justify-between pb-3 mb-3 border-b border-gray-200 relative">
-        <div class="flex items-center gap-2">
-          <span class="text-xl font-bold text-gray-800 name">Nama Penjual</span>
-          <img src="images/verif.svg" alt="Terverifikasi" title="Akun Terverifikasi" class="w-6 h-6 hidden verified-icon animate-bounce-verified" />
-        </div>
-        <button class="info-button p-1 rounded-full text-gray-500 hover:text-gray-700 transition-colors duration-200" title="Informasi Tambahan">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
-          </svg>
-        </button>
-        <div class="info-popover text-sm text-gray-700 hidden">
-          <p class="info-content"></p>
-        </div>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 buttons-container"></div>
+<body class="bg-gray-100">
+  <main class="flex flex-col items-center py-10 px-4">
+    <div class="flex items-center justify-center gap-3 mb-6">
+      <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Cari Pedagang Twitter</h1>
+      <img src="images/cari.svg" alt="Search Icon" class="w-7 h-7 md:w-8 md:h-8" title="Direktori Pencarian" />
     </div>
-  </template>
+
+    <div class="w-full max-w-xl mb-8 relative">
+      <input id="searchInput" type="text" placeholder="Masukkan nama, nomor, atau username..."
+        class="w-full pl-12 pr-4 py-3 rounded-xl shadow-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700" />
+      <img src="images/cari.svg" alt="Search Icon" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 opacity-60 search-icon-inside-input" />
+    </div>
+
+    <div id="results" class="w-full max-w-xl space-y-6"></div>
+
+    <template id="card-template">
+      <div class="bg-white shadow-lg rounded-2xl p-5 fade-in border border-gray-200 hover:shadow-xl transition-shadow duration-300">
+        <div class="flex items-center justify-between pb-3 mb-3 border-b border-gray-200 relative">
+          <div class="flex items-center gap-2">
+            <span class="text-xl font-bold text-gray-800 name">Nama Penjual</span>
+            <img src="images/verif.svg" alt="Terverifikasi" title="Akun Terverifikasi" class="w-6 h-6 hidden verified-icon animate-bounce-verified" />
+          </div>
+          <button class="info-button p-1 rounded-full text-gray-500 hover:text-gray-700 transition-colors duration-200" title="Informasi Tambahan">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+            </svg>
+          </button>
+          <div class="info-popover text-sm text-gray-700 hidden">
+            <p class="info-content"></p>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 buttons-container"></div>
+      </div>
+    </template>
+  </main>
+
+  <footer>
+      <div class="footer-links">
+          <a href="privacy-policy.html">Kebijakan Privasi</a> | 
+          <a href="terms-conditions.html">Syarat & Ketentuan</a>
+      </div>
+      <div class="contact-info">
+          <p>Untuk informasi pendaftaran dan pertanyaan lainnya, hubungi kami:</p>
+          <p>Email: <a href="mailto:info@namaorganisasianda.com">info@namaorganisasianda.com</a></p>
+          <p>WhatsApp: <a href="https://wa.me/6281234567890">+62 812-3456-7890</a></p>
+      </div>
+      <p>&copy; 2025 [Nama Organisasi Anda/Nama Layanan Anda]. Hak Cipta Dilindungi.</p>
+  </footer>
 
   <script>
     const searchInput = document.getElementById("searchInput");
@@ -187,12 +187,10 @@
 
     function createCard(entry) {
       const clone = cardTemplate.content.cloneNode(true);
-      // Dapatkan div header yang kini jadi parent relatif untuk popover
       const cardHeaderDiv = clone.querySelector('.pb-3.mb-3.border-b');
 
       clone.querySelector(".name").textContent = entry.Nama;
 
-      // Verified badge
       if (entry.Terverifikasi === true || entry.Terverifikasi === "TRUE" || entry.Terverifikasi === "Ya") {
         const verifiedIcon = clone.querySelector(".verified-icon");
         verifiedIcon.classList.remove("hidden");
@@ -200,7 +198,6 @@
 
       const buttons = clone.querySelector(".buttons-container");
 
-      // Menambahkan tombol dengan logo kustom. Menggunakan warna yang sedikit disesuaikan.
       if (entry.Twitter) {
         buttons.appendChild(createButton("Twitter", entry.Twitter, "bg-blue-600 hover:bg-blue-700", "images/twitter.svg"));
       }
@@ -212,39 +209,36 @@
         buttons.appendChild(createButton("Telegram", tgLink, "bg-cyan-600 hover:bg-cyan-700", "images/tele.svg"));
       }
 
-      // Handle info button dan popover
       const infoBtn = clone.querySelector(".info-button");
       const infoPopover = clone.querySelector(".info-popover");
       const infoContent = clone.querySelector(".info-content");
 
       if (entry.Catatan && entry.Catatan.trim() !== "") {
         infoContent.textContent = entry.Catatan;
-        infoPopover.classList.remove('hidden'); // Pastikan popover tidak tersembunyi oleh CSS 'hidden' awal
+        infoPopover.classList.remove('hidden');
 
         infoBtn.onclick = (e) => {
-          e.stopPropagation(); // Mencegah event klik menyebar ke document
+          e.stopPropagation();
 
-          // Jika ada popover lain yang aktif, sembunyikan
           if (activePopover && activePopover !== infoPopover) {
             activePopover.classList.remove('active');
           }
           
-          infoPopover.classList.toggle('active'); // Toggle class 'active'
-          activePopover = infoPopover.classList.contains('active') ? infoPopover : null; // Update activePopover
+          infoPopover.classList.toggle('active');
+          activePopover = infoPopover.classList.contains('active') ? infoPopover : null;
         };
 
-        infoBtn.style.opacity = 1; // Pastikan terlihat jika ada catatan
+        infoBtn.style.opacity = 1;
         infoBtn.style.cursor = "pointer";
       } else {
-        infoBtn.style.opacity = 0.3; // Sedikit transparan jika tidak ada catatan
+        infoBtn.style.opacity = 0.3;
         infoBtn.style.cursor = "default";
-        infoPopover.remove(); // Hapus popover jika tidak ada catatan
+        infoPopover.remove(); 
       }
 
       results.appendChild(clone);
     }
 
-    // Fungsi createButton yang diperbarui untuk mendukung ikon
     function createButton(label, href, bg, iconPath = null, full = false) {
       const btn = document.createElement("a");
       btn.href = href;
@@ -255,7 +249,7 @@
         const icon = document.createElement("img");
         icon.src = iconPath;
         icon.alt = label;
-        icon.className = "w-5 h-5"; // Ukuran ikon 20x20 pixel
+        icon.className = "w-5 h-5";
         btn.appendChild(icon);
       }
 
@@ -265,15 +259,12 @@
       return btn;
     }
 
-    // Menutup popover ketika mengklik di luar
     document.addEventListener('click', (e) => {
-        // Cek apakah yang diklik BUKAN popover, dan BUKAN tombol info
         if (activePopover && !activePopover.contains(e.target) && !e.target.closest('.info-button')) {
             activePopover.classList.remove('active');
             activePopover = null;
         }
     });
-
 
     function loadData() {
       fetch("/api")
@@ -286,9 +277,8 @@
         .then(data => {
           searchInput.addEventListener("input", () => {
             const keyword = searchInput.value.trim().toLowerCase();
-            results.innerHTML = ""; // Bersihkan hasil sebelumnya
+            results.innerHTML = "";
 
-            // Tutup popover aktif saat mencari ulang
             if (activePopover) {
                 activePopover.classList.remove('active');
                 activePopover = null;
@@ -305,7 +295,6 @@
               entry.Telegram?.toLowerCase().includes(keyword)
             );
 
-            // Tampilkan pesan jika tidak ada hasil
             if (filtered.length === 0) {
                 results.innerHTML = "<p class='text-gray-500 text-center mt-8'>Tidak ada pedagang yang ditemukan.</p>";
             } else {
