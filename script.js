@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // !!! SANGAT PENTING: PASTIKAN URL INI ADALAH URL WEB APP Apps Script TERBARU ANDA !!!
     // COPY PASTE LANGSUNG DARI WINDOW DEPLOYMENT APPS SCRIPT ANDA
     // Setelah Anda melakukan "New deployment" dan memilih "Anyone" access
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw4MBzMecp1_cGAM5L16OqHM-eI-zV4dWynxJGF4X1hmvLoeKiB_KeC7972ENwtTcwP/exec'; // GANTI DENGAN URL APPS SCRIPT TERBARU ANDA DI SINI
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbykwhObiBCJtVEIe9Y_WpYrYRf_JxuE7c2sS3tUkQhZo6TdHzt1Fk70wKX7Fv9ucbw/exec'; // GANTI DENGAN URL APPS SCRIPT TERBARU ANDA DI SINI
 
     // Logging awal saat website dimuat
     console.log("Website Dimuat.");
