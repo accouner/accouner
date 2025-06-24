@@ -3,137 +3,132 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Direktori Pedagang Twitter</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Cari Pedagang Twitter</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
     .fade-in {
       animation: fadeIn 0.4s ease-in-out;
     }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
   </style>
 </head>
-<body class="bg-gray-100 min-h-screen flex flex-col items-center py-10 px-4">
-  <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6 text-center">Cari Pedagang Twitter</h1>
+<body class="bg-gray-100 text-gray-800">
+  <div class="container mx-auto p-4 max-w-xl">
+    <h1 class="text-2xl font-bold text-center mb-4">Cari Pedagang Twitter</h1>
+    <input type="text" id="searchInput" placeholder="Cari username…" class="w-full px-4 py-2 border rounded-xl mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400">
 
-  <!-- Search Input -->
-  <div class="w-full max-w-xl mb-8">
-    <input id="searchInput" type="text" placeholder="Masukkan nama, nomor, atau username..."
-      class="w-full px-4 py-3 rounded-xl shadow-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    <div id="results" class="space-y-4"></div>
   </div>
 
-  <!-- Debug output (sementara, boleh dihapus nanti) -->
-  <p id="debug" class="text-xs text-gray-500 mb-4"></p>
-
-  <!-- Search Results -->
-  <div id="results" class="w-full max-w-xl space-y-6 min-h-[100px]"></div>
-
-  <!-- Card Template -->
+  <!-- Template Card -->
   <template id="card-template">
     <div class="bg-white shadow-md rounded-2xl p-4 fade-in">
       <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2 text-lg font-semibold text-gray-800">
-          <span class="name">👤 Nama Penjual</span>
-          <span class="verified-icon" title="Terverifikasi"></span>
+        <!-- Nama + Verified -->
+        <div class="flex items-center gap-2 text-lg font-semibold text-gray-800 min-w-0">
+          <span class="name truncate">👤 Nama Penjual</span>
+          <span class="verified-icon shrink-0" title="Terverifikasi"></span>
         </div>
-        <button class="text-blue-600 hover:text-blue-800 info-button" title="Info">🛈</button>
+        <!-- Info Button -->
+        <button class="text-blue-600 hover:text-blue-800 info-button shrink-0" title="Info">🛈</button>
       </div>
       <div class="grid grid-cols-2 gap-2 mt-4 buttons-container"></div>
     </div>
   </template>
 
-  <!-- Script -->
   <script>
-    const searchInput = document.getElementById("searchInput");
-    const results = document.getElementById("results");
-    const debug = document.getElementById("debug");
-    const cardTemplate = document.getElementById("card-template");
-    let fullData = [];
+    const API_URL = "/api"; // Pastikan endpoint ini benar
+
+    async function loadData() {
+      try {
+        const res = await fetch(API_URL);
+        const data = await res.json();
+        return data.data || [];
+      } catch (err) {
+        console.error("Gagal memuat data:", err);
+        return [];
+      }
+    }
 
     function createCard(entry) {
-      const clone = cardTemplate.content.cloneNode(true);
-      clone.querySelector(".name").textContent = `👤 ${entry.Nama}`;
+      const template = document.getElementById("card-template");
+      const clone = template.content.cloneNode(true);
 
-      // Verified badge
-      if (entry.Terverifikasi === true || entry.Terverifikasi === "TRUE" || entry.Terverifikasi === "Ya") {
-        clone.querySelector(".verified-icon").innerHTML = `
+      clone.querySelector(".name").textContent = entry.Nama || "Tanpa Nama";
+
+      if (entry.Terverifikasi === "TRUE" || entry.Terverifikasi === "Ya" || entry.Terverifikasi === true) {
+        const verifiedSVG = `
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-500" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2s10 4.477 10 10zM10 14.586l5.293-5.293 1.414 1.414L10 17.414l-3.707-3.707 1.414-1.414L10 14.586z"/>
-          </svg>`;
+            <path d="M22.25 12.003c0 5.657-4.593 10.25-10.25 10.25s-10.25-4.593-10.25-10.25S6.343 1.753 12 1.753s10.25 4.593 10.25 10.25zm-6.878-2.628l-4.75 4.75-2.122-2.122-1.414 1.415 3.536 3.536 6.164-6.165-1.414-1.414z"/>
+          </svg>
+        `;
+        clone.querySelector(".verified-icon").innerHTML = verifiedSVG;
       }
 
-      const buttons = clone.querySelector(".buttons-container");
+      const buttonsContainer = clone.querySelector(".buttons-container");
 
       if (entry.Twitter) {
-        buttons.appendChild(createButton("🌐 Twitter", entry.Twitter, "bg-blue-500"));
+        buttonsContainer.innerHTML += `
+          <a href="${entry.Twitter}" target="_blank" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-xl text-center text-sm">
+            🌐 Twitter
+          </a>`;
       }
       if (entry.WhatsApp) {
-        buttons.appendChild(createButton("📞 WhatsApp", `https://wa.me/${entry.WhatsApp}`, "bg-green-500"));
+        buttonsContainer.innerHTML += `
+          <a href="${entry.WhatsApp}" target="_blank" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-xl text-center text-sm">
+            📞 WhatsApp
+          </a>`;
       }
       if (entry.Telegram) {
-        const tg = entry.Telegram.startsWith("@") ? entry.Telegram.slice(1) : entry.Telegram;
-        buttons.appendChild(createButton("✉️ Telegram", `https://t.me/${tg}`, "bg-cyan-500"));
+        buttonsContainer.innerHTML += `
+          <a href="${entry.Telegram}" target="_blank" class="bg-cyan-500 hover:bg-cyan-600 text-white py-2 px-4 rounded-xl text-center text-sm">
+            ✉️ Telegram
+          </a>`;
       }
 
-      const infoBtn = clone.querySelector(".info-button");
-      if (entry.Catatan?.trim()) {
-        infoBtn.onclick = () => alert(entry.Catatan);
-      } else {
-        infoBtn.style.opacity = 0.3;
-        infoBtn.style.cursor = "default";
-      }
+      // Tombol info klik
+      const infoButton = clone.querySelector(".info-button");
+      infoButton.addEventListener("click", () => {
+        alert(`Info: ${entry.Nama || "Tanpa Nama"}\nUsername: ${entry.Username || "-"}\nVerified: ${entry.Terverifikasi || "-"}`);
+      });
 
-      results.appendChild(clone);
+      return clone;
     }
 
-    function createButton(label, href, bg, full = false) {
-      const btn = document.createElement("a");
-      btn.href = href;
-      btn.target = "_blank";
-      btn.textContent = label;
-      btn.className = `${bg} text-white rounded-xl py-2 text-center hover:opacity-90 transition ${full ? 'col-span-2' : ''}`;
-      return btn;
-    }
+    function displayResults(data, keyword = "") {
+      const resultsContainer = document.getElementById("results");
+      resultsContainer.innerHTML = "";
 
-    function handleSearch() {
-      const keyword = searchInput.value.trim().toLowerCase();
-      results.innerHTML = "";
-      if (!keyword) {
-        debug.textContent = "Masukkan kata kunci untuk mencari pedagang.";
+      const filtered = keyword
+        ? data.filter(entry => (entry.Username || "").toLowerCase().includes(keyword.toLowerCase()))
+        : data;
+
+      if (filtered.length === 0) {
+        resultsContainer.innerHTML = `<p class="text-center text-gray-500">Tidak ditemukan.</p>`;
         return;
       }
 
-      const filtered = fullData.filter(entry =>
-        entry.Nama?.toLowerCase().includes(keyword) ||
-        entry.Twitter?.toLowerCase().includes(keyword) ||
-        entry.WhatsApp?.toString().includes(keyword) ||
-        entry.Telegram?.toLowerCase().includes(keyword)
-      );
+      resultsContainer.innerHTML = `<p class="text-center text-sm text-gray-500">${filtered.length} hasil ditemukan.</p>`;
 
-      debug.textContent = `${filtered.length} hasil ditemukan.`;
-      filtered.forEach(createCard);
+      filtered.forEach(entry => {
+        resultsContainer.appendChild(createCard(entry));
+      });
     }
 
-    function loadData() {
-      fetch("https://accouner.site/api")
-        .then(res => res.json())
-        .then(data => {
-          fullData = data;
-          debug.textContent = "Data siap. Ketik untuk mencari.";
-        })
-        .catch(err => {
-          console.error("Gagal mengambil data:", err);
-          debug.textContent = "❌ Gagal memuat data.";
-        });
-    }
-
-    ["input", "keyup", "change"].forEach(evt => {
-      searchInput.addEventListener(evt, handleSearch);
+    document.getElementById("searchInput").addEventListener("input", async (e) => {
+      const keyword = e.target.value;
+      const data = await loadData();
+      displayResults(data, keyword);
     });
 
-    loadData();
+    // Inisialisasi awal
+    (async () => {
+      const data = await loadData();
+      displayResults(data);
+    })();
   </script>
 </body>
 </html>
