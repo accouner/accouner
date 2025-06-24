@@ -28,6 +28,46 @@
     .animate-bounce-verified {
         animation: bounceVerified 1.5s ease-in-out infinite; /* Animasi berjalan terus-menerus */
     }
+
+    /* Gaya untuk popover info */
+    .info-popover {
+        position: absolute; /* Penting untuk positioning relatif terhadap tombol */
+        top: calc(100% + 8px); /* 8px di bawah tombol */
+        right: 0; /* Sejajar kanan dengan tombol */
+        width: 250px; /* Lebar popover */
+        background-color: white;
+        border: 1px solid #e2e8f0; /* border-gray-200 */
+        border-radius: 0.75rem; /* rounded-xl */
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+        padding: 1rem; /* p-4 */
+        z-index: 10; /* Pastikan di atas elemen lain */
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10px);
+        transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0.2s;
+    }
+    .info-popover.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+    /* Arrow ke atas (opsional, bisa ditambah dengan pseudo-element) */
+    .info-popover::before {
+      content: "";
+      position: absolute;
+      top: -8px; /* Setengah dari tinggi border dan margin */
+      right: 15px; /* Sesuaikan posisi agar di tengah tombol info */
+      border-width: 0 8px 8px 8px;
+      border-color: transparent transparent #e2e8f0 transparent; /* Warna border atas */
+    }
+     .info-popover::after {
+      content: "";
+      position: absolute;
+      top: -7px; /* Sedikit di atas border untuk "fill" */
+      right: 15px; /* Sesuaikan posisi agar di tengah tombol info */
+      border-width: 0 8px 8px 8px;
+      border-color: transparent transparent white transparent; /* Warna isi */
+    }
   </style>
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col items-center py-10 px-4">
@@ -45,7 +85,7 @@
   <div id="results" class="w-full max-w-xl space-y-6"></div>
 
   <template id="card-template">
-    <div class="bg-white shadow-lg rounded-2xl p-5 fade-in border border-gray-200 hover:shadow-xl transition-shadow duration-300">
+    <div class="bg-white shadow-lg rounded-2xl p-5 fade-in border border-gray-200 hover:shadow-xl transition-shadow duration-300 relative">
       <div class="flex items-center justify-between pb-3 mb-3 border-b border-gray-200">
         <div class="flex items-center gap-2">
           <span class="text-xl font-bold text-gray-800 name">Nama Penjual</span>
@@ -57,6 +97,9 @@
           </svg>
         </button>
       </div>
+      <div class="info-popover text-sm text-gray-700 hidden">
+        <p class="info-content"></p>
+      </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-3 buttons-container"></div>
     </div>
   </template>
@@ -65,9 +108,11 @@
     const searchInput = document.getElementById("searchInput");
     const results = document.getElementById("results");
     const cardTemplate = document.getElementById("card-template");
+    let activePopover = null; // Melacak popover yang sedang aktif
 
     function createCard(entry) {
       const clone = cardTemplate.content.cloneNode(true);
+      const cardDiv = clone.querySelector('.bg-white'); // Dapatkan div kartu utama
       clone.querySelector(".name").textContent = entry.Nama;
 
       // Verified badge
@@ -90,15 +135,36 @@
         buttons.appendChild(createButton("Telegram", tgLink, "bg-cyan-600 hover:bg-cyan-700", "images/tele.svg"));
       }
 
-      // Handle info button
+      // Handle info button dan popover
       const infoBtn = clone.querySelector(".info-button");
+      const infoPopover = clone.querySelector(".info-popover");
+      const infoContent = clone.querySelector(".info-content");
+
       if (entry.Catatan && entry.Catatan.trim() !== "") {
-        infoBtn.onclick = () => alert(entry.Catatan);
+        infoContent.textContent = entry.Catatan;
+        infoPopover.classList.remove('hidden'); // Tampilkan popover jika ada catatan
+
+        infoBtn.onclick = (e) => {
+          e.stopPropagation(); // Mencegah event klik menyebar ke document
+
+          // Jika ada popover lain yang aktif, sembunyikan
+          if (activePopover && activePopover !== infoPopover) {
+            activePopover.classList.remove('active');
+          }
+          
+          infoPopover.classList.toggle('active'); // Toggle class 'active'
+          activePopover = infoPopover.classList.contains('active') ? infoPopover : null; // Update activePopover
+
+          // Atur posisi popover agar relatif terhadap kartu, bukan body
+          // cardDiv.style.position = 'relative'; // Sudah di set di template
+        };
+
         infoBtn.style.opacity = 1; // Pastikan terlihat jika ada catatan
         infoBtn.style.cursor = "pointer";
       } else {
         infoBtn.style.opacity = 0.3; // Sedikit transparan jika tidak ada catatan
         infoBtn.style.cursor = "default";
+        infoPopover.remove(); // Hapus popover jika tidak ada catatan
       }
 
       results.appendChild(clone);
@@ -109,7 +175,6 @@
       const btn = document.createElement("a");
       btn.href = href;
       btn.target = "_blank";
-      // Menambahkan flexbox untuk menempatkan ikon dan teks secara horizontal
       btn.className = `${bg} text-white rounded-xl py-2 px-3 flex items-center justify-center gap-2 hover:opacity-90 transition ${full ? 'col-span-2' : ''}`;
 
       if (iconPath) {
@@ -126,6 +191,15 @@
       return btn;
     }
 
+    // Menutup popover ketika mengklik di luar
+    document.addEventListener('click', (e) => {
+        if (activePopover && !activePopover.contains(e.target) && !e.target.closest('.info-button')) {
+            activePopover.classList.remove('active');
+            activePopover = null;
+        }
+    });
+
+
     function loadData() {
       fetch("/api")
         .then(res => {
@@ -139,9 +213,13 @@
             const keyword = searchInput.value.trim().toLowerCase();
             results.innerHTML = ""; // Bersihkan hasil sebelumnya
 
+            // Tutup popover aktif saat mencari ulang
+            if (activePopover) {
+                activePopover.classList.remove('active');
+                activePopover = null;
+            }
+
             if (!keyword) {
-                // Tampilkan pesan awal atau biarkan kosong jika tidak ada keyword
-                // results.innerHTML = "<p class='text-gray-500 text-center mt-8'>Mulai ketik untuk mencari pedagang...</p>";
                 return;
             }
 
