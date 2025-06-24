@@ -9,7 +9,6 @@
     /* CSS Dasar */
     html, body {
         height: 100vh; /* Memastikan html dan body mengambil 100% tinggi viewport */
-        overflow: hidden; /* Mencegah scrolling pada seluruh halaman */
         margin: 0;
         padding: 0;
         font-family: Arial, sans-serif;
@@ -18,7 +17,7 @@
         color: #333;
         display: flex;
         flex-direction: column;
-        justify-content: space-between; /* Mendistribusikan ruang antara elemen header, main, footer */
+        /* Hapus overflow: hidden; dari body/html */
     }
     
     /* Main content akan mengambil sisa ruang yang tersedia */
@@ -31,11 +30,26 @@
         max-width: 800px; /* Lebar maksimum seperti sebelumnya */
         width: 100%; /* Memastikan lebar responsif */
         box-sizing: border-box; /* Memastikan padding tidak menambah lebar/tinggi total */
-        overflow-y: auto; /* Memungkinkan scrolling di dalam main jika kontennya melebihi tinggi */
-        /* Catatan: Karena ada permintaan "tidak bisa di-scroll", main tidak boleh melebihi tinggi yang tersedia.
-           Namun, jika hasil pencarian banyak, ini akan jadi masalah.
-           Untuk benar-benar "tidak bisa di-scroll", konten dalam main harus sangat sedikit
-           atau Anda perlu mekanisme untuk membatasi jumlah hasil yang ditampilkan. */
+        overflow-y: auto; /* Ini yang memungkinkan scrolling di dalam main jika kontennya melebihi tinggi */
+        -webkit-overflow-scrolling: touch; /* Untuk scrolling yang lebih halus di iOS */
+    }
+
+    /* Bagian Kontak di atas Footer */
+    .contact-section {
+        background-color: #f4f4f4; /* Sesuaikan dengan background body */
+        color: #333; /* Warna teks sesuai body */
+        padding: 15px 20px;
+        text-align: center;
+        width: 100%;
+        box-sizing: border-box;
+        flex-shrink: 0; /* Mencegah contact-section menyusut */
+    }
+    .contact-section p {
+        margin-bottom: 5px;
+    }
+    .contact-section a {
+        color: #007bff; /* Warna link yang menonjol */
+        text-decoration: underline;
     }
 
     /* Footer */
@@ -58,24 +72,6 @@
     .footer-links a:hover {
         text-decoration: underline;
     }
-
-    /* Bagian Kontak di atas Footer */
-    .contact-section {
-        background-color: #f4f4f4; /* Sesuaikan dengan background body */
-        color: #333; /* Warna teks sesuai body */
-        padding: 15px 20px;
-        text-align: center;
-        width: 100%;
-        box-sizing: border-box;
-    }
-    .contact-section p {
-        margin-bottom: 5px;
-    }
-    .contact-section a {
-        color: #007bff; /* Warna link yang menonjol */
-        text-decoration: underline;
-    }
-
 
     /* CSS Khusus untuk Halaman Ini (dari sebelumnya) */
     @keyframes fadeIn {
@@ -314,13 +310,42 @@
             } else {
                 filtered.forEach(createCard);
             }
+            // Setelah hasil ditampilkan, sesuaikan padding main untuk memastikan footer terlihat
+            adjustMainPadding();
           });
+          // Panggil sekali saat halaman dimuat (jika ada initial content)
+          adjustMainPadding();
         })
         .catch(err => {
           console.error("Gagal mengambil data:", err);
           results.innerHTML = "<p class='text-red-500 text-center mt-8'>Gagal memuat data. Coba lagi nanti.</p>";
         });
     }
+
+    // Fungsi baru untuk menyesuaikan padding main
+    function adjustMainPadding() {
+      const mainElement = document.querySelector('main');
+      const contactSectionHeight = document.querySelector('.contact-section').offsetHeight;
+      const footerHeight = document.querySelector('footer').offsetHeight;
+      const totalFixedElementHeight = contactSectionHeight + footerHeight;
+
+      // Atur min-height untuk main agar selalu mengisi ruang, mencegah footer naik
+      // dan pastikan ada ruang jika ada hasil pencarian
+      // Kita perlu memperhitungkan tinggi header (jika ada) dan elemen di atas input pencarian
+      // Untuk kasus ini, karena tidak ada header, kita hanya perlu memperhitungkan totalFixedElementHeight
+      // dan padding atas/bawah main.
+      
+      // Hitung tinggi yang tersedia untuk konten yang bisa digulir di dalam `main`
+      const viewportHeight = window.innerHeight;
+      const availableHeightForMainContent = viewportHeight - totalFixedElementHeight - (2 * 20); // 20px padding top/bottom main
+
+      // Jika hasil pencarian ada dan tingginya melebihi `availableHeightForMainContent`,
+      // `overflow-y: auto;` akan membuat scrollbar internal di `main`.
+      // Jika tidak, `main` akan menyesuaikan tingginya agar footer tetap di bawah.
+    }
+
+    // Panggil adjustMainPadding setiap kali ukuran jendela berubah
+    window.addEventListener('resize', adjustMainPadding);
 
     loadData();
   </script>
