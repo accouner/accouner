@@ -8,7 +8,7 @@
   <style>
     /* CSS Dasar */
     html, body {
-        height: 100vh; 
+        height: 100vh;
         margin: 0;
         padding: 0;
         font-family: Arial, sans-serif;
@@ -33,52 +33,114 @@
         -webkit-overflow-scrolling: touch; 
     }
 
-    /* Bagian Kontak (diperbarui) */
-    .contact-card-container {
-        padding: 20px; /* Padding di luar kartu agar ada ruang */
+    /* Kontak Popover (diperbarui) */
+    .contact-popover-container {
         width: 100%;
-        max-width: 800px; /* Lebar maksimum mengikuti main */
-        margin: 0 auto; /* Tengah */
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 10px 20px; /* Padding untuk tombol */
         box-sizing: border-box;
-        flex-shrink: 0; /* Mencegah menyusut */
+        text-align: center;
+        position: relative; /* Penting untuk positioning popover */
+        z-index: 20; /* Pastikan di atas elemen lain */
+        flex-shrink: 0;
     }
-    .contact-card {
-        background-color: #fff;
-        border-radius: 12px; /* Lebih rounded dari sebelumnya */
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Shadow yang lebih lembut */
-        padding: 25px;
+
+    .contact-toggle-button {
+        background-color: #007bff; /* Warna biru */
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .contact-toggle-button:hover {
+        background-color: #0056b3; /* Biru lebih gelap */
+        transform: translateY(-1px);
+    }
+
+    .contact-popover {
+        position: absolute;
+        bottom: 100%; /* Posisikan di atas tombol toggle */
+        left: 50%;
+        transform: translateX(-50%) translateY(-10px); /* Geser ke tengah dan beri sedikit jarak */
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        padding: 20px;
         text-align: center;
         border: 1px solid #e2e8f0;
+        width: 280px; /* Lebar popover */
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease-out, transform 0.3s ease-out, visibility 0.3s;
+        pointer-events: none; /* Awalnya tidak bisa diklik */
     }
-    .contact-card h3 {
-        font-size: 1.4em;
+
+    .contact-popover.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0); /* Kembali ke posisi semula */
+        pointer-events: auto; /* Bisa diklik saat aktif */
+    }
+
+    /* Arrow ke bawah (mengarah ke tombol) */
+    .contact-popover::before {
+      content: "";
+      position: absolute;
+      top: 100%; /* Di bagian bawah popover */
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 8px 8px 0 8px;
+      border-color: #e2e8f0 transparent transparent transparent; 
+    }
+     .contact-popover::after {
+      content: "";
+      position: absolute;
+      top: calc(100% - 1px); /* Sedikit di atas border untuk ilusi arrow putih */
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 8px 8px 0 8px;
+      border-color: white transparent transparent transparent; 
+    }
+
+    .contact-popover h3 {
+        font-size: 1.2em; /* Lebih kecil dari kartu */
         color: #333;
-        margin-bottom: 15px;
+        margin-bottom: 10px;
         font-weight: bold;
     }
-    .contact-card p {
-        margin-bottom: 10px;
+    .contact-popover p {
+        margin-bottom: 15px;
         color: #555;
+        font-size: 0.95em;
     }
-    .contact-card .whatsapp-button {
-        display: inline-flex; /* Agar ikon dan teks sejajar */
-        align-items: center; /* Vertically center */
-        justify-content: center; /* Horizontally center */
-        background-color: #25D366; /* WhatsApp Green */
+    .contact-popover .whatsapp-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #25D366;
         color: #fff;
-        padding: 12px 25px;
-        border-radius: 8px;
+        padding: 10px 20px; /* Padding lebih kecil */
+        border-radius: 6px; /* Lebih kecil */
         text-decoration: none;
         font-weight: bold;
         transition: background-color 0.2s ease-in-out;
-        gap: 8px; /* Jarak antara ikon dan teks */
+        gap: 6px; /* Jarak ikon-teks lebih kecil */
+        font-size: 0.9em;
     }
-    .contact-card .whatsapp-button:hover {
-        background-color: #1DA851; /* Darker green on hover */
+    .contact-popover .whatsapp-button:hover {
+        background-color: #1DA851;
     }
-    .contact-card .whatsapp-button img {
-        width: 24px; /* Ukuran ikon WhatsApp */
-        height: 24px;
+    .contact-popover .whatsapp-button img {
+        width: 20px; /* Ukuran ikon lebih kecil */
+        height: 20px;
     }
 
     /* Footer */
@@ -124,6 +186,7 @@
         animation: bounceVerified 1.5s ease-in-out infinite;
     }
 
+    /* Info popover untuk kartu hasil pencarian */
     .info-popover {
         position: absolute;
         right: 0; 
@@ -204,10 +267,16 @@
     </template>
   </main>
 
-  <div class="contact-card-container">
-      <div class="contact-card">
-          <h3>Informasi Pendaftaran & Pertanyaan</h3>
-          <p>Untuk informasi lebih lanjut mengenai pendaftaran pedagang atau pertanyaan lainnya, silakan hubungi kami melalui WhatsApp.</p>
+  <div class="contact-popover-container">
+      <button id="contactToggleButton" class="contact-toggle-button">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+            <path fill-rule="evenodd" d="M1.5 4.5a3 3 0 013-3h15a3 3 0 013 3v10.5a3 3 0 01-3 3H5.25a3 3 0 00-2.879 2.111l-.017.068-.208.74a1.5 1.5 0 01-2.315-1.867L1.5 4.5zM11.96 11.293a.75.75 0 00-1.06-1.06L7.498 13.78l-1.47-1.47a.75.75 0 00-1.06 1.06l2.5 2.5a.75.75 0 001.06 0l4.5-4.5z" clip-rule="evenodd" />
+          </svg>
+          Kontak Kami
+      </button>
+      <div id="contactPopover" class="contact-popover">
+          <h3>Hubungi Kami</h3>
+          <p>Untuk pertanyaan atau bantuan lebih lanjut, silakan hubungi kami melalui WhatsApp.</p>
           <a href="https://wa.me/6281234567890" target="_blank" class="whatsapp-button">
               <img src="images/wa.svg" alt="WhatsApp Icon" />
               Hubungi via WhatsApp
@@ -220,19 +289,52 @@
           <a href="privacy-policy.html">Kebijakan Privasi</a> | 
           <a href="terms-conditions.html">Syarat & Ketentuan</a>
       </div>
-      <p>&copy; 2025 accouner.site. All rights reserved.</p>
+      <p>Copyright accouner.site</p>
   </footer>
 
   <script>
     const searchInput = document.getElementById("searchInput");
     const results = document.getElementById("results");
     const cardTemplate = document.getElementById("card-template");
-    let activePopover = null;
+    let activeCardPopover = null; // Melacak popover info kartu yang sedang aktif
+
+    // Elemen Popover Kontak
+    const contactToggleButton = document.getElementById("contactToggleButton");
+    const contactPopover = document.getElementById("contactPopover");
+    let activeContactPopover = null; // Melacak popover kontak yang sedang aktif
+
+    contactToggleButton.addEventListener('click', (e) => {
+        e.stopPropagation(); // Mencegah event click menyebar ke document
+
+        if (activeContactPopover) {
+            activeContactPopover.classList.remove('active');
+            activeContactPopover = null;
+        }
+
+        contactPopover.classList.toggle('active');
+        if (contactPopover.classList.contains('active')) {
+            activeContactPopover = contactPopover;
+        } else {
+            activeContactPopover = null;
+        }
+    });
+
+    // Menutup popover kontak jika klik di luar
+    document.addEventListener('click', (e) => {
+        if (activeContactPopover && !contactPopover.contains(e.target) && !contactToggleButton.contains(e.target)) {
+            activeContactPopover.classList.remove('active');
+            activeContactPopover = null;
+        }
+        // Juga tutup popover info kartu jika klik di luar
+        if (activeCardPopover && !activeCardPopover.contains(e.target) && !e.target.closest('.info-button')) {
+            activeCardPopover.classList.remove('active');
+            activeCardPopover = null;
+        }
+    });
 
     function createCard(entry) {
       const clone = cardTemplate.content.cloneNode(true);
-      const cardHeaderDiv = clone.querySelector('.pb-3.mb-3.border-b');
-
+      
       clone.querySelector(".name").textContent = entry.Nama;
 
       if (entry.Terverifikasi === true || entry.Terverifikasi === "TRUE" || entry.Terverifikasi === "Ya") {
@@ -264,12 +366,12 @@
         infoBtn.onclick = (e) => {
           e.stopPropagation();
 
-          if (activePopover && activePopover !== infoPopover) {
-            activePopover.classList.remove('active');
+          if (activeCardPopover && activeCardPopover !== infoPopover) {
+            activeCardPopover.classList.remove('active');
           }
           
           infoPopover.classList.toggle('active');
-          activePopover = infoPopover.classList.contains('active') ? infoPopover : null;
+          activeCardPopover = infoPopover.classList.contains('active') ? infoPopover : null;
         };
 
         infoBtn.style.opacity = 1;
@@ -303,13 +405,6 @@
       return btn;
     }
 
-    document.addEventListener('click', (e) => {
-        if (activePopover && !activePopover.contains(e.target) && !e.target.closest('.info-button')) {
-            activePopover.classList.remove('active');
-            activePopover = null;
-        }
-    });
-
     function loadData() {
       fetch("/api")
         .then(res => {
@@ -323,9 +418,14 @@
             const keyword = searchInput.value.trim().toLowerCase();
             results.innerHTML = "";
 
-            if (activePopover) {
-                activePopover.classList.remove('active');
-                activePopover = null;
+            // Tutup semua popover saat pencarian dimulai
+            if (activeContactPopover) {
+                activeContactPopover.classList.remove('active');
+                activeContactPopover = null;
+            }
+            if (activeCardPopover) {
+                activeCardPopover.classList.remove('active');
+                activeCardPopover = null;
             }
 
             if (!keyword) {
