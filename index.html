@@ -18,16 +18,16 @@
 <body class="bg-gray-100 min-h-screen flex flex-col items-center py-10 px-4">
   <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6">Cari Pedagang Twitter</h1>
 
-  <!-- Search Bar -->
+  <!-- Search Input -->
   <div class="w-full max-w-xl mb-8">
     <input id="searchInput" type="text" placeholder="Masukkan nama, nomor, atau username..."
       class="w-full px-4 py-3 rounded-xl shadow-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" />
   </div>
 
-  <!-- Results -->
+  <!-- Search Results -->
   <div id="results" class="w-full max-w-xl space-y-6"></div>
 
-  <!-- Template -->
+  <!-- Card Template -->
   <template id="card-template">
     <div class="bg-white shadow-md rounded-2xl p-4 fade-in">
       <div class="flex items-center justify-between">
@@ -52,7 +52,7 @@
       clone.querySelector(".name").textContent = `👤 ${entry.Nama}`;
 
       // Verified badge
-      if (entry.Terverifikasi === true || entry.Terverifikasi === "TRUE") {
+      if (entry.Terverifikasi === true || entry.Terverifikasi === "TRUE" || entry.Terverifikasi === "Ya") {
         const verifiedSVG = `
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-500" viewBox="0 0 24 24" fill="currentColor">
             <path d="M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2s10 4.477 10 10zM10 14.586l5.293-5.293 1.414 1.414L10 17.414l-3.707-3.707 1.414-1.414L10 14.586z"/>
@@ -70,7 +70,7 @@
       }
       if (entry.Telegram) {
         const tgLink = entry.Telegram.startsWith("@") ? `https://t.me/${entry.Telegram.slice(1)}` : `https://t.me/${entry.Telegram}`;
-        buttons.appendChild(createButton("✉️ Telegram", tgLink, "bg-cyan-500", true));
+        buttons.appendChild(createButton("✉️ Telegram", tgLink, "bg-cyan-500"));
       }
 
       const infoBtn = clone.querySelector(".info-button");
@@ -97,6 +97,8 @@
       fetch("https://accouner.site/api")
         .then(res => res.json())
         .then(data => {
+          console.log("Data yang dimuat:", data); // Tambahkan ini untuk debug
+
           searchInput.addEventListener("input", () => {
             const keyword = searchInput.value.trim().toLowerCase();
             results.innerHTML = "";
