@@ -7,58 +7,77 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     /* CSS Dasar */
-    body {
-        font-family: Arial, sans-serif;
-        line-height: 1.6;
+    html, body {
+        height: 100vh; /* Memastikan html dan body mengambil 100% tinggi viewport */
+        overflow: hidden; /* Mencegah scrolling pada seluruh halaman */
         margin: 0;
         padding: 0;
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
         background-color: #f4f4f4;
         color: #333;
-        display: flex; /* Menggunakan flexbox untuk layout keseluruhan */
-        flex-direction: column; /* Mengatur item secara vertikal */
-        min-height: 100vh; /* Memastikan body mengisi seluruh tinggi viewport */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* Mendistribusikan ruang antara elemen header, main, footer */
     }
     
-    /* Main content akan flex-grow untuk mengisi ruang kosong */
+    /* Main content akan mengambil sisa ruang yang tersedia */
     main {
         flex-grow: 1; /* Memastikan main content mengambil semua ruang yang tersedia */
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Rata tengah horizontal */
         padding: 20px;
         max-width: 800px; /* Lebar maksimum seperti sebelumnya */
-        margin: 20px auto; /* Centering */
         width: 100%; /* Memastikan lebar responsif */
+        box-sizing: border-box; /* Memastikan padding tidak menambah lebar/tinggi total */
+        overflow-y: auto; /* Memungkinkan scrolling di dalam main jika kontennya melebihi tinggi */
+        /* Catatan: Karena ada permintaan "tidak bisa di-scroll", main tidak boleh melebihi tinggi yang tersedia.
+           Namun, jika hasil pencarian banyak, ini akan jadi masalah.
+           Untuk benar-benar "tidak bisa di-scroll", konten dalam main harus sangat sedikit
+           atau Anda perlu mekanisme untuk membatasi jumlah hasil yang ditampilkan. */
     }
 
     /* Footer */
     footer {
         background-color: #333;
         color: #fff;
-        padding: 25px 20px; /* Padding lebih besar untuk konten footer */
+        padding: 20px; /* Padding disesuaikan */
         text-align: center;
         font-size: 0.9em;
-        width: 100%; /* Memastikan footer selebar viewport */
+        width: 100%;
+        box-sizing: border-box;
+        flex-shrink: 0; /* Mencegah footer menyusut */
     }
-    footer .footer-links a {
+    .footer-links a {
         color: #fff;
         text-decoration: none;
-        margin: 0 10px;
+        margin: 0 5px; /* Jarak antar tautan lebih rapat */
         font-weight: bold;
     }
-    footer .footer-links a:hover {
-        text-decoration: underline;
-    }
-    footer .contact-info {
-        margin-top: 15px;
-        color: #ccc;
-    }
-    footer .contact-info p {
-        margin-bottom: 5px;
-    }
-    footer .contact-info a {
-        color: #fff;
+    .footer-links a:hover {
         text-decoration: underline;
     }
 
-    /* CSS Khusus untuk Halaman Ini */
+    /* Bagian Kontak di atas Footer */
+    .contact-section {
+        background-color: #f4f4f4; /* Sesuaikan dengan background body */
+        color: #333; /* Warna teks sesuai body */
+        padding: 15px 20px;
+        text-align: center;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .contact-section p {
+        margin-bottom: 5px;
+    }
+    .contact-section a {
+        color: #007bff; /* Warna link yang menonjol */
+        text-decoration: underline;
+    }
+
+
+    /* CSS Khusus untuk Halaman Ini (dari sebelumnya) */
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
@@ -67,25 +86,21 @@
       animation: fadeIn 0.4s ease-in-out;
     }
 
-    /* Styling untuk placeholder pada input pencarian */
     ::placeholder {
-        color: #9ca3af; /* Warna abu-abu yang lebih lembut */
-        opacity: 1; /* Pastikan tidak transparan */
+        color: #9ca3af;
+        opacity: 1;
     }
 
-    /* Keyframes untuk animasi logo verified */
     @keyframes bounceVerified {
         0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-3px); } /* Sedikit naik */
+        50% { transform: translateY(-3px); }
     }
     .animate-bounce-verified {
-        animation: bounceVerified 1.5s ease-in-out infinite; /* Animasi berjalan terus-menerus */
+        animation: bounceVerified 1.5s ease-in-out infinite;
     }
 
-    /* Gaya untuk popover info */
     .info-popover {
         position: absolute;
-        /* Mengatur posisi relatif terhadap div .flex.items-start.justify-between */
         right: 0; 
         top: calc(100% + 8px); 
         width: 250px; 
@@ -106,7 +121,6 @@
         visibility: visible;
         transform: translateY(0);
     }
-    /* Arrow ke atas */
     .info-popover::before {
       content: "";
       position: absolute;
@@ -124,15 +138,14 @@
       border-color: transparent transparent white transparent; 
     }
 
-    /* Perbaikan untuk ikon pencarian agar tidak menghalangi input */
     .search-icon-inside-input {
         pointer-events: none; 
     }
   </style>
 </head>
 <body class="bg-gray-100">
-  <main class="flex flex-col items-center py-10 px-4">
-    <div class="flex items-center justify-center gap-3 mb-6">
+  <main>
+    <div class="flex items-center justify-center gap-3 mb-6 mt-8">
       <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Cari Pedagang Twitter</h1>
       <img src="images/cari.svg" alt="Search Icon" class="w-7 h-7 md:w-8 md:h-8" title="Direktori Pencarian" />
     </div>
@@ -166,24 +179,25 @@
     </template>
   </main>
 
+  <div class="contact-section">
+      <p>Untuk informasi pendaftaran dan pertanyaan lainnya, hubungi kami:</p>
+      <p>Email: <a href="mailto:info@accouner.site">info@accouner.site</a></p>
+      <p>WhatsApp: <a href="https://wa.me/6281234567890">+62 812-3456-7890</a></p>
+  </div>
+
   <footer>
       <div class="footer-links">
           <a href="privacy-policy.html">Kebijakan Privasi</a> | 
           <a href="terms-conditions.html">Syarat & Ketentuan</a>
       </div>
-      <div class="contact-info">
-          <p>Untuk informasi pendaftaran dan pertanyaan lainnya, hubungi kami:</p>
-          <p>Email: <a href="mailto:info@namaorganisasianda.com">info@namaorganisasianda.com</a></p>
-          <p>WhatsApp: <a href="https://wa.me/6281234567890">+62 812-3456-7890</a></p>
-      </div>
-      <p>&copy; 2025 [Nama Organisasi Anda/Nama Layanan Anda]. Hak Cipta Dilindungi.</p>
+      <p>Copyright accouner.site</p>
   </footer>
 
   <script>
     const searchInput = document.getElementById("searchInput");
     const results = document.getElementById("results");
     const cardTemplate = document.getElementById("card-template");
-    let activePopover = null; // Melacak popover yang sedang aktif
+    let activePopover = null;
 
     function createCard(entry) {
       const clone = cardTemplate.content.cloneNode(true);
