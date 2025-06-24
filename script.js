@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const noResultsMessage = document.getElementById('noResults');
 
     // Ganti dengan URL Web App Apps Script Anda!
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwIYq2JyPbr67n8UZSgT8zUlf8W_GoOmVmP13cLOri0DAXjackymvWjmPxbuPRcjlbx/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw4MBzMecp1_cGAM5L16OqHM-eI-zV4dWynxJGF4X1hmvLoeKiB_KeC7972ENwtTcwP/exec';
 
     const performSearch = async () => {
         const query = searchInput.value.trim();
