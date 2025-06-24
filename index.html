@@ -6,6 +6,50 @@
   <title>Direktori Pedagang Twitter</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
+    /* CSS Dasar untuk Konsistensi dengan Halaman Lain */
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        color: #333;
+    }
+    header {
+        background-color: #333;
+        color: #fff;
+        padding: 1em 0;
+        text-align: center;
+    }
+    header h1 {
+        margin: 0;
+        font-size: 1.8em;
+    }
+    nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+    }
+    nav ul li {
+        margin: 0 15px;
+    }
+    nav ul li a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    footer {
+        text-align: center;
+        padding: 20px;
+        margin-top: 40px;
+        background-color: #333;
+        color: #fff;
+        font-size: 0.9em;
+    }
+
+    /* CSS Khusus untuk Halaman Ini */
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
@@ -76,11 +120,34 @@
     .search-icon-inside-input {
         pointer-events: none; /* Mencegah ikon menangkap event klik */
     }
+
+    /* Styling untuk bagian kontak di footer */
+    .contact-info {
+        margin-top: 20px;
+        color: #ccc; /* Warna teks yang lebih terang di footer */
+    }
+    .contact-info p {
+        margin-bottom: 5px;
+    }
+    .contact-info a {
+        color: #fff;
+        text-decoration: underline;
+    }
   </style>
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col items-center py-10 px-4">
-  <div class="flex items-center justify-center gap-3 mb-6">
-    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Cari Pedagang Twitter</h1>
+  <header>
+      <h1>Direktori Pedagang Twitter</h1>
+      <nav>
+          <ul>
+              <li><a href="index.html">Beranda</a></li>
+              <li><a href="privacy-policy.html">Kebijakan Privasi</a></li>
+              <li><a href="terms-conditions.html">Syarat & Ketentuan</a></li>
+          </ul>
+      </nav>
+  </header>
+
+  <div class="flex items-center justify-center gap-3 mb-6 mt-8"> <h2 class="text-2xl md:text-3xl font-bold text-gray-800">Cari Pedagang Twitter</h2>
     <img src="images/cari.svg" alt="Search Icon" class="w-7 h-7 md:w-8 md:h-8" title="Direktori Pencarian" />
   </div>
 
