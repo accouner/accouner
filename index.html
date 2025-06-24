@@ -13,10 +13,20 @@
     .fade-in {
       animation: fadeIn 0.4s ease-in-out;
     }
-    /* Styling untuk placeholder pada input pencarian agar sesuai dengan desain modern */
+
+    /* Styling untuk placeholder pada input pencarian */
     ::placeholder {
         color: #9ca3af; /* Warna abu-abu yang lebih lembut */
         opacity: 1; /* Pastikan tidak transparan */
+    }
+
+    /* Keyframes untuk animasi logo verified */
+    @keyframes bounceVerified {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-3px); } /* Sedikit naik */
+    }
+    .animate-bounce-verified {
+        animation: bounceVerified 1.5s ease-in-out infinite; /* Animasi berjalan terus-menerus */
     }
   </style>
 </head>
@@ -29,17 +39,17 @@
   <div class="w-full max-w-xl mb-8 relative">
     <input id="searchInput" type="text" placeholder="Masukkan nama, nomor, atau username..."
       class="w-full pl-12 pr-4 py-3 rounded-xl shadow-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700" />
-    <img src="images/cari.svg" alt="Search Icon" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+    <img src="images/cari.svg" alt="Search Icon" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 opacity-60" />
   </div>
 
   <div id="results" class="w-full max-w-xl space-y-6"></div>
 
   <template id="card-template">
     <div class="bg-white shadow-lg rounded-2xl p-5 fade-in border border-gray-200 hover:shadow-xl transition-shadow duration-300">
-      <div class="flex items-start justify-between mb-3">
+      <div class="flex items-center justify-between pb-3 mb-3 border-b border-gray-200">
         <div class="flex items-center gap-2">
           <span class="text-xl font-bold text-gray-800 name">Nama Penjual</span>
-          <img src="images/verif.svg" alt="Terverifikasi" title="Akun Terverifikasi" class="w-5 h-5 hidden verified-icon mt-1" />
+          <img src="images/verif.svg" alt="Terverifikasi" title="Akun Terverifikasi" class="w-6 h-6 hidden verified-icon animate-bounce-verified" />
         </div>
         <button class="info-button p-1 rounded-full text-gray-500 hover:text-gray-700 transition-colors duration-200" title="Informasi Tambahan">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -68,16 +78,16 @@
 
       const buttons = clone.querySelector(".buttons-container");
 
-      // Menambahkan tombol dengan logo kustom
+      // Menambahkan tombol dengan logo kustom. Menggunakan warna yang sedikit disesuaikan.
       if (entry.Twitter) {
-        buttons.appendChild(createButton("Twitter", entry.Twitter, "bg-blue-500", "images/twitter.svg"));
+        buttons.appendChild(createButton("Twitter", entry.Twitter, "bg-blue-600 hover:bg-blue-700", "images/twitter.svg"));
       }
       if (entry.WhatsApp) {
-        buttons.appendChild(createButton("WhatsApp", `https://wa.me/${entry.WhatsApp}`, "bg-green-500", "images/wa.svg"));
+        buttons.appendChild(createButton("WhatsApp", `https://wa.me/${entry.WhatsApp}`, "bg-green-600 hover:bg-green-700", "images/wa.svg"));
       }
       if (entry.Telegram) {
         const tgLink = entry.Telegram.startsWith("@") ? `https://t.me/${entry.Telegram.slice(1)}` : `https://t.me/${entry.Telegram}`;
-        buttons.appendChild(createButton("Telegram", tgLink, "bg-cyan-500", "images/tele.svg"));
+        buttons.appendChild(createButton("Telegram", tgLink, "bg-cyan-600 hover:bg-cyan-700", "images/tele.svg"));
       }
 
       // Handle info button
@@ -129,7 +139,11 @@
             const keyword = searchInput.value.trim().toLowerCase();
             results.innerHTML = ""; // Bersihkan hasil sebelumnya
 
-            if (!keyword) return; // Tidak menampilkan apa-apa jika keyword kosong
+            if (!keyword) {
+                // Tampilkan pesan awal atau biarkan kosong jika tidak ada keyword
+                // results.innerHTML = "<p class='text-gray-500 text-center mt-8'>Mulai ketik untuk mencari pedagang...</p>";
+                return;
+            }
 
             const filtered = data.filter(entry =>
               entry.Nama?.toLowerCase().includes(keyword) ||
