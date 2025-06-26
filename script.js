@@ -6,12 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const items = this.nextElementSibling;
             const arrow = this.querySelector('.arrow');
 
-            // Hapus bagian ini karena semua kategori sekarang dropdown
-            // if (items.classList.contains('static-item')) {
-            //     // Do nothing for static items
-            //     return;
-            // }
-
             if (items.classList.contains('open')) {
                 items.classList.remove('open');
                 this.classList.remove('active');
