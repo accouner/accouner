@@ -1,458 +1,65 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Direktori Pedagang Twitter</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    /* CSS Dasar */
-    html, body {
-        height: 100vh;
-        margin: 0;
-        padding: 0;
-        font-family: Arial, sans-serif;
-        line-height: 1.6;
-        background-color: #f4f4f4;
-        color: #333;
-        display: flex;
-        flex-direction: column;
-    }
-    
-    /* Main content akan mengambil sisa ruang yang tersedia */
-    main {
-        flex-grow: 1; 
-        display: flex;
-        flex-direction: column;
-        align-items: center; 
-        padding: 20px;
-        max-width: 800px; 
-        width: 100%; 
-        box-sizing: border-box; 
-        overflow-y: auto; /* Memungkinkan scrolling di dalam main jika kontennya melebihi tinggi */
-        -webkit-overflow-scrolling: touch; 
-    }
-
-    /* Kontak Popover (diperbarui) */
-    .contact-popover-container {
-        width: 100%;
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 10px 20px; /* Padding untuk tombol */
-        box-sizing: border-box;
-        text-align: center;
-        position: relative; /* Penting untuk positioning popover */
-        z-index: 20; /* Pastikan di atas elemen lain */
-        flex-shrink: 0;
-    }
-
-    .contact-toggle-button {
-        background-color: #007bff; /* Warna biru */
-        color: white;
-        padding: 10px 20px;
-        border-radius: 8px;
-        border: none;
-        cursor: pointer;
-        font-weight: bold;
-        transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .contact-toggle-button:hover {
-        background-color: #0056b3; /* Biru lebih gelap */
-        transform: translateY(-1px);
-    }
-
-    .contact-popover {
-        position: absolute;
-        bottom: 100%; /* Posisikan di atas tombol toggle */
-        left: 50%;
-        transform: translateX(-50%) translateY(-10px); /* Geser ke tengah dan beri sedikit jarak */
-        background-color: white;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        padding: 20px;
-        text-align: center;
-        border: 1px solid #e2e8f0;
-        width: 280px; /* Lebar popover */
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s ease-out, transform 0.3s ease-out, visibility 0.3s;
-        pointer-events: none; /* Awalnya tidak bisa diklik */
-    }
-
-    .contact-popover.active {
-        opacity: 1;
-        visibility: visible;
-        transform: translateX(-50%) translateY(0); /* Kembali ke posisi semula */
-        pointer-events: auto; /* Bisa diklik saat aktif */
-    }
-
-    /* Arrow ke bawah (mengarah ke tombol) */
-    .contact-popover::before {
-      content: "";
-      position: absolute;
-      top: 100%; /* Di bagian bawah popover */
-      left: 50%;
-      transform: translateX(-50%);
-      border-width: 8px 8px 0 8px;
-      border-color: #e2e8f0 transparent transparent transparent; 
-    }
-     .contact-popover::after {
-      content: "";
-      position: absolute;
-      top: calc(100% - 1px); /* Sedikit di atas border untuk ilusi arrow putih */
-      left: 50%;
-      transform: translateX(-50%);
-      border-width: 8px 8px 0 8px;
-      border-color: white transparent transparent transparent; 
-    }
-
-    .contact-popover h3 {
-        font-size: 1.2em; /* Lebih kecil dari kartu */
-        color: #333;
-        margin-bottom: 10px;
-        font-weight: bold;
-    }
-    .contact-popover p {
-        margin-bottom: 15px;
-        color: #555;
-        font-size: 0.95em;
-    }
-    .contact-popover .whatsapp-button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #25D366;
-        color: #fff;
-        padding: 10px 20px; /* Padding lebih kecil */
-        border-radius: 6px; /* Lebih kecil */
-        text-decoration: none;
-        font-weight: bold;
-        transition: background-color 0.2s ease-in-out;
-        gap: 6px; /* Jarak ikon-teks lebih kecil */
-        font-size: 0.9em;
-    }
-    .contact-popover .whatsapp-button:hover {
-        background-color: #1DA851;
-    }
-    .contact-popover .whatsapp-button img {
-        width: 20px; /* Ukuran ikon lebih kecil */
-        height: 20px;
-    }
-
-    /* Footer */
-    footer {
-        background-color: #333;
-        color: #fff;
-        padding: 20px; 
-        text-align: center;
-        font-size: 0.9em;
-        width: 100%;
-        box-sizing: border-box;
-        flex-shrink: 0; 
-    }
-    .footer-links a {
-        color: #fff;
-        text-decoration: none;
-        margin: 0 5px; 
-        font-weight: bold;
-    }
-    .footer-links a:hover {
-        text-decoration: underline;
-    }
-
-    /* CSS Khusus untuk Halaman Ini (dari sebelumnya) */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .fade-in {
-      animation: fadeIn 0.4s ease-in-out;
-    }
-
-    ::placeholder {
-        color: #9ca3af;
-        opacity: 1;
-    }
-
-    @keyframes bounceVerified {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-3px); }
-    }
-    .animate-bounce-verified {
-        animation: bounceVerified 1.5s ease-in-out infinite;
-    }
-
-    /* Info popover untuk kartu hasil pencarian */
-    .info-popover {
-        position: absolute;
-        right: 0; 
-        top: calc(100% + 8px); 
-        width: 250px; 
-        max-width: calc(100% - 20px); 
-        background-color: white;
-        border: 1px solid #e2e8f0; 
-        border-radius: 0.75rem; 
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); 
-        padding: 1rem; 
-        z-index: 10;
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(10px);
-        transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0.2s;
-    }
-    .info-popover.active {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-    }
-    .info-popover::before {
-      content: "";
-      position: absolute;
-      top: -8px; 
-      right: 16px; 
-      border-width: 0 8px 8px 8px;
-      border-color: transparent transparent #e2e8f0 transparent; 
-    }
-     .info-popover::after {
-      content: "";
-      position: absolute;
-      top: -7px; 
-      right: 16px; 
-      border-width: 0 8px 8px 8px;
-      border-color: transparent transparent white transparent; 
-    }
-
-    .search-icon-inside-input {
-        pointer-events: none; 
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricelist Treasure Reseller</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-gray-100">
-  <main>
-    <div class="flex items-center justify-center gap-3 mb-6 mt-8">
-      <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Cari Pedagang Twitter</h1>
-      <img src="images/cari.svg" alt="Search Icon" class="w-7 h-7 md:w-8 md:h-8" title="Direktori Pencarian" />
-    </div>
-
-    <div class="w-full max-w-xl mb-8 relative">
-      <input id="searchInput" type="text" placeholder="Masukkan nama, nomor, atau username..."
-        class="w-full pl-12 pr-4 py-3 rounded-xl shadow-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700" />
-      <img src="images/cari.svg" alt="Search Icon" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 opacity-60 search-icon-inside-input" />
-    </div>
-
-    <div id="results" class="w-full max-w-xl space-y-6"></div>
-
-    <template id="card-template">
-      <div class="bg-white shadow-lg rounded-2xl p-5 fade-in border border-gray-200 hover:shadow-xl transition-shadow duration-300">
-        <div class="flex items-center justify-between pb-3 mb-3 border-b border-gray-200 relative">
-          <div class="flex items-center gap-2">
-            <span class="text-xl font-bold text-gray-800 name">Nama Penjual</span>
-            <img src="images/verif.svg" alt="Terverifikasi" title="Akun Terverifikasi" class="w-6 h-6 hidden verified-icon animate-bounce-verified" />
-          </div>
-          <button class="info-button p-1 rounded-full text-gray-500 hover:text-gray-700 transition-colors duration-200" title="Informasi Tambahan">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
-            </svg>
-          </button>
-          <div class="info-popover text-sm text-gray-700 hidden">
-            <p class="info-content"></p>
-          </div>
+<body>
+    <header>
+        <div class="container">
+            <h1>Treasure Reseller</h1>
+            <p>Pricelist Akun Berkualitas untuk Kebutuhan Anda</p>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 buttons-container"></div>
-      </div>
-    </template>
-  </main>
+    </header>
 
-  <div class="contact-popover-container">
-      <button id="contactToggleButton" class="contact-toggle-button">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
-            <path fill-rule="evenodd" d="M1.5 4.5a3 3 0 013-3h15a3 3 0 013 3v10.5a3 3 0 01-3 3H5.25a3 3 0 00-2.879 2.111l-.017.068-.208.74a1.5 1.5 0 01-2.315-1.867L1.5 4.5zM11.96 11.293a.75.75 0 00-1.06-1.06L7.498 13.78l-1.47-1.47a.75.75 0 00-1.06 1.06l2.5 2.5a.75.75 0 001.06 0l4.5-4.5z" clip-rule="evenodd" />
-          </svg>
-          Kontak Kami
-      </button>
-      <div id="contactPopover" class="contact-popover">
-          <h3>Hubungi Kami</h3>
-          <p>Untuk pertanyaan atau bantuan lebih lanjut, silakan hubungi kami melalui WhatsApp.</p>
-          <a href="https://wa.me/6281234567890" target="_blank" class="whatsapp-button">
-              <img src="images/wa.svg" alt="WhatsApp Icon" />
-              Hubungi via WhatsApp
-          </a>
-      </div>
-  </div>
+    <main class="container">
+        <section class="pricelist-section">
+            <h2>Pricelist Treasure Reseller</h2>
 
-  <footer>
-      <div class="footer-links">
-          <a href="privacy-policy.html">Kebijakan Privasi</a> | 
-          <a href="terms-conditions.html">Syarat & Ketentuan</a>
-      </div>
-      <p>Copyright accouner.site</p>
-  </footer>
+            <div class="category">
+                <h3 class="category-title">Kosongan Biasa <span class="arrow">▼</span></h3>
+                <ul class="items">
+                    <li>Y25: <span>Rp4.000 - Rp5.500</span></li>
+                    <li>Y Lama: <span>Rp5.000 - Rp7.500</span></li>
+                    <li>Masuk HT: <span>Rp17.000 - Rp20.000</span></li>
+                </ul>
+            </div>
 
-  <script>
-    const searchInput = document.getElementById("searchInput");
-    const results = document.getElementById("results");
-    const cardTemplate = document.getElementById("card-template");
-    let activeCardPopover = null; // Melacak popover info kartu yang sedang aktif
+            <div class="category">
+                <h3 class="category-title">Account CA/RP/BA <span class="arrow">▼</span></h3>
+                <ul class="items">
+                    <li>Verif All: <span>Rp12.000 - Rp13.000</span></li>
+                    <li>Verif Email: <span>Rp10.000 - Rp11.000</span></li>
+                </ul>
+            </div>
 
-    // Elemen Popover Kontak
-    const contactToggleButton = document.getElementById("contactToggleButton");
-    const contactPopover = document.getElementById("contactPopover");
-    let activeContactPopover = null; // Melacak popover kontak yang sedang aktif
+            <div class="category">
+                <h3 class="category-title">Account Ber-Followers <span class="arrow">▼</span></h3>
+                <ul class="items">
+                    <li>F100+: <span>Rp20.000 - Rp25.000</span></li>
+                    <li>F200+: <span>Rp25.000 - Rp30.000</span></li>
+                    <li>F300+: <span>Rp35.000 - Rp40.000</span></li>
+                </ul>
+            </div>
 
-    contactToggleButton.addEventListener('click', (e) => {
-        e.stopPropagation(); // Mencegah event click menyebar ke document
+            <div class="category">
+                <h3 class="category-title">Account INACT <span class="arrow">▼</span></h3> <ul class="items"> <li>Harga menyesuaikan spesifikasi</li>
+                </ul>
+            </div>
 
-        if (activeContactPopover) {
-            activeContactPopover.classList.remove('active');
-            activeContactPopover = null;
-        }
+            <p class="note">NB: harga akun menyesuaikan spesifikasi</p>
+        </section>
+    </main>
 
-        contactPopover.classList.toggle('active');
-        if (contactPopover.classList.contains('active')) {
-            activeContactPopover = contactPopover;
-        } else {
-            activeContactPopover = null;
-        }
-    });
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Treasure Reseller. All rights reserved.</p>
+        </div>
+    </footer>
 
-    // Menutup popover kontak jika klik di luar
-    document.addEventListener('click', (e) => {
-        if (activeContactPopover && !contactPopover.contains(e.target) && !contactToggleButton.contains(e.target)) {
-            activeContactPopover.classList.remove('active');
-            activeContactPopover = null;
-        }
-        // Juga tutup popover info kartu jika klik di luar
-        if (activeCardPopover && !activeCardPopover.contains(e.target) && !e.target.closest('.info-button')) {
-            activeCardPopover.classList.remove('active');
-            activeCardPopover = null;
-        }
-    });
-
-    function createCard(entry) {
-      const clone = cardTemplate.content.cloneNode(true);
-      
-      clone.querySelector(".name").textContent = entry.Nama;
-
-      if (entry.Terverifikasi === true || entry.Terverifikasi === "TRUE" || entry.Terverifikasi === "Ya") {
-        const verifiedIcon = clone.querySelector(".verified-icon");
-        verifiedIcon.classList.remove("hidden");
-      }
-
-      const buttons = clone.querySelector(".buttons-container");
-
-      if (entry.Twitter) {
-        buttons.appendChild(createButton("Twitter", entry.Twitter, "bg-blue-600 hover:bg-blue-700", "images/twitter.svg"));
-      }
-      if (entry.WhatsApp) {
-        buttons.appendChild(createButton("WhatsApp", `https://wa.me/${entry.WhatsApp}`, "bg-green-600 hover:bg-green-700", "images/wa.svg"));
-      }
-      if (entry.Telegram) {
-        const tgLink = entry.Telegram.startsWith("@") ? `https://t.me/${entry.Telegram.slice(1)}` : `https://t.me/${entry.Telegram}`;
-        buttons.appendChild(createButton("Telegram", tgLink, "bg-cyan-600 hover:bg-cyan-700", "images/tele.svg"));
-      }
-
-      const infoBtn = clone.querySelector(".info-button");
-      const infoPopover = clone.querySelector(".info-popover");
-      const infoContent = clone.querySelector(".info-content");
-
-      if (entry.Catatan && entry.Catatan.trim() !== "") {
-        infoContent.textContent = entry.Catatan;
-        infoPopover.classList.remove('hidden');
-
-        infoBtn.onclick = (e) => {
-          e.stopPropagation();
-
-          if (activeCardPopover && activeCardPopover !== infoPopover) {
-            activeCardPopover.classList.remove('active');
-          }
-          
-          infoPopover.classList.toggle('active');
-          activeCardPopover = infoPopover.classList.contains('active') ? infoPopover : null;
-        };
-
-        infoBtn.style.opacity = 1;
-        infoBtn.style.cursor = "pointer";
-      } else {
-        infoBtn.style.opacity = 0.3;
-        infoBtn.style.cursor = "default";
-        infoPopover.remove(); 
-      }
-
-      results.appendChild(clone);
-    }
-
-    function createButton(label, href, bg, iconPath = null, full = false) {
-      const btn = document.createElement("a");
-      btn.href = href;
-      btn.target = "_blank";
-      btn.className = `${bg} text-white rounded-xl py-2 px-3 flex items-center justify-center gap-2 hover:opacity-90 transition ${full ? 'col-span-2' : ''}`;
-
-      if (iconPath) {
-        const icon = document.createElement("img");
-        icon.src = iconPath;
-        icon.alt = label;
-        icon.className = "w-5 h-5";
-        btn.appendChild(icon);
-      }
-
-      const textSpan = document.createElement("span");
-      textSpan.textContent = label;
-      btn.appendChild(textSpan);
-      return btn;
-    }
-
-    function loadData() {
-      fetch("/api")
-        .then(res => {
-            if (!res.ok) {
-                throw new Error(`HTTP error! status: ${res.status}`);
-            }
-            return res.json();
-        })
-        .then(data => {
-          searchInput.addEventListener("input", () => {
-            const keyword = searchInput.value.trim().toLowerCase();
-            results.innerHTML = "";
-
-            // Tutup semua popover saat pencarian dimulai
-            if (activeContactPopover) {
-                activeContactPopover.classList.remove('active');
-                activeContactPopover = null;
-            }
-            if (activeCardPopover) {
-                activeCardPopover.classList.remove('active');
-                activeCardPopover = null;
-            }
-
-            if (!keyword) {
-                return;
-            }
-
-            const filtered = data.filter(entry =>
-              entry.Nama?.toLowerCase().includes(keyword) ||
-              entry.Twitter?.toLowerCase().includes(keyword) ||
-              entry.WhatsApp?.toString().includes(keyword) ||
-              entry.Telegram?.toLowerCase().includes(keyword)
-            );
-
-            if (filtered.length === 0) {
-                results.innerHTML = "<p class='text-gray-500 text-center mt-8'>Tidak ada pedagang yang ditemukan.</p>";
-            } else {
-                filtered.forEach(createCard);
-            }
-          });
-        })
-        .catch(err => {
-          console.error("Gagal mengambil data:", err);
-          results.innerHTML = "<p class='text-red-500 text-center mt-8'>Gagal memuat data. Coba lagi nanti.</p>";
-        });
-    }
-
-    loadData();
-  </script>
+    <script src="script.js"></script>
 </body>
 </html>
