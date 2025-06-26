@@ -126,17 +126,17 @@ body {
 
 /* Styling for Syarat & Ketentuan section */
 .syarat-ketentuan .items ul {
-    list-style: disc;
-    padding-left: 20px;
-    margin-bottom: 20px;
+    list-style: none; /* Hapus bullet points */
+    padding-left: 0; /* Hapus indentasi */
+    margin: 0; /* Hapus margin default */
 }
 
 .syarat-ketentuan .items ul li {
     border-bottom: none;
     padding: 8px 0;
-    display: list-item;
-    justify-content: flex-start;
-    align-items: flex-start;
+    display: flex; /* Pertahankan flex untuk konsistensi */
+    justify-content: flex-start; /* Rata kiri */
+    align-items: center; /* Tengahkan vertikal */
 }
 
 /* Styling for Contact Buttons container */
@@ -160,11 +160,9 @@ body {
     white-space: nowrap; /* Prevent button text from wrapping */
     box-sizing: border-box;
 
-    /* ----- PERUBAHAN UTAMA UNTUK POSISI LOGO DAN TEKS ----- */
     display: flex; /* Aktifkan Flexbox untuk konten tombol */
     align-items: center; /* Tengahkan ikon dan teks secara vertikal */
     justify-content: flex-start; /* Posisikan ikon dan teks rata kiri */
-    /* ----------------------------------------------------- */
 
     /* Flex properties for 2 buttons per row (applied consistently) */
     flex: 1 1 calc(50% - 5px); /* Grow, shrink, basis: ~50% minus half the gap */
@@ -179,11 +177,7 @@ body {
 
 /* Styling for the WhatsApp icon inside the button */
 .whatsapp-btn i {
-    /* ----- PERUBAHAN UTAMA UNTUK POSISI LOGO ----- */
     margin-right: 8px; /* Beri jarak antara ikon dan teks */
-    /* Hapus properti positioning absolut sebelumnya */
-    /* position: absolute; left: ...; top: ...; transform: ...; */
-    /* ------------------------------------------- */
     font-size: 1.2em; /* Ukuran ikon */
     color: #fff; /* Warna ikon putih */
 }
@@ -195,6 +189,7 @@ body {
     font-style: italic;
     color: #777;
     font-size: 1.1em;
+    white-space: nowrap; /* <-- Ditambahkan: Memastikan teks ini tidak pecah baris */
 }
 
 /* Footer Styling */
@@ -238,7 +233,6 @@ footer p {
         font-size: 0.9em;
         flex: 1 1 calc(50% - 5px);
         max-width: calc(50% - 5px);
-        /* Padding kiri otomatis disesuaikan oleh padding global */
     }
     .whatsapp-btn i {
         margin-right: 5px; /* Sesuaikan margin ikon di mobile */
@@ -270,7 +264,7 @@ footer p {
     }
 
     .whatsapp-btn {
-        font-size: 0.9em; /* Reduce button font size for smaller screens */
+        font-size: 0.9em;
         flex: 1 1 calc(50% - 5px); /* Tetap 2 per baris */
         max-width: calc(50% - 5px);
     }
