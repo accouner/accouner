@@ -3,7 +3,7 @@ body {
     font-family: 'Montserrat', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f7f6; /* Light background */
+    background-color: #f4f7f6;
     color: #333;
     line-height: 1.6;
 }
@@ -87,18 +87,17 @@ body {
     list-style: none;
     padding: 0 25px;
     margin: 0;
+    /* --- PERBAIKAN: Set max-height ke nilai yang jauh lebih besar --- */
     max-height: 0;
-    overflow: hidden;
+    overflow: hidden; /* Tetap hidden saat tertutup */
     transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out;
     background-color: #f9f9f9;
     border-top: 1px solid #eee;
 }
 
 .items.open {
-    max-height: 500px;
-    /* --- PERBAIKAN JARAK BAWAH DROPDOWN --- */
-    padding: 25px 25px; /* Meningkatkan padding atas dan bawah */
-    /* -------------------------------------- */
+    max-height: 1000px; /* Meningkatkan max-height agar tidak terpotong */
+    padding: 25px 25px;
 }
 
 /* Styling for regular price list items */
@@ -189,9 +188,15 @@ body {
     margin-top: 30px;
     font-style: italic;
     color: #777;
-    font-size: clamp(0.9em, 2.8vw, 1.1em);
-    white-space: normal;
-    line-height: 1.3;
+    /* --- PERBAIKAN UNTUK TEXT NB: AGAR 1 BARIS --- */
+    font-size: clamp(0.75em, 2.5vw, 1.1em); /* Rentang font-size yang lebih kecil dan agresif */
+    white-space: nowrap; /* Memastikan teks tidak pecah baris */
+    overflow: hidden; /* Sembunyikan jika melebihi */
+    text-overflow: ellipsis; /* Tampilkan "..." jika terpotong */
+    max-width: 100%; /* Pastikan tidak melebihi lebar kontainer induk */
+    box-sizing: border-box; /* Pastikan padding/border tidak menambah lebar */
+    padding: 0 10px; /* Tambahkan sedikit padding horizontal agar tidak terlalu menempel tepi */
+    /* ------------------------------------------------ */
 }
 
 /* Footer Styling */
