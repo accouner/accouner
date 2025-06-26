@@ -5,14 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pricelist Treasure Reseller</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
+    <header class="hero-section">
+        <div class="container">
+            <h1 class="animated-gradient-text">Pricelist Treasure<br>Reseller</h1>
+        </div>
+    </header>
+
     <main class="container">
         <section class="pricelist-section">
-            <h2>Pricelist Treasure Reseller</h2>
-
             <div class="category">
                 <h3 class="category-title">Kosongan Biasa <span class="arrow">▼</span></h3>
                 <ul class="items">
@@ -39,24 +43,22 @@
                 </ul>
             </div>
 
-            <div class="category">
-                <h3 class="category-title">Account INACT <span class="arrow">▼</span></h3>
+            <div class="category last-category"> <h3 class="category-title">Account INACT <span class="arrow">▼</span></h3>
                 <ul class="items">
-                    <li>Harga menyesuaikan spesifikasi</li>
+                    <li>Harga menyesuaikan spesifikasi akun</li>
                 </ul>
             </div>
 
-            <p class="note">NB: harga akun menyesuaikan spesifikasi</p>
-
-            <div class="category syarat-ketentuan">
+            <hr class="section-separator"> <div class="category syarat-ketentuan">
                 <h3 class="category-title">Syarat dan Ketentuan <span class="arrow">▼</span></h3>
                 <div class="items">
-                    <ul>
-                        <li>Tanyakan stock ke admin sebelum melakukan transaksi</li>
-                        <li>Payment di awal ke admin yang bersangkutan</li>
-                        <li>Dilarang invite member selain ADMIN</li>
-                        <li>Dilarang culik member & promosi selain admin</li>
-                        <li>Take pemakaian pribadi dikenakan fee jika ketauan akan di kick</li>
+                    <ul class="no-select custom-list">
+                        <li><i class="fas fa-check-circle rule-icon"></i>Wajib konfirmasi stok ke admin sebelum transfer.</li>
+                        <li><i class="fas fa-check-circle rule-icon"></i>Pembayaran hanya melalui admin yang bersangkutan.</li>
+                        <li><i class="fas fa-check-circle rule-icon"></i>Dilarang mengundang member selain **ADMIN**.</li>
+                        <li><i class="fas fa-check-circle rule-icon"></i>Dilarang menculik member atau melakukan promosi selain oleh admin.</li>
+                        <li><i class="fas fa-check-circle rule-icon"></i>Pengambilan untuk pemakaian pribadi dikenakan fee. Jika ketahuan, akan dikeluarkan dari grup.</li>
+                        <li><i class="fas fa-check-circle rule-icon"></i>**Penyesuaian Harga Berdasarkan Spesifikasi Akun**</li>
                     </ul>
                     <div class="contact-buttons">
                         <a href="https://wa.me/6285117219192" target="_blank" class="whatsapp-btn"><i class="fab fa-whatsapp"></i> RDS</a>
@@ -74,7 +76,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2025 Treasure. All rights reserved.</p>
+            <p class="no-select">&copy; 2025 Treasure. All rights reserved.</p>
         </div>
     </footer>
 
