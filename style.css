@@ -1,129 +1,244 @@
 /* General Styling */
 body {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Poppins', sans-serif; /* Changed font for modern feel */
     margin: 0;
     padding: 0;
-    background-color: #f4f7f6;
+    background: linear-gradient(to right, #ece9e6, #ffffff); /* Subtle gradient background */
     color: #333;
-    line-height: 1.6;
+    line-height: 1.7; /* Increased line-height for better readability */
+    scroll-behavior: smooth; /* Smooth scrolling for potential anchor links */
+}
+
+/* Global no-select class */
+.no-select {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Safari */
+    -khtml-user-select: none;    /* Konqueror HTML */
+    -moz-user-select: none;      /* Old versions of Firefox */
+    -ms-user-select: none;       /* Internet Explorer/Edge */
+    user-select: none;           /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
 }
 
 .container {
     width: 90%;
-    max-width: 960px;
+    max-width: 1000px; /* Slightly wider container */
     margin: 0 auto;
     padding: 20px 0;
 }
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); /* Vibrant gradient */
+    color: #fff;
+    padding: 30px 0; /* Reduced padding for less height */
+    text-align: center;
+    border-bottom-left-radius: 50% 20%; /* Unique border radius */
+    border-bottom-right-radius: 50% 20%;
+    margin-bottom: 40px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 1s ease-out; /* Fade in animation for the hero section */
+}
+
+.hero-section h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 3em; /* Slightly smaller for less height */
+    margin-bottom: 0; /* Removed bottom margin */
+    font-weight: 700;
+    letter-spacing: -1px; /* Tighter letter spacing */
+    line-height: 1.1; /* Adjusted line height for two lines */
+}
+
+/* Animated Gradient Text for H1 */
+.animated-gradient-text {
+    background: linear-gradient(45deg, #ff7e5f, #feb47b, #ff7e5f);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientShift 3s ease-in-out infinite alternate, bounceIn 1.5s ease-out; /* Added bounceIn */
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+@keyframes bounceIn {
+    0%, 20%, 40%, 60%, 80%, 100% {
+        transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    }
+    0% {
+        opacity: 0;
+        transform: scale3d(0.3, 0.3, 0.3);
+    }
+    20% {
+        transform: scale3d(1.1, 1.1, 1.1);
+    }
+    40% {
+        transform: scale3d(0.9, 0.9, 0.9);
+    }
+    60% {
+        opacity: 1;
+        transform: scale3d(1.03, 1.03, 1.03);
+    }
+    80% {
+        transform: scale3d(0.97, 0.97, 0.97);
+    }
+    100% {
+        opacity: 1;
+        transform: scale3d(1, 1, 1);
+    }
+}
+
 
 /* Pricelist Section */
 .pricelist-section {
     background-color: #ffffff;
     padding: 40px;
-    margin-top: 20px;
-    border-radius: 10px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-radius: 15px; /* Softer, larger border-radius */
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15); /* More prominent shadow */
+    animation: slideInUp 0.8s ease-out forwards; /* Slide in animation */
+    opacity: 0; /* Start hidden for animation */
 }
 
-.pricelist-section h2 {
-    text-align: center;
-    color: #2c3e50;
-    font-size: 2.5em;
-    margin-bottom: 30px;
-    position: relative;
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
-.pricelist-section h2::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 4px;
-    background-color: #3498db;
-    border-radius: 2px;
+@keyframes slideInUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 /* Category Styling (Dropdown) */
 .category {
     margin-bottom: 25px;
-    border: 1px solid #eee;
-    border-radius: 8px;
+    border: 1px solid #e0e0e0; /* Lighter border */
+    border-radius: 10px; /* Slightly larger radius */
     overflow: hidden;
-    transition: all 0.3s ease-in-out;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother transition */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Subtle initial shadow */
 }
 
 .category:hover {
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* More pronounced shadow on hover */
+    transform: translateY(-5px); /* Lift effect on hover */
+}
+
+/* Ensure minimal margin for the last category to not interfere with separator */
+.category.last-category {
+    margin-bottom: 30px; /* Maintain a bit of space before the separator */
 }
 
 .category-title {
     background-color: #34495e;
+    background: linear-gradient(to right, #34495e, #4a627a); /* Gradient for category title */
     color: #fff;
     padding: 18px 25px;
     margin: 0;
-    font-size: 1.5em;
+    font-size: 1.6em; /* Slightly larger category titles */
     cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    outline: none; /* Menghilangkan efek biru saat di klik/fokus */
+    -webkit-user-select: none; /* Menghilangkan highlight teks untuk Safari */
+    -moz-user-select: none;    /* Menghilangkan highlight teks untuk Firefox */
+    -ms-user-select: none;     /* Menghilangkan highlight teks untuk IE/Edge */
+    user-select: none;         /* Menghilangkan highlight teks untuk browser modern */
 }
 
 .category-title:hover {
-    background-color: #4a627a;
+    background: linear-gradient(to right, #4a627a, #5c758d); /* Darker gradient on hover */
 }
 
 .category-title .arrow {
-    transition: transform 0.3s ease;
-    font-size: 0.8em;
+    transition: transform 0.3s ease, color 0.3s ease;
+    font-size: 0.9em;
+    color: rgba(255, 255, 255, 0.7); /* Slightly muted arrow color */
 }
 
 .category-title.active .arrow {
     transform: rotate(180deg);
+    color: #fff; /* White arrow when active */
 }
 
 .items {
     list-style: none;
     padding: 0 25px;
     margin: 0;
-    /* --- PERBAIKAN: Set max-height ke nilai yang jauh lebih besar --- */
     max-height: 0;
-    overflow: hidden; /* Tetap hidden saat tertutup */
-    transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out;
-    background-color: #f9f9f9;
-    border-top: 1px solid #eee;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out; /* Slower transition for content */
+    background-color: #fcfcfc; /* Lighter background for items */
+    border-top: 1px solid #f0f0f0; /* Lighter border */
 }
 
 .items.open {
-    max-height: 1000px; /* Meningkatkan max-height agar tidak terpotong */
+    max-height: 1000px; /* Sufficient height for content */
     padding: 25px 25px;
 }
 
 /* Styling for regular price list items */
 .items li {
-    padding: 12px 0;
-    border-bottom: 1px solid #eee;
+    padding: 15px 0; /* More padding */
+    border-bottom: 1px solid #f0f0f0; /* Lighter border */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 1.1em;
+    font-size: 1.15em; /* Slightly larger text */
+    opacity: 0; /* Hidden for staggered animation */
+    transform: translateY(10px); /* Start slightly below */
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out; /* Animation for individual items */
 }
+
+.items.open li {
+    opacity: 1; /* Fade in when open */
+    transform: translateY(0); /* Move to original position */
+}
+
+/* Staggered animation for list items */
+.items.open li:nth-child(1) { transition-delay: 0.1s; }
+.items.open li:nth-child(2) { transition-delay: 0.2s; }
+.items.open li:nth-child(3) { transition-delay: 0.3s; }
+.items.open li:nth-child(4) { transition-delay: 0.4s; }
+.items.open li:nth-child(5) { transition-delay: 0.5s; }
+.items.open li:nth-child(6) { transition-delay: 0.6s; }
+
 
 .items li:last-child {
     border-bottom: none;
 }
 
 .items li span {
-    font-weight: 600;
-    color: #27ae60;
+    font-weight: 700; /* Bolder prices */
+    color: #28a745; /* Green for prices */
+    letter-spacing: 0.5px;
 }
 
 .items li strong {
     font-weight: 700;
-    margin-right: 5px;
-    color: #333;
+    margin-right: 10px;
+    color: #555; /* Slightly darker for item names */
 }
+
+/* Section Separator */
+.section-separator {
+    border: none;
+    border-top: 2px dashed #ccc; /* Dashed line separator */
+    margin: 40px auto; /* Centered, generous margin */
+    width: 50%; /* Adjust width as needed */
+    opacity: 0.7;
+}
+
 
 /* Styling for Syarat & Ketentuan section */
 .syarat-ketentuan .items ul {
@@ -134,18 +249,43 @@ body {
 
 .syarat-ketentuan .items ul li {
     border-bottom: none;
-    padding: 8px 0;
+    padding: 10px 0;
     display: flex;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start; /* Align to top for longer texts */
+    line-height: 1.5;
+    position: relative; /* For custom bullet positioning */
 }
+
+/* Custom bullet for Syarat & Ketentuan */
+.syarat-ketentuan .items ul.custom-list li {
+    padding-left: 30px; /* Space for the icon */
+    border-bottom: 1px dashed #eee; /* Dotted line separator */
+    -webkit-user-select: none; /* Menghilangkan highlight teks untuk Safari */
+    -moz-user-select: none;    /* Menghilangkan highlight teks untuk Firefox */
+    -ms-user-select: none;     /* Menghilangkan highlight teks untuk IE/Edge */
+    user-select: none;         /* Menghilangkan highlight teks untuk browser modern */
+}
+
+.syarat-ketentuan .items ul.custom-list li:last-child {
+    border-bottom: none; /* No border for the last item */
+}
+
+.rule-icon {
+    position: absolute;
+    left: 0;
+    top: 12px; /* Adjust vertical position */
+    color: #3498db; /* Blue checkmark */
+    font-size: 1.1em;
+}
+
 
 /* Styling for Contact Buttons container */
 .contact-buttons {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 30px;
+    gap: 15px; /* Increased gap */
+    margin-top: 35px;
     justify-content: center;
 }
 
@@ -153,129 +293,160 @@ body {
 .whatsapp-btn {
     background-color: #25d366;
     color: #fff;
-    padding: 10px 15px;
-    border-radius: 20px;
+    padding: 12px 20px; /* Larger padding */
+    border-radius: 30px; /* More rounded */
     text-decoration: none;
     font-weight: 600;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
     white-space: nowrap;
     box-sizing: border-box;
-
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-
-    flex: 1 1 calc(50% - 5px);
-    max-width: calc(50% - 5px);
+    justify-content: flex-start; /* ALIGN TO THE LEFT */
+    outline: none; /* Menghilangkan efek biru saat di klik/fokus */
+    -webkit-user-select: none; /* Menghilangkan highlight teks untuk Safari */
+    -moz-user-select: none;    /* Menghilangkan highlight teks untuk Firefox */
+    -ms-user-select: none;     /* Menghilangkan highlight teks untuk IE/Edge */
+    user-select: none;         /* Menghilangkan highlight teks untuk browser modern */
+    /* --- PERUBAHAN UTAMA UNTUK 2 TOMBOL PER BARIS --- */
+    flex: 1 1 calc(50% - 7.5px); /* Adjusted for 2 columns, half of the gap (15px / 2 = 7.5px) */
+    max-width: calc(50% - 7.5px);
+    /* ------------------------------------------------ */
+    font-size: 1.05em;
 }
 
 .whatsapp-btn:hover {
-    background-color: #1da851;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #1aae4b; /* Darker green on hover */
+    transform: translateY(-3px); /* More pronounced lift */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25); /* Stronger shadow */
 }
 
 /* Styling for the WhatsApp icon inside the button */
 .whatsapp-btn i {
-    margin-right: 8px;
-    font-size: 1.2em;
+    margin-right: 10px; /* More space for icon */
+    font-size: 1.3em;
     color: #fff;
 }
 
-/* Note below pricelist */
+/* Note below pricelist - Removed NB: text, keeping the note class for consistency if other notes are added later */
 .note {
-    text-align: center;
-    margin-top: 30px;
-    font-style: italic;
-    color: #777;
-    /* --- PERBAIKAN UNTUK TEXT NB: AGAR 1 BARIS --- */
-    font-size: clamp(0.75em, 2.5vw, 1.1em); /* Rentang font-size yang lebih kecil dan agresif */
-    white-space: nowrap; /* Memastikan teks tidak pecah baris */
-    overflow: hidden; /* Sembunyikan jika melebihi */
-    text-overflow: ellipsis; /* Tampilkan "..." jika terpotong */
-    max-width: 100%; /* Pastikan tidak melebihi lebar kontainer induk */
-    box-sizing: border-box; /* Pastikan padding/border tidak menambah lebar */
-    padding: 0 10px; /* Tambahkan sedikit padding horizontal agar tidak terlalu menempel tepi */
-    /* ------------------------------------------------ */
+    display: none; /* Hide the NB: text completely */
 }
 
 /* Footer Styling */
 footer {
     background-color: #2c3e50;
-    color: #fff;
+    color: #f0f0f0; /* Lighter footer text */
     text-align: center;
-    padding: 20px 0;
-    margin-top: 40px;
-    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+    padding: 25px 0; /* More padding */
+    margin-top: 50px; /* More space above footer */
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+    font-size: 0.95em;
 }
 
 footer p {
     margin: 0;
-    font-size: 0.9em;
-    opacity: 0.7;
+    opacity: 0.85;
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (max-width: 992px) {
     .pricelist-section {
-        padding: 20px;
+        padding: 30px;
     }
+    /* whatsapp-btn already set to 2 columns, so no change needed here specifically for 992px */
+}
 
-    .pricelist-section h2 {
-        font-size: 2em;
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 25px 0; /* Further reduced padding */
+        border-bottom-left-radius: 30% 10%;
+        border-bottom-right-radius: 30% 10%;
     }
-
+    .hero-section h1 {
+        font-size: 2.5em; /* Smaller font for smaller screens */
+    }
+    .pricelist-section {
+        padding: 25px;
+    }
     .category-title {
-        font-size: 1.3em;
-        padding: 15px 20px;
+        font-size: 1.4em;
+        padding: 16px 20px;
     }
-
     .items li {
-        font-size: 1em;
-        padding: 10px 0;
+        font-size: 1.05em;
+        padding: 12px 0;
     }
-
+    /* whatsapp-btn already set to 2 columns */
     .whatsapp-btn {
-        padding: 8px 12px;
-        font-size: 0.9em;
-        flex: 1 1 calc(50% - 5px);
-        max-width: calc(50% - 5px);
+        padding: 10px 15px;
+        font-size: 1em;
+        /* No change needed as it's already calc(50% - 7.5px) */
     }
     .whatsapp-btn i {
-        margin-right: 5px;
-        font-size: 1.1em;
+        margin-right: 8px;
+        font-size: 1.2em;
+    }
+    .syarat-ketentuan .items ul.custom-list li {
+        padding-left: 25px; /* Adjust padding for icon on smaller screens */
+    }
+    .rule-icon {
+        font-size: 1em;
+        top: 14px; /* Adjust vertical position */
+    }
+    .section-separator {
+        margin: 30px auto; /* Adjust margin for smaller screens */
     }
 }
 
 @media (max-width: 480px) {
-    .pricelist-section h2 {
-        font-size: 1.8em;
+    .hero-section {
+        padding: 20px 0; /* Even less padding */
+        border-bottom-left-radius: 20% 8%;
+        border-bottom-right-radius: 20% 8%;
     }
-
+    .hero-section h1 {
+        font-size: 2em; /* Smallest font size for mobile */
+    }
+    .pricelist-section {
+        padding: 20px;
+    }
     .category-title {
-        font-size: 1.1em;
-        padding: 12px 15px;
+        font-size: 1.2em;
+        padding: 14px 15px;
     }
-
     .items li {
         flex-direction: column;
         align-items: flex-start;
+        font-size: 1em;
     }
-
     .items li span {
         margin-top: 5px;
+        font-size: 0.95em;
     }
-
     .contact-buttons {
-        justify-content: center;
+        gap: 10px; /* Slightly reduced gap for very small screens */
     }
-
     .whatsapp-btn {
         font-size: 0.9em;
-        flex: 1 1 calc(50% - 5px);
+        padding: 8px 12px;
+        flex: 1 1 calc(50% - 5px); /* Adjusted for 2 columns, half of the new gap (10px / 2 = 5px) */
         max-width: calc(50% - 5px);
     }
     .whatsapp-btn i {
-        font-size: 1em;
+        font-size: 1.1em;
+    }
+    .note {
+        font-size: 0.85em;
+    }
+    .syarat-ketentuan .items ul.custom-list li {
+        padding-left: 20px; /* Further adjust padding for icon on very small screens */
+    }
+    .rule-icon {
+        font-size: 0.9em;
+        top: 15px; /* Adjust vertical position */
+    }
+    .section-separator {
+        margin: 25px auto; /* Further adjust margin for very small screens */
     }
 }
