@@ -15,9 +15,10 @@ body {
     padding: 20px 0;
 }
 
-/* Header */
+/* Hapus bagian Header ini */
+/*
 header {
-    background-color: #2c3e50; /* Dark blue/gray */
+    background-color: #2c3e50;
     color: #fff;
     padding: 40px 0;
     text-align: center;
@@ -35,12 +36,14 @@ header p {
     font-size: 1.2em;
     opacity: 0.8;
 }
+*/
 
 /* Pricelist Section */
 .pricelist-section {
     background-color: #ffffff;
     padding: 40px;
-    margin-top: 40px;
+    /* Sesuaikan margin-top karena header dihapus */
+    margin-top: 20px; /* atau 40px jika ingin ada ruang lebih di atas */
     border-radius: 10px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
@@ -138,12 +141,13 @@ header p {
     color: #27ae60; /* Green for prices */
 }
 
-/* Hapus bagian ini */
-/* .items.static-item {
-    max-height: fit-content;
-    padding: 15px 25px;
-    border-top: none;
-} */
+/* Penyesuaian untuk teks bold di dalam li */
+.items li strong {
+    font-weight: 700; /* Pastikan bold */
+    margin-right: 5px; /* Sedikit spasi antara judul dan harga */
+    color: #333; /* Warna teks judul */
+}
+
 
 .note {
     text-align: center;
@@ -171,6 +175,8 @@ footer p {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    /* Hapus bagian header h1, p di sini juga */
+    /*
     header h1 {
         font-size: 2.5em;
     }
@@ -178,6 +184,7 @@ footer p {
     header p {
         font-size: 1em;
     }
+    */
 
     .pricelist-section {
         padding: 20px;
@@ -199,9 +206,12 @@ footer p {
 }
 
 @media (max-width: 480px) {
+    /* Hapus bagian header h1 di sini juga */
+    /*
     header h1 {
         font-size: 2em;
     }
+    */
 
     .pricelist-section h2 {
         font-size: 1.8em;
