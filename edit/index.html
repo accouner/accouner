@@ -1,139 +1,443 @@
-<!DOCTYPE html><html lang="id">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pricelist Treasure Reseller</title>
-  <link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Chewy', cursive;
-      background: #fffbe6;
-      color: #333;
-      overflow-x: hidden;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-    }
-    h1 {
-      text-align: center;
-      font-size: 2.5rem;
-      color: #ff6f61;
-      animation: bounce 2s infinite;
-      line-height: 1.2;
-      margin-bottom: 0;
-    }
-    h1 span {
-      display: block;
-    }
-    .treasure {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-    .treasure img {
-      width: 120px;
-      animation: shakeX 3s infinite;
-    }
-    .section {
-      background: #fff;
-      border-radius: 15px;
-      padding: 20px;
-      margin: 20px auto;
-      max-width: 600px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    .section h2 {
-      color: #00bcd4;
-      margin-top: 0;
-    }
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    li {
-      margin: 8px 0;
-      background: #f0f0f0;
-      border-radius: 10px;
-      padding: 10px;
-      transition: transform 0.3s;
-      cursor: pointer;
-    }
-    li:hover {
-      transform: scale(1.05);
-      background: #ffe0b2;
-    }
-    footer {
-      text-align: center;
-      margin-top: 30px;
-      font-size: 1.1rem;
-      color: #777;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 2rem;
-      }
-      .section {
-        padding: 15px;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricelist Treasure Reseller</title>
+    <link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Chewy', cursive;
+            background: #fffbe6;
+            color: #333;
+            overflow-x: hidden; /* Mencegah scroll horizontal keseluruhan halaman */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #ff6f61;
+            animation: bounce 2s infinite;
+            line-height: 1.2;
+            margin-top: 0;
+            margin-bottom: 0;
+            padding-top: 40px;
+            padding-bottom: 0;
+            box-sizing: border-box;
+            width: 100%;
+            position: relative;
+        }
+
+        h1 span {
+            display: block;
+        }
+
+        /* Animated Header Lines - Continuous Collision */
+        .header-lines-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 3px;
+            overflow: hidden;
+            margin-top: 20px;
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .header-line {
+            width: 50px;
+            height: 3px;
+            background-color: #00bcd4;
+            border-radius: 5px;
+            position: absolute;
+            opacity: 0;
+            animation-duration: 2.5s;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-out;
+            animation-delay: 0.2s;
+        }
+
+        .header-line:first-child {
+            left: 0;
+            transform-origin: left center;
+            animation-name: line-collide-left;
+        }
+
+        .header-line:last-child {
+            right: 0;
+            transform-origin: right center;
+            animation-name: line-collide-right;
+        }
+
+        /* Keyframes for Left Line (moves right) */
+        @keyframes line-collide-left {
+            0% {
+                transform: translateX(-100%);
+                width: 0;
+                opacity: 0;
+            }
+            25% {
+                transform: translateX(calc(50vw - 55px - 50%));
+                width: 50px;
+                opacity: 1;
+            }
+            50% {
+                transform: translateX(calc(50vw - 55px - 50%));
+                width: 50px;
+                opacity: 1;
+            }
+            75% {
+                transform: translateX(100vw);
+                width: 0;
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(-100%);
+                width: 0;
+                opacity: 0;
+            }
+        }
+
+        /* Keyframes for Right Line (moves left) */
+        @keyframes line-collide-right {
+            0% {
+                transform: translateX(100%);
+                width: 0;
+                opacity: 0;
+            }
+            25% {
+                transform: translateX(calc(-50vw + 55px + 50%));
+                width: 50px;
+                opacity: 1;
+            }
+            50% {
+                transform: translateX(calc(-50vw + 55px + 50%));
+                width: 50px;
+                opacity: 1;
+            }
+            75% {
+                transform: translateX(-100vw);
+                width: 0;
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(100%);
+                width: 0;
+                opacity: 0;
+            }
+        }
+        /* End Animated Header Lines */
+
+        .section {
+            background: #fff;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 20px;
+            width: auto;
+            max-width: 600px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        /* Animated Border for .section */
+        .section::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            border-radius: 18px;
+            background: linear-gradient(45deg, #ff6f61, #00bcd4, #ff6f61, #00bcd4);
+            background-size: 400% 400%;
+            animation: animated-border 4s linear infinite;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @keyframes animated-border {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+
+        .section h2 {
+            color: #fff;
+            background-color: #00bcd4; /* Warna solid untuk visibilitas maksimal */
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin-top: 0;
+            margin-bottom: 15px;
+            
+            display: block; /* Mengambil lebar penuh yang tersedia */
+            width: 100%; /* Menyesuaikan lebar pembungkus dengan lebar konten .section */
+            box-sizing: border-box; /* Memastikan padding termasuk dalam 100% width */
+
+            white-space: nowrap; /* Memaksa teks pada satu baris */
+            
+            text-align: center; /* Menengahkan teks dan ikon secara horizontal */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            margin: 8px 0;
+            background: #f0f0f0;
+            border-radius: 10px;
+            padding: 10px;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        li:hover {
+            transform: scale(1.05);
+            background: #ffe0b2;
+        }
+
+        /* ----- PERUBAHAN UTAMA UNTUK PERATAAN AWAL HURUF & COLON PER BAGIAN ----- */
+
+        /* Gaya umum untuk item daftar yang memiliki label (bagian 1, 2, 3) */
+        .section:nth-of-type(1) ul li,
+        .section:nth-of-type(2) ul li,
+        .section:nth-of-type(3) ul li {
+            display: grid;
+            gap: 5px; /* Jarak antar kolom */
+            align-items: baseline; /* Menyelaraskan teks di garis dasar */
+        }
+
+        /* Mengatur lebar kolom LABEL dan COLON untuk masing-masing bagian */
+        /* COBA NILAI-NILAI ALTERNATIF INI JIKA MASIH BELUM SESUAI */
+        
+        /* Bagian 1: Kosongan Biasa (label terpanjang: "Masuk HT") */
+        /* MENYESUAIKAN LEBIH JAUH: Mengurangi lebar label, menambah lebar colon */
+        .section:nth-of-type(1) ul li {
+            grid-template-columns: minmax(auto, 70px) 12px 1fr; /* COBA JUGA: 65px 15px 1fr */
+        }
+        /* Bagian 2: Account CA / RP / BA (label terpanjang: "Verif email") */
+        /* MENYESUAIKAN LEBIH JAUH: Meningkatkan lebar label */
+        .section:nth-of-type(2) ul li {
+            grid-template-columns: minmax(auto, 130px) 8px 1fr; /* COBA JUGA: 140px 8px 1fr */
+        }
+        /* Bagian 3: ACC BER Followers (label terpanjang: "F300+") */
+        .section:nth-of-type(3) ul li {
+            grid-template-columns: minmax(auto, 70px) 8px 1fr;
+        }
+
+        .section ul li .label {
+            text-align: left; /* Teks label rata kiri dalam kolomnya */
+            font-weight: bold;
+            color: #444;
+        }
+
+        .section ul li .colon-char {
+            text-align: center; /* Colon rata tengah di kolomnya sendiri */
+            /* Lebar kolom diatur oleh grid-template-columns di atas (misal 8px atau 12px) */
+        }
+
+        .section ul li .value {
+            text-align: left; /* Teks nilai rata kiri */
+        }
+
+        /* Gaya untuk item daftar yang TIDAK memiliki label/nilai (bagian 4 dan seterusnya) */
+        .section ul li:not(:has(span.label)) {
+            display: block; /* Pastikan item ini tetap blok standar dan rata kiri */
+            text-align: left; /* Mengatasi potensi perataan yang tidak diinginkan */
+        }
+
+        /* ----- AKHIR PERUBAHAN UTAMA ----- */
+
+        footer {
+            text-align: center;
+            margin: 40px auto 20px;
+            font-size: 1.1rem;
+            color: #777;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 600px;
+            padding: 0 20px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* Footer Lines Container */
+        .footer-lines-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 3px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .footer-line {
+            width: 50px;
+            height: 3px;
+            background-color: #00bcd4;
+            border-radius: 5px;
+            position: absolute;
+            opacity: 0;
+            animation-duration: 2.5s;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-out;
+            animation-delay: 0.2s;
+        }
+
+        .footer-line:first-child {
+            left: 0;
+            transform-origin: left center;
+            animation-name: line-collide-left;
+        }
+
+        .footer-line:last-child {
+            right: 0;
+            transform-origin: right center;
+            animation-name: line-collide-right;
+        }
+
+        .footer-copyright {
+            font-size: 0.9rem;
+            color: #999;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+                padding-top: 30px;
+            }
+            .section {
+                margin: 15px 15px;
+            }
+            footer {
+                padding: 0 10px;
+            }
+            .section h2 {
+                padding: 8px 12px;
+                font-size: 1.4rem;
+            }
+            /* Menyesuaikan lebar kolom label di mobile */
+            /* COBA NILAI-NILAI ALTERNATIF INI JIKA MASIH BELUM SESUAI DI MOBILE */
+            .section:nth-of-type(1) ul li {
+                grid-template-columns: minmax(auto, 60px) 10px 1fr; /* COBA JUGA: 55px 12px 1fr */
+            }
+            .section:nth-of-type(2) ul li {
+                grid-template-columns: minmax(auto, 110px) 8px 1fr; /* COBA JUGA: 120px 8px 1fr */
+            }
+            .section:nth-of-type(3) ul li {
+                grid-template-columns: minmax(auto, 60px) 8px 1fr;
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1 class="animate__animated animate__bounce">
-    <span>Pricelist Treasure</span>
-    <span>Reseller</span>
-  </h1>  <div class="treasure">
-    <img src="https://i.ibb.co/gwj0DwG/treasure-chest.gif" alt="Treasure Chest Lucu" />
-  </div>  <div class="section">
-    <h2>🪙 Kosongan Biasa</h2>
-    <ul>
-      <li onclick="playSound()">Y25 : 4k - 5.5k</li>
-      <li onclick="playSound()">Y Lama : 5k - 7.5k</li>
-      <li onclick="playSound()">Masuk HT : 17k - 20k</li>
-    </ul>
-  </div>  <div class="section">
-    <h2>🏴‍☠️ Account CA / RP / BA</h2>
-    <ul>
-      <li onclick="playSound()">Verif all : 12k - 13k</li>
-      <li onclick="playSound()">Verif email : 10k - 11k</li>
-    </ul>
-  </div>  <div class="section">
-    <h2>🌟 ACC BER Followers</h2>
-    <ul>
-      <li onclick="playSound()">F100+ : 20k - 25k</li>
-      <li onclick="playSound()">F200+ : 25k - 30k</li>
-      <li onclick="playSound()">F300+ : 35k - 40k</li>
-    </ul>
-  </div>  <div class="section">
-    <h2>💤 ACC INACT</h2>
-    <p onclick="playSound()">💡 Harga menyesuaikan spesifikasi akun</p>
-  </div>  <div class="section">
-    <h2>📜 Syarat & Ketentuan</h2>
-    <ul>
-      <li onclick="playSound()">Cek stok dulu ke admin sebelum transfer, ya!</li>
-      <li onclick="playSound()">Pembayaran langsung ke admin yang bersangkutan.</li>
-      <li onclick="playSound()">Dilarang add/invite member selain admin.</li>
-      <li onclick="playSound()">Gak boleh culik member atau promosi sendiri, auto kick!</li>
-      <li onclick="playSound()">Ambil buat dipake sendiri? Boleh, tapi harga normal ya. Ketauan curang, siap-siap di-kick!</li>
-      <li onclick="playSound()">Harga akun menyesuaikan spek, jadi jangan asal bandingin.</li>
-    </ul>
-  </div>  <footer onclick="playSound()">
-    Terimakasih sudah cek pricelist kami yaa
-  </footer><audio id="hoverSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7c9c5fb0c1.mp3?filename=pop-up-110229.mp3" preload="auto"></audio>
+    <audio id="hoverSound" src="your-sound-file.mp3" preload="auto"></audio>
 
-  <script>
-    function playSound() {
-      const sound = document.getElementById("hoverSound");
-      sound.currentTime = 0;
-      sound.play();
-    }
-  </script></body>
+    <h1>
+        <span>Pricelist</span>
+        <span>Treasure Reseller</span>
+    </h1>
+    <div class="header-lines-container">
+        <div class="header-line"></div>
+        <div class="header-line"></div>
+    </div>
+
+    <div class="section">
+        <h2>🪙 Kosongan Biasa</h2>
+        <ul>
+            <li onmouseover="playSound()"><span class="label">Y25</span><span class="colon-char">:</span> <span class="value">4k - 5.5k</span></li>
+            <li onmouseover="playSound()"><span class="label">Y Lama</span><span class="colon-char">:</span> <span class="value">5k - 7.5k</span></li>
+            <li onmouseover="playSound()"><span class="label">Masuk HT</span><span class="colon-char">:</span> <span class="value">17k - 20k</span></li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>🏴‍☠️ Account CA / RP / BA</h2>
+        <ul>
+            <li onmouseover="playSound()"><span class="label">Verif all</span><span class="colon-char">:</span> <span class="value">12k - 13k</span></li>
+            <li onmouseover="playSound()"><span class="label">Verif email</span><span class="colon-char">:</span> <span class="value">10k - 11k</span></li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>🌟 ACC BER Followers</h2>
+        <ul>
+            <li onmouseover="playSound()"><span class="label">F100+</span><span class="colon-char">:</span> <span class="value">20k - 25k</span></li>
+            <li onmouseover="playSound()"><span class="label">F200+</span><span class="colon-char">:</span> <span class="value">25k - 30k</span></li>
+            <li onmouseover="playSound()"><span class="label">F300+</span><span class="colon-char">:</span> <span class="value">35k - 40k</span></li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>💤 ACC INACT</h2>
+        <ul>
+            <li>Harga menyesuaikan spesifikasi akun</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>📜 Syarat & Ketentuan</h2>
+        <ul>
+            <li>Cek stok dulu ke admin sebelum transfer, ya!</li>
+            <li>Pembayaran langsung ke admin yang bersangkutan.</li>
+            <li>Dilarang add/invite member selain admin.</li>
+            <li>Gak boleh culik member atau promosi sendiri, auto kick!</li>
+            <li>Ambil buat dipake sendiri? Boleh, tapi harga normal ya. Ketauan curang, siap-siap di-kick!</li>
+            <li>Harga akun menyesuaikan spek, jadi jangan asal bandingin.</li>
+        </ul>
+    </div>
+
+    <footer>
+        <div class="footer-lines-container">
+            <div class="footer-line"></div>
+            <div class="footer-line"></div>
+        </div>
+        Terimakasih sudah cek pricelist kami yaa
+        <div class="footer-copyright">
+            &copy; 2025 Treasure Reseller. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        function playSound() {
+            const sound = document.getElementById("hoverSound");
+            if (sound) {
+                sound.currentTime = 0;
+                sound.play();
+            }
+        }
+    </script>
+</body>
 </html>
