@@ -279,55 +279,6 @@ body {
     font-size: 1.1em;
 }
 
-
-/* Styling for Contact Buttons container */
-.contact-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px; /* Increased gap */
-    margin-top: 35px;
-    justify-content: center;
-}
-
-/* Styling for individual WhatsApp buttons */
-.whatsapp-btn {
-    background-color: #25d366;
-    color: #fff;
-    padding: 12px 20px; /* Larger padding */
-    border-radius: 30px; /* More rounded */
-    text-decoration: none;
-    font-weight: 600;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-    white-space: nowrap;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start; /* ALIGN TO THE LEFT */
-    outline: none; /* Menghilangkan efek biru saat di klik/fokus */
-    -webkit-user-select: none; /* Menghilangkan highlight teks untuk Safari */
-    -moz-user-select: none;    /* Menghilangkan highlight teks untuk Firefox */
-    -ms-user-select: none;     /* Menghilangkan highlight teks untuk IE/Edge */
-    user-select: none;         /* Menghilangkan highlight teks untuk browser modern */
-    /* --- PERUBAHAN UTAMA UNTUK 2 TOMBOL PER BARIS --- */
-    flex: 1 1 calc(50% - 7.5px); /* Adjusted for 2 columns, half of the gap (15px / 2 = 7.5px) */
-    max-width: calc(50% - 7.5px);
-    /* ------------------------------------------------ */
-    font-size: 1.05em;
-}
-
-.whatsapp-btn:hover {
-    background-color: #1aae4b; /* Darker green on hover */
-    transform: translateY(-3px); /* More pronounced lift */
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25); /* Stronger shadow */
-}
-
-/* Styling for the WhatsApp icon inside the button */
-.whatsapp-btn i {
-    margin-right: 10px; /* More space for icon */
-    font-size: 1.3em;
-    color: #fff;
-}
-
 /* Note below pricelist - Removed NB: text, keeping the note class for consistency if other notes are added later */
 .note {
     display: none; /* Hide the NB: text completely */
@@ -354,7 +305,6 @@ footer p {
     .pricelist-section {
         padding: 30px;
     }
-    /* whatsapp-btn already set to 2 columns, so no change needed here specifically for 992px */
 }
 
 @media (max-width: 768px) {
@@ -376,16 +326,6 @@ footer p {
     .items li {
         font-size: 1.05em;
         padding: 12px 0;
-    }
-    /* whatsapp-btn already set to 2 columns */
-    .whatsapp-btn {
-        padding: 10px 15px;
-        font-size: 1em;
-        /* No change needed as it's already calc(50% - 7.5px) */
-    }
-    .whatsapp-btn i {
-        margin-right: 8px;
-        font-size: 1.2em;
     }
     .syarat-ketentuan .items ul.custom-list li {
         padding-left: 25px; /* Adjust padding for icon on smaller screens */
@@ -423,18 +363,6 @@ footer p {
     .items li span {
         margin-top: 5px;
         font-size: 0.95em;
-    }
-    .contact-buttons {
-        gap: 10px; /* Slightly reduced gap for very small screens */
-    }
-    .whatsapp-btn {
-        font-size: 0.9em;
-        padding: 8px 12px;
-        flex: 1 1 calc(50% - 5px); /* Adjusted for 2 columns, half of the new gap (10px / 2 = 5px) */
-        max-width: calc(50% - 5px);
-    }
-    .whatsapp-btn i {
-        font-size: 1.1em;
     }
     .note {
         font-size: 0.85em;
