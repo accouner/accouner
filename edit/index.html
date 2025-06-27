@@ -219,44 +219,36 @@
         .section:nth-of-type(2) ul li,
         .section:nth-of-type(3) ul li {
             display: grid;
-            gap: 5px; /* Jarak antar kolom */
+            /* Kolom pertama (label) akan selebar kontennya (max-content) */
+            /* Kolom kedua (colon-char) akan memiliki lebar tetap (misal 5px) */
+            /* Kolom ketiga (value) akan mengambil sisa ruang (1fr) */
+            grid-template-columns: max-content 5px 1fr; 
+            gap: 0px; /* Mengurangi gap agar colon lebih dekat ke label */
             align-items: baseline; /* Menyelaraskan teks di garis dasar */
         }
 
-        /* Mengatur lebar kolom LABEL dan COLON untuk masing-masing bagian */
-        /* COBA NILAI-NILAI ALTERNATIF INI JIKA MASIH BELUM SESUAI */
-        
-        /* Bagian 1: Kosongan Biasa (label terpanjang: "Masuk HT") */
-        /* MENYESUAIKAN LEBIH JAUH: Mengurangi lebar label, menambah lebar colon */
-        .section:nth-of-type(1) ul li {
-            grid-template-columns: minmax(auto, 70px) 12px 1fr; /* COBA JUGA: 65px 15px 1fr */
-        }
-        /* Bagian 2: Account CA / RP / BA (label terpanjang: "Verif email") */
-        /* MENYESUAIKAN LEBIH JAUH: Meningkatkan lebar label */
-        .section:nth-of-type(2) ul li {
-            grid-template-columns: minmax(auto, 130px) 8px 1fr; /* COBA JUGA: 140px 8px 1fr */
-        }
-        /* Bagian 3: ACC BER Followers (label terpanjang: "F300+") */
-        .section:nth-of-type(3) ul li {
-            grid-template-columns: minmax(auto, 70px) 8px 1fr;
-        }
-
+        /* Penyesuaian khusus untuk colon-char dan label */
         .section ul li .label {
             text-align: left; /* Teks label rata kiri dalam kolomnya */
             font-weight: bold;
             color: #444;
+            /* Tambahkan padding kanan untuk jarak antara teks label dan colon */
+            padding-right: 2px; /* Sesuaikan nilai ini jika jarak colon masih terlalu jauh/dekat */
         }
 
         .section ul li .colon-char {
-            text-align: center; /* Colon rata tengah di kolomnya sendiri */
-            /* Lebar kolom diatur oleh grid-template-columns di atas (misal 8px atau 12px) */
+            text-align: left; /* Atur rata kiri agar colon lebih dekat ke label */
+            /* Lebar kolom diatur oleh grid-template-columns di atas (5px) */
+            /* Tidak perlu width manual di sini karena sudah diatur oleh grid */
         }
 
         .section ul li .value {
             text-align: left; /* Teks nilai rata kiri */
+            /* Tambahkan padding kiri untuk jarak antara colon dan value */
+            padding-left: 5px; /* Sesuaikan nilai ini jika jarak colon ke value terlalu jauh/dekat */
         }
 
-        /* Gaya untuk item daftar yang TIDAK memiliki label/nilai (bagian 4 dan seterusnya) */
+        /* Override khusus untuk item daftar yang TIDAK memiliki label/nilai (bagian 4 dan seterusnya) */
         .section ul li:not(:has(span.label)) {
             display: block; /* Pastikan item ini tetap blok standar dan rata kiri */
             text-align: left; /* Mengatasi potensi perataan yang tidak diinginkan */
@@ -336,16 +328,13 @@
                 padding: 8px 12px;
                 font-size: 1.4rem;
             }
-            /* Menyesuaikan lebar kolom label di mobile */
-            /* COBA NILAI-NILAI ALTERNATIF INI JIKA MASIH BELUM SESUAI DI MOBILE */
-            .section:nth-of-type(1) ul li {
-                grid-template-columns: minmax(auto, 60px) 10px 1fr; /* COBA JUGA: 55px 12px 1fr */
+            /* Pada mobile, grid-template-columns tetap max-content 5px 1fr */
+            /* Pastikan padding-right pada .label dan padding-left pada .value tetap relevan */
+            .section ul li .label {
+                padding-right: 2px; /* Sesuaikan lagi di mobile jika perlu */
             }
-            .section:nth-of-type(2) ul li {
-                grid-template-columns: minmax(auto, 110px) 8px 1fr; /* COBA JUGA: 120px 8px 1fr */
-            }
-            .section:nth-of-type(3) ul li {
-                grid-template-columns: minmax(auto, 60px) 8px 1fr;
+            .section ul li .value {
+                padding-left: 5px; /* Sesuaikan lagi di mobile jika perlu */
             }
         }
 
@@ -392,7 +381,7 @@
     </div>
 
     <div class="section">
-        <h2>🌟 ACC BER Followers</h2>
+        <h2>🌟 ACC Ber Followers</h2>
         <ul>
             <li onmouseover="playSound()"><span class="label">F100+</span><span class="colon-char">:</span> <span class="value">20k - 25k</span></li>
             <li onmouseover="playSound()"><span class="label">F200+</span><span class="colon-char">:</span> <span class="value">25k - 30k</span></li>
@@ -410,7 +399,7 @@
     <div class="section">
         <h2>📜 Syarat & Ketentuan</h2>
         <ul>
-            <li>Cek stok dulu ke admin sebelum transfer, ya!</li>
+            <li>Wajib banget cek stok dulu ke admin sebelum transfer, ya!</li>
             <li>Pembayaran langsung ke admin yang bersangkutan.</li>
             <li>Dilarang add/invite member selain admin.</li>
             <li>Gak boleh culik member atau promosi sendiri, auto kick!</li>
@@ -426,7 +415,7 @@
         </div>
         Terimakasih sudah cek pricelist kami yaa
         <div class="footer-copyright">
-            &copy; 2025 Treasure Reseller. All rights reserved.
+            &copy; 2025 Treasure. All rights reserved.
         </div>
     </footer>
 
