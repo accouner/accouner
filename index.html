@@ -218,6 +218,7 @@
             padding: 10px;
             transition: transform 0.3s;
             cursor: pointer;
+            text-align: left; /* Ensure text is left-aligned by default */
         }
 
         li:hover {
@@ -261,7 +262,7 @@
             padding-left: 5px; /* Sesuaikan nilai ini jika jarak colon ke value terlalu jauh/dekat */
         }
 
-        /* Override khusus untuk item daftar yang TIDAK memiliki label/nilai (bagian 4 dan seterusnya) */
+        /* Override khusus untuk item daftar yang TIDAK memiliki label/nilai (bagian 4, S&K, dan Kebijakan Privasi) */
         .section ul li:not(:has(span.label)) {
             display: block; /* Pastikan item ini tetap blok standar dan rata kiri */
             text-align: left; /* Mengatasi potensi perataan yang tidak diinginkan */
@@ -281,6 +282,9 @@
             padding: 0 20px;
             box-sizing: border-box;
             position: relative;
+            display: flex; /* Untuk flexbox agar item footer tertata vertikal */
+            flex-direction: column;
+            align-items: center; /* Untuk menengahkan item secara horizontal */
         }
 
         /* Footer Lines Container */
@@ -291,8 +295,10 @@
             width: 100%;
             height: 3px;
             overflow: hidden;
-            margin-bottom: 20px;
+            margin-top: 0; /* Reset margin top */
+            margin-bottom: 20px; /* Margin bawah untuk memisahkan dari teks */
             position: relative;
+            order: 0; /* Pastikan garis di atas teks */
         }
 
         .footer-line {
@@ -324,6 +330,13 @@
             font-size: 0.9rem;
             color: #999;
             margin-top: 10px;
+            margin-bottom: 0; /* Pastikan tidak ada margin bawah berlebih */
+            order: 2; /* Atur urutan agar di bawah teks terima kasih */
+        }
+
+        .footer-text-thanks {
+            margin-bottom: 10px; /* Margin bawah untuk memisahkan dari copyright */
+            order: 1; /* Atur urutan agar di bawah garis */
         }
 
         @media (max-width: 600px) {
@@ -412,12 +425,26 @@
     <div class="section">
         <h2>📜 Syarat & Ketentuan</h2>
         <ul>
-            <li>Wajib banget cek stok dulu ke admin sebelum transfer, ya!</li>
-            <li>Pembayaran langsung ke admin yang bersangkutan.</li>
-            <li>Dilarang add/invite member selain admin.</li>
-            <li>Gak boleh culik member atau promosi sendiri, auto kick!</li>
-            <li>Ambil buat dipake sendiri? Boleh, tapi harga normal ya. Ketauan curang, siap-siap di-kick!</li>
-            <li>Harga akun menyesuaikan spek, jadi jangan asal bandingin.</li>
+            <li onmouseover="playSound()">Wajib banget cek stok dulu ke admin sebelum transfer, ya!</li>
+            <li onmouseover="playSound()">Pembayaran langsung ke admin yang bersangkutan.</li>
+            <li onmouseover="playSound()">Dilarang add/invite member selain admin.</li>
+            <li onmouseover="playSound()">Gak boleh culik member atau promosi sendiri, auto kick!</li>
+            <li onmouseover="playSound()">Ambil buat dipake sendiri? Boleh, tapi harga normal ya. Ketauan curang, siap-siap di-kick!</li>
+            <li onmouseover="playSound()">Harga akun menyesuaikan spek, jadi jangan asal bandingin.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>📄 Kebijakan Privasi</h2>
+        <ul>
+            <li onmouseover="playSound()"><strong>Data Aman, Santuy Aja</strong><br>Semua data & chat lo di sini aman. Gak bakal kita sebarin ke siapa-siapa tanpa izin.</li>
+            <li onmouseover="playSound()"><strong>Privasi Member Tetap No.1</strong><br>Siapa lo, beli apa, ngapain di grup, itu urusan lo. Kecuali lo ngelanggar aturan, baru deh kita buka suara.</li>
+            <li onmouseover="playSound()"><strong>Harga & Spek Jelas, Gak Neko-neko</strong><br>Kita transparan. Harga dan spek akun selalu update. Gak ada yang ditutup-tutupin.</li>
+            <li onmouseover="playSound()"><strong>Gak Suka Drama? Sama.</strong><br>Di sini anti ribet. Gak boleh spam, gak boleh DM random, gak boleh promosi sendiri. Nyaman bareng, cuan bareng.</li>
+            <li onmouseover="playSound()"><strong>Transfer? Cuma ke Admin Resmi!</strong><br>Ada yang ngaku-ngaku admin dan minta transfer? Langsung anggap itu penipuan. Rugi sendiri kalau nurut.</li>
+            <li onmouseover="playSound()"><strong>Mau Take Buat Pribadi? Gass!</strong><br>Lo boleh ambil buat dipake sendiri, asal bayar harga normal. Ketauan curang? Langsung kita tendang cantik.</li>
+            <li onmouseover="playSound()"><strong>Penipuan? NO MERCY!</strong><br>Nipu, nyaru jadi admin, atau jual akun palsu = blacklist seumur hidup + bisa kena laporan. Jangan main api.</li>
+            <li onmouseover="playSound()"><strong>Kebijakan Bisa Update Kapan Aja</strong><br>Buat kenyamanan semua, aturan bisa berubah. Tapi tenang, bakal kita infoin duluan.</li>
         </ul>
     </div>
 
@@ -426,7 +453,9 @@
             <div class="footer-line"></div>
             <div class="footer-line"></div>
         </div>
-        Terimakasih sudah cek pricelist kami yaa
+        <div class="footer-text-thanks">
+            Terimakasih sudah cek pricelist kami yaa
+        </div>
         <div class="footer-copyright">
             &copy; 2025 Treasure. All rights reserved.
         </div>
