@@ -155,7 +155,7 @@
             background: #fff;
             border-radius: 15px;
             padding: 20px;
-            margin: 20px 20px;
+            margin: 20px auto; /* Auto margin for horizontal centering */
             width: auto;
             max-width: 600px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -362,6 +362,10 @@
             .section ul li .value {
                 padding-left: 5px; /* Sesuaikan lagi di mobile jika perlu */
             }
+            /* Menyesuaikan tinggi dropdown di mobile */
+            .registration-form-content.active {
+                max-height: 900px; /* Lebih tinggi untuk mobile karena konten form stacked. Sesuaikan jika kurang. */
+            }
         }
 
         @keyframes bounce {
@@ -375,6 +379,114 @@
                 transform: translateY(-5px);
             }
         }
+
+        /* === CSS Baru untuk Formulir Pendaftaran Dropdown === */
+        .section.registration-section h2 {
+            cursor: pointer; /* Menunjukkan bahwa header bisa diklik */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding-right: 40px; /* Ruang untuk ikon panah */
+        }
+
+        .section.registration-section h2::after {
+            content: '▼'; /* Panah ke bawah */
+            position: absolute;
+            right: 15px;
+            font-size: 1rem;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .section.registration-section.active h2::after {
+            content: '▲'; /* Panah ke atas saat aktif */
+            transform: rotate(0deg); /* Pastikan tidak ada rotasi berlebih jika '▲' */
+        }
+
+        .registration-form-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out; /* Transisi untuk efek dropdown */
+            padding-top: 0; /* Awalnya tidak ada padding */
+        }
+
+        .registration-form-content.active {
+            max-height: 700px; /* Tinggi maksimum saat konten terlihat, sesuaikan jika form lebih panjang */
+            padding-top: 15px; /* Tambahkan padding setelah terbuka */
+        }
+        
+        /* CSS untuk elemen formulir kustom */
+        .registration-form-content form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* Jarak antar grup form */
+        }
+
+        .form-group {
+            margin-bottom: 0; /* Reset margin default */
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #444; /* Warna teks label */
+            font-family: Arial, sans-serif; /* Ganti jika Anda ingin font berbeda untuk label */
+            font-size: 1rem;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: Arial, sans-serif; /* Ganti font input */
+            font-size: 1rem;
+            color: #333;
+            background-color: #f0f0f0; /* Latar belakang input */
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="file"]:focus {
+            border-color: #00bcd4; /* Border saat fokus */
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 188, 212, 0.5);
+        }
+
+        .registration-form-content button[type="submit"] {
+            padding: 12px 25px;
+            background-color: #ff6f61; /* Warna primary dari website Anda */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-family: 'Chewy', cursive; /* Font yang sama dengan judul */
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            margin-top: 10px;
+        }
+
+        .registration-form-content button[type="submit"]:hover:not(:disabled) {
+            background-color: #e65c50; /* Sedikit lebih gelap saat hover */
+            transform: translateY(-2px);
+        }
+
+        .registration-form-content button[type="submit"]:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .response-message {
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+            font-family: Arial, sans-serif; /* Untuk pesan status */
+        }
+        /* Akhir CSS Baru */
+
     </style>
 </head>
 <body>
@@ -448,6 +560,35 @@
         </ul>
     </div>
 
+    <div class="section registration-section">
+        <h2 onclick="toggleRegistrationForm()" onmouseover="playSound()">📝 Formulir Pendaftaran</h2>
+        <div class="registration-form-content">
+            <form id="registrationCustomForm"> 
+                <div class="form-group">
+                    <label for="nama">Nama:</label>
+                    <input type="text" id="nama" name="Nama" required>
+                </div>
+                <div class="form-group">
+                    <label for="platformPromosi">Platform Promosi:</label>
+                    <input type="text" id="platformPromosi" name="Platform Promosi" required>
+                </div>
+                <div class="form-group">
+                    <label for="accountBA">Account BA:</label>
+                    <input type="text" id="accountBA" name="Account BA" required>
+                </div>
+                <div class="form-group">
+                    <label for="nomorWhatsApp">Nomor WhatsApp:</label>
+                    <input type="text" id="nomorWhatsApp" name="Nomor WhatsApp" pattern="[0-9]+" title="Hanya angka diperbolehkan" required>
+                </div>
+                <div class="form-group">
+                    <label for="ssKepemilikan">Screenshot Bukti Kepemilikan Account BA:</label>
+                    <input type="file" id="ssKepemilikan" accept="image/*" required> 
+                </div>
+                <button type="submit">Daftar Sekarang</button>
+                <p id="responseMessage" class="response-message"></p>
+            </form>
+            </div>
+    </div>
     <footer>
         <div class="footer-lines-container">
             <div class="footer-line"></div>
@@ -462,6 +603,7 @@
     </footer>
 
     <script>
+        // Fungsi untuk memainkan suara saat hover
         function playSound() {
             const sound = document.getElementById("hoverSound");
             if (sound) {
@@ -469,6 +611,94 @@
                 sound.play();
             }
         }
+
+        // Fungsi untuk mengaktifkan/nonaktifkan dropdown formulir
+        function toggleRegistrationForm() {
+            const section = document.querySelector('.registration-section');
+            const content = document.querySelector('.registration-form-content');
+
+            section.classList.toggle('active');
+            content.classList.toggle('active');
+
+            playSound();
+        }
+
+        // --- JavaScript untuk Pengiriman Formulir Kustom (dengan Base64) ---
+        document.getElementById('registrationCustomForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Mencegah pengiriman formulir default
+
+            const form = event.target;
+            const submitButton = form.querySelector('button[type="submit"]');
+            const responseMessage = document.getElementById('responseMessage');
+            const fileInput = document.getElementById('ssKepemilikan'); // Ambil elemen input file
+            
+            submitButton.disabled = true; // Nonaktifkan tombol saat submit
+            responseMessage.textContent = 'Mengirim data...';
+            responseMessage.style.color = '#007bff'; // Warna biru untuk loading
+
+            // --- INI URL WEB APP APPS SCRIPT ANDA ---
+            const appScriptUrl = 'https://accouner.site/api/submit-form'; 
+            // ----------------------------------------
+
+            try {
+                // Buat objek FormData untuk mengumpulkan data teks dari formulir
+                const formData = new FormData(form); 
+                
+                // BARU: Proses file menjadi Base64
+                if (fileInput.files.length > 0) {
+                    const file = fileInput.files[0];
+                    const reader = new FileReader();
+
+                    // Menggunakan Promise untuk menunggu FileReader selesai membaca file
+                    const base64Data = await new Promise((resolve, reject) => {
+                        reader.onload = () => resolve(reader.result);
+                        reader.onerror = error => reject(error);
+                        reader.readAsDataURL(file); // Baca file sebagai Data URL (Base64 string)
+                    });
+
+                    // Tambahkan Base64 string dan nama file asli ke FormData
+                    // Apps Script akan menerima ini sebagai e.parameter['Screenshot Bukem..._base64']
+                    formData.append('Screenshot Bukti Kepemilikan Account BA_base64', base64Data);
+                    formData.append('Screenshot Bukti Kepemilikan Account BA_filename', file.name);
+                } else {
+                    responseMessage.textContent = 'Gagal: File screenshot wajib diunggah.';
+                    responseMessage.style.color = 'red';
+                    submitButton.disabled = false;
+                    return; // Hentikan proses jika tidak ada file yang dipilih
+                }
+
+                // Kirim FormData ke Apps Script (FormData sekarang berisi data teks dan Base64 string file)
+                const response = await fetch(appScriptUrl, {
+                    method: 'POST',
+                    body: formData,
+                    // Tidak perlu mode: 'no-cors' atau cache: 'no-cache'.
+                    // Biarkan browser menangani mode default (cors) dan Content-Type untuk FormData.
+                });
+                
+                // Pastikan respons adalah JSON dan bisa dibaca
+                const result = await response.json(); 
+
+                if (result.status === 'success') {
+                    responseMessage.textContent = result.message + ' Silakan cek spreadsheet dan Google Drive Anda.';
+                    responseMessage.style.color = 'green';
+                    form.reset(); // Reset formulir setelah sukses
+                } else {
+                    // Tampilkan pesan error yang diterima dari Apps Script
+                    responseMessage.textContent = 'Gagal: ' + result.message;
+                    responseMessage.style.color = 'red';
+                }
+                
+                console.log('Apps Script response:', result); // Log respons lengkap ke konsol browser
+
+            } catch (error) {
+                console.error('Error:', error); // Log error fetch ke konsol browser
+                responseMessage.textContent = 'Terjadi kesalahan saat mengirim pendaftaran. Coba lagi atau hubungi admin.';
+                responseMessage.style.color = 'red';
+            } finally {
+                submitButton.disabled = false; // Aktifkan kembali tombol
+            }
+        });
+        // --- Akhir JavaScript Pengiriman Formulir Kustom ---
     </script>
 </body>
 </html>
