@@ -215,6 +215,10 @@
             list-style: none;
             padding: 0;
             margin: 0;
+            flex-grow: 1; /* Biarkan ul mengisi ruang yang tersisa */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Atau space-around jika ingin item tersebar */
         }
 
         li {
@@ -386,9 +390,7 @@
         }
 
         .registration-form-content.active {
-            /* Sesuaikan nilai max-height ini. Mungkin perlu eksperimen sedikit. */
-            /* Misalnya, coba nilai yang lebih kecil, lalu tingkatkan jika konten terpotong. */
-            max-height: 500px; /* Mengurangi nilai ini secara signifikan */
+            max-height: 500px; /* Nilai ini sudah disesuaikan sebelumnya */
             padding-top: 20px;
             padding-bottom: 0px; /* Pastikan padding-bottom ini sangat kecil atau 0 */
         }
@@ -515,6 +517,19 @@
 
         /* --- Media Queries untuk Responsivitas Desktop --- */
         @media (min-width: 768px) {
+            /* ===== PENYESUAIAN TINGGI SECTION DI DESKTOP ===== */
+            .section {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                /* Nilai min-height ini disesuaikan. Anda mungkin perlu sedikit eksperimen
+                   untuk menemukan nilai yang paling pas agar semua section sejajar. */
+                min-height: 380px; /* Meningkatkan min-height */
+                padding: 40px;
+                margin: 40px auto;
+            }
+            /* ===== AKHIR PENYESUAIAN TINGGI SECTION DI DESKTOP ===== */
+
             /* Untuk layout 2 kolom pada form */
             .registration-form-content form {
                 display: grid;
@@ -527,12 +542,6 @@
             .registration-form-content button[type="submit"],
             .response-message {
                 grid-column: 1 / -1;
-            }
-
-            /* Penyesuaian margin dan padding untuk section di desktop */
-            .section {
-                padding: 40px;
-                margin: 40px auto;
             }
 
             .section.registration-section {
@@ -560,6 +569,9 @@
             .section {
                 margin: 15px 15px;
                 padding: 20px;
+                /* Hapus flexbox dan min-height untuk tampilan mobile */
+                display: block;
+                min-height: auto;
             }
 
             h1 {
@@ -582,7 +594,6 @@
             }
 
             .registration-form-content.active {
-                /* Sesuaikan max-height untuk mobile juga */
                 max-height: 600px; /* Mungkin lebih rendah dari desktop */
             }
         }
