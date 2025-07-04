@@ -563,7 +563,7 @@
     <div class="section registration-section">
         <h2 onclick="toggleRegistrationForm()" onmouseover="playSound()">📝 Formulir Pendaftaran</h2>
         <div class="registration-form-content">
-            <form id="registrationCustomForm" enctype="multipart/form-data">
+            <form id="registrationCustomForm"> 
                 <div class="form-group">
                     <label for="nama">Nama:</label>
                     <input type="text" id="nama" name="Nama" required>
@@ -582,7 +582,7 @@
                 </div>
                 <div class="form-group">
                     <label for="ssKepemilikan">Screenshot Bukti Kepemilikan Account BA:</label>
-                    <input type="file" id="ssKepemilikan" name="Screenshot Bukti Kepemilikan Account BA" accept="image/*" required>
+                    <input type="file" id="ssKepemilikan" accept="image/*" required> 
                 </div>
                 <button type="submit">Daftar Sekarang</button>
                 <p id="responseMessage" class="response-message"></p>
@@ -612,7 +612,7 @@
             }
         }
 
-        // Fungsi untuk mengaktifkan/menonaktifkan dropdown formulir
+        // Fungsi untuk mengaktifkan/nonaktifkan dropdown formulir
         function toggleRegistrationForm() {
             const section = document.querySelector('.registration-section');
             const content = document.querySelector('.registration-form-content');
@@ -620,27 +620,53 @@
             section.classList.toggle('active');
             content.classList.toggle('active');
 
-            // Jika ada suara, mainkan suara saat klik
             playSound();
         }
 
-        // --- JavaScript untuk Pengiriman Formulir Kustom ---
+        // --- JavaScript untuk Pengiriman Formulir Kustom (dengan Base64) ---
         document.getElementById('registrationCustomForm').addEventListener('submit', async function(event) {
             event.preventDefault(); // Mencegah pengiriman formulir default
 
             const form = event.target;
-            const formData = new FormData(form);
             const submitButton = form.querySelector('button[type="submit"]');
             const responseMessage = document.getElementById('responseMessage');
-
+            const fileInput = document.getElementById('ssKepemilikan'); // Ambil elemen input file
+            
             submitButton.disabled = true; // Nonaktifkan tombol saat submit
             responseMessage.textContent = 'Mengirim data...';
             responseMessage.style.color = '#007bff'; // Warna biru untuk loading
 
             // URL Web App Google Apps Script Anda
-            const appScriptUrl = 'https://script.google.com/macros/s/AKfycbzyImzNLQLigKnqrEFSyunccQwWTQImHY8tWj9XNoTjt-FSDXeSrQ2yW1PClTgUACXq/exec'; // GANTI Pastikan ini URL Web App Anda
+            const appScriptUrl = 'https://script.google.com/macros/s/AKfycbzyImzNLQLigKnqrEFSyunccQwWTQImHY8tWj9XNoTjt-FSDXeSrQ2yW1PClTgUACXq/exec'; // GANTI dengan URL Web App Anda
 
             try {
+                // Buat objek FormData untuk mengumpulkan data teks dari formulir
+                const formData = new FormData(form); 
+                
+                // BARU: Proses file menjadi Base64
+                if (fileInput.files.length > 0) {
+                    const file = fileInput.files[0];
+                    const reader = new FileReader();
+
+                    // Menggunakan Promise untuk menunggu FileReader selesai membaca file
+                    const base64Data = await new Promise((resolve, reject) => {
+                        reader.onload = () => resolve(reader.result);
+                        reader.onerror = error => reject(error);
+                        reader.readAsDataURL(file); // Baca file sebagai Data URL (Base64 string)
+                    });
+
+                    // Tambahkan Base64 string dan nama file asli ke FormData
+                    // Apps Script akan menerima ini sebagai e.parameter['Screenshot Bukti Kepemilikan Account BA_base64']
+                    formData.append('Screenshot Bukti Kepemilikan Account BA_base64', base64Data);
+                    formData.append('Screenshot Bukti Kepemilikan Account BA_filename', file.name);
+                } else {
+                    responseMessage.textContent = 'Gagal: File screenshot wajib diunggah.';
+                    responseMessage.style.color = 'red';
+                    submitButton.disabled = false;
+                    return; // Hentikan proses jika tidak ada file yang dipilih
+                }
+
+                // Kirim FormData ke Apps Script (FormData sekarang berisi data teks dan Base64 string file)
                 const response = await fetch(appScriptUrl, {
                     method: 'POST',
                     body: formData,
@@ -652,11 +678,11 @@
                 const result = await response.json(); 
 
                 if (result.status === 'success') {
-                    responseMessage.textContent = result.message + ' Silakan cek spreadsheet Anda.';
+                    responseMessage.textContent = result.message + ' Silakan cek spreadsheet dan Google Drive Anda.';
                     responseMessage.style.color = 'green';
                     form.reset(); // Reset formulir setelah sukses
                 } else {
-                    // Tampilkan pesan error dari Apps Script
+                    // Tampilkan pesan error yang diterima dari Apps Script
                     responseMessage.textContent = 'Gagal: ' + result.message;
                     responseMessage.style.color = 'red';
                 }
