@@ -155,7 +155,7 @@
             background: #fff;
             border-radius: 15px;
             padding: 20px;
-            margin: 20px 20px;
+            margin: 20px auto; /* Auto margin for horizontal centering */
             width: auto;
             max-width: 600px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -636,8 +636,9 @@
             responseMessage.textContent = 'Mengirim data...';
             responseMessage.style.color = '#007bff'; // Warna biru untuk loading
 
-            // URL Web App Google Apps Script Anda
-            const appScriptUrl = 'https://script.google.com/macros/s/AKfycbzyImzNLQLigKnqrEFSyunccQwWTQImHY8tWj9XNoTjt-FSDXeSrQ2yW1PClTgUACXq/exec'; // GANTI dengan URL Web App Anda
+            // --- INI URL WEB APP APPS SCRIPT ANDA ---
+            const appScriptUrl = 'https://script.google.com/macros/s/AKfycbzHcAAfTk2R3zpOPIjtVIBF3E0j9IoKfokHln2evlFSgzfRpRru6BNcYGhd26ehcVQ/exec'; 
+            // ----------------------------------------
 
             try {
                 // Buat objek FormData untuk mengumpulkan data teks dari formulir
@@ -656,7 +657,7 @@
                     });
 
                     // Tambahkan Base64 string dan nama file asli ke FormData
-                    // Apps Script akan menerima ini sebagai e.parameter['Screenshot Bukti Kepemilikan Account BA_base64']
+                    // Apps Script akan menerima ini sebagai e.parameter['Screenshot Bukem..._base64']
                     formData.append('Screenshot Bukti Kepemilikan Account BA_base64', base64Data);
                     formData.append('Screenshot Bukti Kepemilikan Account BA_filename', file.name);
                 } else {
