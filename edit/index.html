@@ -637,28 +637,32 @@
             responseMessage.textContent = 'Mengirim data...';
             responseMessage.style.color = '#007bff'; // Warna biru untuk loading
 
-            // Ganti URL ini dengan URL Web App Google Apps Script Anda
+            // URL Web App Google Apps Script Anda
             const appScriptUrl = 'https://script.google.com/macros/s/AKfycbzyImzNLQLigKnqrEFSyunccQwWTQImHY8tWj9XNoTjt-FSDXeSrQ2yW1PClTgUACXq/exec';
 
             try {
                 const response = await fetch(appScriptUrl, {
                     method: 'POST',
                     body: formData,
+                    mode: 'no-cors', // <--- PENTING: Tambahan ini
+                    cache: 'no-cache', // <--- PENTING: Tambahan ini
                     // Tidak perlu mengatur 'Content-Type' untuk FormData, browser akan melakukannya otomatis
                 });
-                const result = await response.json(); // Mengasumsikan Apps Script mengembalikan JSON
+                
+                // Ketika mode: 'no-cors', respons tidak bisa diakses sepenuhnya (opaque response).
+                // Kita tidak bisa langsung membaca .json() dari respons.
+                // Oleh karena itu, kita harus mengasumsikan sukses jika fetch berhasil tanpa error.
+                // Pesan sukses 'Pendaftaran berhasil!' akan ditampilkan jika fetch() tidak gagal.
+                responseMessage.textContent = 'Pendaftaran berhasil! Silakan cek spreadsheet Anda.';
+                responseMessage.style.color = 'green';
+                form.reset(); // Reset formulir setelah sukses
+                
+                // Opsional: Log respons (meskipun akan opaque di mode no-cors)
+                console.log('Fetch response (opaque in no-cors mode):', response);
 
-                if (result.status === 'success') {
-                    responseMessage.textContent = 'Pendaftaran berhasil! Terima kasih.';
-                    responseMessage.style.color = 'green';
-                    form.reset(); // Reset formulir setelah sukses
-                } else {
-                    responseMessage.textContent = 'Pendaftaran gagal: ' + result.message;
-                    responseMessage.style.color = 'red';
-                }
             } catch (error) {
                 console.error('Error:', error);
-                responseMessage.textContent = 'Terjadi kesalahan saat mengirim pendaftaran.';
+                responseMessage.textContent = 'Terjadi kesalahan saat mengirim pendaftaran. Coba lagi atau hubungi admin.';
                 responseMessage.style.color = 'red';
             } finally {
                 submitButton.disabled = false; // Aktifkan kembali tombol
