@@ -487,6 +487,8 @@
             max-width: 350px;
             align-self: center;
             letter-spacing: 0.5px;
+            position: relative; /* Penting untuk penempatan pesan di atas tombol */
+            overflow: hidden; /* Pastikan konten di dalam tombol tidak keluar */
         }
 
         .registration-form-content button[type="submit"]:hover:not(:disabled) {
@@ -502,16 +504,70 @@
             box-shadow: none;
             transform: none;
         }
+        /* Style untuk pesan di dalam tombol */
+        .registration-form-content button[type="submit"] .button-content {
+            display: inline-block; /* Agar teks dan ikon bisa diatur */
+            transition: opacity 0.3s ease; /* Transisi untuk menghilang */
+        }
+        .registration-form-content button[type="submit"] .loading-spinner {
+            display: none; /* Sembunyikan spinner secara default */
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .registration-form-content button[type="submit"].loading .button-content {
+            opacity: 0; /* Sembunyikan teks asli saat loading */
+        }
+        .registration-form-content button[type="submit"].loading .loading-spinner {
+            display: block; /* Tampilkan spinner saat loading */
+        }
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Styling untuk pesan respons yang muncul di bawah tombol */
         .response-message {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 10px; /* Mengurangi margin top agar lebih dekat ke tombol */
             font-weight: bold;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             font-size: 1.05rem;
             padding: 10px;
             border-radius: 5px;
-            background-color: rgba(0, 188, 212, 0.1);
+            display: block; /* Pastikan selalu blok */
+            opacity: 0; /* Mulai dengan tidak terlihat */
+            visibility: hidden; /* Sembunyikan sepenuhnya dari layout */
+            transition: opacity 0.5s ease-in-out, visibility 0s linear 0.5s; /* Transisi */
+            box-sizing: border-box; /* Pastikan padding termasuk dalam lebar */
+            width: 100%; /* Lebar penuh */
         }
+
+        .response-message.show {
+            opacity: 1; /* Tampilkan */
+            visibility: visible; /* Buat terlihat */
+            transition: opacity 0.5s ease-in-out, visibility 0s linear 0s; /* Transisi */
+        }
+
+        .response-message.success {
+            background-color: rgba(144, 238, 144, 0.2); /* Light green */
+            color: #28a745; /* Darker green */
+            border: 1px solid #28a745;
+        }
+
+        .response-message.error {
+            background-color: rgba(255, 99, 71, 0.2); /* Tomato light */
+            color: #dc3545; /* Dark red */
+            border: 1px solid #dc3545;
+        }
+
 
         /* --- Media Queries untuk Responsivitas Desktop --- */
         @media (min-width: 768px) {
@@ -594,7 +650,8 @@
             .registration-form-content.active {
                 max-height: 600px; /* Mungkin lebih rendah dari desktop */
             }
-        </style>
+        }
+    </style>
 </head>
 <body>
     <audio id="hoverSound" src="your-sound-file.mp3" preload="auto"></audio>
@@ -691,8 +748,13 @@
                     <label for="ssKepemilikan"><i class="fas fa-camera"></i> Screenshot Bukti Kepemilikan Account BA:</label>
                     <input type="file" id="ssKepemilikan" name="ssBukti" accept="image/*" required>
                 </div>
-                <button type="submit">Daftar Sekarang</button>
-                <p id="responseMessage" class="response-message"></p>
+                <div style="text-align: center; position: relative;">
+                    <button type="submit" id="submitButton">
+                        <span class="button-content">Daftar Sekarang</span>
+                        <div class="loading-spinner"></div>
+                    </button>
+                    <p id="responseMessage" class="response-message"></p>
+                </div>
             </form>
             </div>
     </div>
@@ -730,25 +792,26 @@
             playSound();
         }
 
-        // --- JavaScript untuk Pengiriman Formulir Kustom (dengan Base64) ---
         document.addEventListener('DOMContentLoaded', () => {
             const registrationForm = document.getElementById('registrationCustomForm');
-            if (registrationForm) {
+            // Ambil referensi tombol dan pesan respons
+            const submitButton = document.getElementById('submitButton');
+            const buttonContent = submitButton ? submitButton.querySelector('.button-content') : null;
+            const responseMessage = document.getElementById('responseMessage');
+
+            if (registrationForm && submitButton && buttonContent && responseMessage) {
                 registrationForm.addEventListener('submit', async function(event) {
                     event.preventDefault(); // Mencegah pengiriman formulir default
 
-                    const form = event.target;
-                    const submitButton = form.querySelector('button[type="submit"]');
-                    // Pastikan elemen responseMessage ada
-                    const responseMessage = document.getElementById('responseMessage');
-                    const fileInput = form.querySelector('input[name="ssBukti"]');
+                    // 1. **Mulai Efek Loading pada Tombol & Sembunyikan Pesan Lama**
+                    submitButton.disabled = true; // Nonaktifkan tombol
+                    submitButton.classList.add('loading'); // Tambahkan kelas loading untuk CSS
+                    if (buttonContent) buttonContent.textContent = 'Mengirim...'; // Ubah teks tombol
+                    responseMessage.classList.remove('show', 'success', 'error'); // Sembunyikan dan reset kelas
+                    responseMessage.textContent = ''; // Kosongkan teks pesan
 
-                    // 1. Reset pesan sebelumnya dan set status "Mengirim..."
-                    if (responseMessage) {
-                        responseMessage.textContent = 'Mengirim data...';
-                        responseMessage.style.color = '#007bff'; // Warna biru untuk loading
-                    }
-                    submitButton.disabled = true; // Nonaktifkan tombol saat submit
+                    const form = event.target;
+                    const fileInput = form.querySelector('input[name="ssBukti"]');
 
                     // --- INI URL WEB APP APPS SCRIPT ANDA ---
                     const appScriptUrl = 'https://accouner.site/api/submit-form';
@@ -769,15 +832,17 @@
                             });
 
                             formData.append('Screenshot Bukti Kepemilikan Account BA_base64', base64Data);
-                            formData.append('Screenshot Bukti Kepemilikan Account BA_filename', file.name);
+                            formData.append('Screenshot Bukemilikan Account BA_filename', file.name); // Perbaikan typo di 'Bukemilikan'
                             formData.delete('ssBukti'); // Hapus input file asli agar tidak dikirim dua kali
                         } else {
-                            if (responseMessage) {
-                                responseMessage.textContent = 'Gagal: File screenshot wajib diunggah.';
-                                responseMessage.style.color = 'red';
-                            }
+                            // Validasi: File screenshot wajib diunggah
+                            responseMessage.textContent = 'Gagal: File screenshot wajib diunggah.';
+                            responseMessage.classList.add('show', 'error');
+                            // Kembali ke kondisi awal tombol (tanpa loading)
                             submitButton.disabled = false;
-                            return; // Hentikan proses jika tidak ada file yang dipilih
+                            submitButton.classList.remove('loading');
+                            if (buttonContent) buttonContent.textContent = 'Daftar Sekarang';
+                            return; // Hentikan proses jika tidak ada file
                         }
 
                         // Kirim data ke Apps Script
@@ -794,35 +859,41 @@
                         const result = await response.json();
 
                         // 2. Tampilkan pesan berdasarkan respons dari Apps Script
-                        if (responseMessage) {
-                            if (result.status === 'success') {
-                                responseMessage.textContent = 'Selamat, formulir Anda berhasil dikirim!';
-                                responseMessage.style.color = 'green';
-                                // Reset formulir setelah sukses dengan penundaan
-                                setTimeout(() => {
-                                    form.reset();
-                                    responseMessage.textContent = ''; // Hapus pesan setelah reset
-                                }, 3000); // Tunda 3 detik
-                            } else {
-                                const errorMessage = result.message || 'Terjadi kesalahan tidak diketahui dari server.';
-                                responseMessage.textContent = 'Gagal: ' + errorMessage;
-                                responseMessage.style.color = 'red';
-                            }
+                        if (result.status === 'success') {
+                            responseMessage.textContent = 'Selamat, formulir Anda berhasil dikirim!';
+                            responseMessage.classList.add('show', 'success');
+                            // Reset formulir setelah sukses dengan penundaan
+                            setTimeout(() => {
+                                form.reset();
+                                responseMessage.classList.remove('show', 'success'); // Sembunyikan pesan setelah reset
+                                responseMessage.textContent = ''; // Kosongkan teks pesan
+                                submitButton.classList.remove('loading'); // Hapus efek loading
+                                if (buttonContent) buttonContent.textContent = 'Daftar Sekarang'; // Kembalikan teks tombol
+                            }, 3000); // Tunda 3 detik
+                        } else {
+                            const errorMessage = result.message || 'Terjadi kesalahan tidak diketahui dari server.';
+                            responseMessage.textContent = 'Gagal: ' + errorMessage;
+                            responseMessage.classList.add('show', 'error');
                         }
+
                     } catch (error) {
                         // 3. Tangani kesalahan jaringan atau JavaScript
-                        if (responseMessage) {
-                            responseMessage.textContent = 'Terjadi kesalahan saat mengirim pendaftaran. Coba lagi atau hubungi admin. Detail: ' + error.message;
-                            responseMessage.style.color = 'red';
-                        }
+                        responseMessage.textContent = 'Terjadi kesalahan saat mengirim. Coba lagi: ' + error.message;
+                        responseMessage.classList.add('show', 'error');
                         console.error('Error during form submission:', error);
                     } finally {
-                        submitButton.disabled = false; // Aktifkan kembali tombol di akhir proses
+                        // 4. Pastikan tombol kembali normal jika bukan sukses (karena sukses ada timeout)
+                        if (!responseMessage.classList.contains('success')) {
+                            submitButton.disabled = false; // Aktifkan kembali tombol
+                            submitButton.classList.remove('loading'); // Hapus efek loading
+                            if (buttonContent) buttonContent.textContent = 'Daftar Sekarang'; // Kembalikan teks tombol
+                        }
                     }
                 });
+            } else {
+                console.error("Error: One or more required elements (form, button, button content, or response message) not found.");
             }
         });
-        // --- Akhir JavaScript Pengiriman Formulir Kustom ---
     </script>
 </body>
 </html>
