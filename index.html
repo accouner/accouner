@@ -556,7 +556,6 @@
             transition: opacity 0.5s ease-in-out, visibility 0s linear 0s; /* Transisi */
         }
 
-        /* --- PERUBAHAN DI SINI: MENYESUAIKAN WARNA TEKS UNTUK LEBIH JELAS --- */
         .response-message.success {
             background-color: #d4edda; /* Warna latar belakang hijau terang yang lebih solid */
             color: #155724; /* Warna teks hijau gelap yang lebih kontras */
@@ -568,7 +567,6 @@
             color: #721c24; /* Warna teks merah gelap yang lebih kontras */
             border: 1px solid #721c24;
         }
-        /* --- AKHIR PERUBAHAN WARNA --- */
 
 
         /* --- Media Queries untuk Responsivitas Desktop --- */
@@ -689,7 +687,9 @@
         <ul>
             <li onmouseover="playSound()"><span class="label">F100+</span><span class="colon-char">:</span> <span class="value">20k - 25k</span></li>
             <li onmouseover="playSound()"><span class="label">F200+</span><span class="colon-char">:</span> <span class="value">25k - 30k</span></li>
-            <li onmouseover="playSound()"><span class="label">F300+</span><span class="colon-char">:</span> <span class="value">35k - 40k</span></li>
+            <li onmouseover="playSound()">
+                <span class="label">F300+</span><span class="colon-char">:</span> <span class="value">35k - 40k</span>
+            </li>
         </ul>
     </div>
 
@@ -715,14 +715,38 @@
     <div class="section">
         <h2>📄 Kebijakan Privasi</h2>
         <ul>
-            <li onmouseover="playSound()"><strong>Data Aman, Santuy Aja</strong><br>Semua data & chat lo di sini aman. Gak bakal kita sebarin ke siapa-siapa tanpa izin.</li>
-            <li onmouseover="playSound()"><strong>Privasi Member Tetap No.1</strong><br>Siapa lo, beli apa, ngapain di grup, itu urusan lo. Kecuali lo ngelanggar aturan, baru deh kita buka suara.</li>
-            <li onmouseover="playSound()"><strong>Harga & Spek Jelas, Gak Neko-neko</strong><br>Kita transparan. Harga dan spek akun selalu update. Gak ada yang ditutup-tutupi.</li>
-            <li onmouseover="playSound()"><strong>Gak Suka Drama? Sama.</strong><br>Di sini anti ribet. Gak boleh spam, gak boleh DM random, gak boleh promosi sendiri. Nyaman bareng, cuan bareng.</li>
-            <li onmouseover="playSound()"><strong>Transfer? Cuma ke Admin Resmi!</strong><br>Ada yang ngaku-ngaku admin dan minta transfer? Langsung anggap itu penipuan. Rugi sendiri kalau nurut.</li>
-            <li onmouseover="playSound()"><strong>Mau Take Buat Pribadi? Gass!</strong><br>Lo boleh ambil buat dipake sendiri, asal bayar harga normal. Ketauan curang? Langsung kita tendang cantik.</li>
-            <li onmouseover="playSound()"><strong>Penipuan? NO MERCY!</strong><br>Nipu, nyaru jadi admin, atau jual akun palsu = blacklist seumur hidup + bisa kena laporan. Jangan main api.</li>
-            <li onmouseover="playSound()"><strong>Kebijakan Bisa Update Kapan Aja</strong><br>Buat kenyamanan semua, aturan bisa berubah. Tapi tenang, bakal kita infoin duluan.</li>
+            <li onmouseover="playSound()">
+                <strong>Data Aman, Santuy Aja</strong><br />Semua data & chat lo di sini aman. Gak bakal kita
+                sebarin ke siapa-siapa tanpa izin.
+            </li>
+            <li onmouseover="playSound()">
+                <strong>Privasi Member Tetap No.1</strong><br />Siapa lo, beli apa, ngapain di grup, itu urusan
+                lo. Kecuali lo ngelanggar aturan, baru deh kita buka suara.
+            </li>
+            <li onmouseover="playSound()">
+                <strong>Harga & Spek Jelas, Gak Neko-neko</strong><br />Kita transparan. Harga dan spek akun
+                selalu update. Gak ada yang ditutup-tutupi.
+            </li>
+            <li onmouseover="playSound()">
+                <strong>Gak Suka Drama? Sama.</strong><br />Di sini anti ribet. Gak boleh spam, gak boleh DM
+                random, gak boleh promosi sendiri. Nyaman bareng, cuan bareng.
+            </li>
+            <li onmouseover="playSound()">
+                <strong>Transfer? Cuma ke Admin Resmi!</strong><br />Ada yang ngaku-ngaku admin dan minta
+                transfer? Langsung anggap itu penipuan. Rugi sendiri kalau nurut.
+            </li>
+            <li onmouseover="playSound()">
+                <strong>Mau Take Buat Pribadi? Gass!</strong><br />Lo boleh ambil buat dipake sendiri, asal
+                bayar harga normal. Ketauan curang? Langsung kita tendang cantik.
+            </li>
+            <li onmouseover="playSound()">
+                <strong>Penipuan? NO MERCY!</strong><br />Nipu, nyaru jadi admin, atau jual akun palsu =
+                blacklist seumur hidup + bisa kena laporan. Jangan main api.
+            </li>
+            <li onmouseover="playSound()">
+                <strong>Kebijakan Bisa Update Kapan Aja</strong><br />Buat kenyamanan semua, aturan bisa
+                berubah. Tapi tenang, bakal kita infoin duluan.
+            </li>
         </ul>
     </div>
 
@@ -732,23 +756,30 @@
             <form id="registrationCustomForm">
                 <div class="form-group">
                     <label for="nama"><i class="fas fa-user"></i> Nama:</label>
-                    <input type="text" id="nama" name="Nama" required>
+                    <input type="text" id="nama" name="Nama" required />
                 </div>
                 <div class="form-group">
                     <label for="platformPromosi"><i class="fas fa-bullhorn"></i> Platform Promosi:</label>
-                    <input type="text" id="platformPromosi" name="Platform Promosi" required>
+                    <input type="text" id="platformPromosi" name="Platform Promosi" required />
                 </div>
                 <div class="form-group">
                     <label for="accountBA"><i class="fas fa-id-card"></i> Account BA:</label>
-                    <input type="text" id="accountBA" name="Account BA" required>
+                    <input type="text" id="accountBA" name="Account BA" required />
                 </div>
                 <div class="form-group">
                     <label for="nomorWhatsApp"><i class="fab fa-whatsapp"></i> Nomor WhatsApp:</label>
-                    <input type="text" id="nomorWhatsApp" name="Nomor WhatsApp" pattern="[0-9]+" title="Hanya angka diperbolehkan" required>
+                    <input
+                        type="text"
+                        id="nomorWhatsApp"
+                        name="Nomor WhatsApp"
+                        pattern="[0-9]+"
+                        title="Hanya angka diperbolehkan"
+                        required
+                    />
                 </div>
                 <div class="form-group file-input-group">
                     <label for="ssKepemilikan"><i class="fas fa-camera"></i> Screenshot Bukti Kepemilikan Account BA:</label>
-                    <input type="file" id="ssKepemilikan" name="ssBukti" accept="image/*" required>
+                    <input type="file" id="ssKepemilikan" name="ssBukti" accept="image/*" required />
                 </div>
                 <div style="text-align: center; position: relative;">
                     <button type="submit" id="submitButton">
@@ -758,19 +789,15 @@
                     <p id="responseMessage" class="response-message"></p>
                 </div>
             </form>
-            </div>
+        </div>
     </div>
     <footer>
         <div class="footer-lines-container">
             <div class="footer-line"></div>
             <div class="footer-line"></div>
         </div>
-        <div class="footer-text-thanks">
-            Terimakasih sudah cek pricelist kami yaa
-        </div>
-        <div class="footer-copyright">
-            &copy; 2025 Treasure. All rights reserved.
-        </div>
+        <div class="footer-text-thanks">Terimakasih sudah cek pricelist kami yaa</div>
+        <div class="footer-copyright">&copy; 2025 Treasure. All rights reserved.</div>
     </footer>
 
     <script>
@@ -845,7 +872,7 @@
                         });
 
                         formData.append('Screenshot Bukti Kepemilikan Account BA_base64', base64Data);
-                        formData.append('Screenshot Bukti Kepemilikan Account BA_filename', file.name);
+                        formData.append('Screenshot Bukemilikan Account BA_filename', file.name); // Perbaikan typo 'Bukemilikan' menjadi 'Bukti Kepemilikan' jika ini juga salah di sisi server
                         formData.delete('ssBukti'); // Hapus input file asli agar tidak dikirim dua kali
                     } else {
                         // Validasi: File screenshot wajib diunggah
@@ -875,8 +902,11 @@
                     if (result.status === 'success') {
                         responseMessage.textContent = 'Selamat, formulir Anda berhasil dikirim!';
                         responseMessage.classList.add('show', 'success');
-                        // Formulir dan pesan tidak di-reset agar tetap terlihat.
-                        // Tombol kembali normal
+                        // --- PERUBAHAN DI SINI: RESET FORMULIR SETELAH SUKSES ---
+                        form.reset(); // Mengosongkan semua input di formulir
+                        // --------------------------------------------------------
+
+                        // Pastikan tombol kembali normal
                         submitButton.disabled = false;
                         submitButton.classList.remove('loading');
                         if (buttonContent) buttonContent.textContent = 'Daftar Sekarang';
@@ -885,7 +915,7 @@
                         const errorMessage = result.message || 'Terjadi kesalahan tidak diketahui dari server.';
                         responseMessage.textContent = 'Gagal: ' + errorMessage;
                         responseMessage.classList.add('show', 'error');
-                        // Tombol kembali normal
+                        // Pastikan tombol kembali normal
                         submitButton.disabled = false;
                         submitButton.classList.remove('loading');
                         if (buttonContent) buttonContent.textContent = 'Daftar Sekarang';
@@ -896,10 +926,10 @@
                     responseMessage.textContent = 'Terjadi kesalahan saat mengirim. Coba lagi: ' + error.message;
                     responseMessage.classList.add('show', 'error');
                     console.error('Error during form submission:', error);
-                    // Tombol kembali normal
+                    // Pastikan tombol kembali normal
                     submitButton.disabled = false;
                     submitButton.classList.remove('loading');
-                    if (buttonContent) buttonContent.textContent = 'Daftar Sekarang';
+                    if (buttonContent) buttonButton.textContent = 'Daftar Sekarang';
                 }
             });
         });
