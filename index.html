@@ -389,7 +389,6 @@
         }
 
         .registration-form-content.active {
-            /* MENINGKATKAN MAX-HEIGHT UNTUK MEMBERI RUANG PADA PESAN */
             max-height: 700px; /* Ditingkatkan dari 500px, sesuaikan jika perlu */
             padding-top: 20px;
             padding-bottom: 0px;
@@ -557,17 +556,19 @@
             transition: opacity 0.5s ease-in-out, visibility 0s linear 0s; /* Transisi */
         }
 
+        /* --- PERUBAHAN DI SINI: MENYESUAIKAN WARNA TEKS UNTUK LEBIH JELAS --- */
         .response-message.success {
-            background-color: rgba(144, 238, 144, 0.2); /* Light green */
-            color: #28a745; /* Darker green */
-            border: 1px solid #28a745;
+            background-color: #d4edda; /* Warna latar belakang hijau terang yang lebih solid */
+            color: #155724; /* Warna teks hijau gelap yang lebih kontras */
+            border: 1px solid #155724;
         }
 
         .response-message.error {
-            background-color: rgba(255, 99, 71, 0.2); /* Tomato light */
-            color: #dc3545; /* Dark red */
-            border: 1px solid #dc3545;
+            background-color: #f8d7da; /* Warna latar belakang merah terang yang lebih solid */
+            color: #721c24; /* Warna teks merah gelap yang lebih kontras */
+            border: 1px solid #721c24;
         }
+        /* --- AKHIR PERUBAHAN WARNA --- */
 
 
         /* --- Media Queries untuk Responsivitas Desktop --- */
@@ -874,10 +875,8 @@
                     if (result.status === 'success') {
                         responseMessage.textContent = 'Selamat, formulir Anda berhasil dikirim!';
                         responseMessage.classList.add('show', 'success');
-                        // TIDAK ADA setTimeout dan form.reset() di sini agar pesan tetap ada
-                        // dan form tetap berisi data yang telah dikirim.
-
-                        // Pastikan tombol kembali normal
+                        // Formulir dan pesan tidak di-reset agar tetap terlihat.
+                        // Tombol kembali normal
                         submitButton.disabled = false;
                         submitButton.classList.remove('loading');
                         if (buttonContent) buttonContent.textContent = 'Daftar Sekarang';
@@ -886,7 +885,7 @@
                         const errorMessage = result.message || 'Terjadi kesalahan tidak diketahui dari server.';
                         responseMessage.textContent = 'Gagal: ' + errorMessage;
                         responseMessage.classList.add('show', 'error');
-                        // Pastikan tombol kembali normal
+                        // Tombol kembali normal
                         submitButton.disabled = false;
                         submitButton.classList.remove('loading');
                         if (buttonContent) buttonContent.textContent = 'Daftar Sekarang';
@@ -897,12 +896,11 @@
                     responseMessage.textContent = 'Terjadi kesalahan saat mengirim. Coba lagi: ' + error.message;
                     responseMessage.classList.add('show', 'error');
                     console.error('Error during form submission:', error);
-                    // Pastikan tombol kembali normal
+                    // Tombol kembali normal
                     submitButton.disabled = false;
                     submitButton.classList.remove('loading');
                     if (buttonContent) buttonContent.textContent = 'Daftar Sekarang';
                 }
-                // Finally block tidak diperlukan lagi karena logika pengembalian tombol sudah diatur di setiap branch
             });
         });
     </script>
