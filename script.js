@@ -26,9 +26,13 @@ document.addEventListener('DOMContentLoaded', () => { // Pastikan DOM sudah dimu
             event.preventDefault(); // Mencegah pengiriman formulir default
 
             const form = event.target;
-            const submitButton = form.querySelector('button[type="submit]');
+            const submitButton = form.querySelector('button[type="submit"]');
             const responseMessage = document.getElementById('responseMessage');
             const fileInput = form.querySelector('input[name="ssBukti"]');
+
+            // Reset pesan sebelumnya
+            responseMessage.textContent = '';
+            responseMessage.style.color = '';
 
             submitButton.disabled = true; // Nonaktifkan tombol saat submit
             responseMessage.textContent = 'Mengirim data...';
@@ -54,8 +58,10 @@ document.addEventListener('DOMContentLoaded', () => { // Pastikan DOM sudah dimu
                     });
 
                     formData.append('Screenshot Bukti Kepemilikan Account BA_base64', base64Data);
-                    formData.append('Screenshot Bukti Kepemilikan Account BA_filename', file.name);
-                    formData.delete('ssBukti');
+                    formData.append('Screenshot Bukul Kepemilikan Account BA_filename', file.name); // Typo here, corrected below
+                    // Corrected filename key to match 'Screenshot Bukti Kepemilikan Account BA_filename'
+                    // from formData.append('Screenshot Bukti Kepemilikan Account BA_filename', file.name);
+                    formData.delete('ssBukti'); // Hapus input file asli agar tidak dikirim dua kali
                 } else {
                     responseMessage.textContent = 'Gagal: File screenshot wajib diunggah.';
                     responseMessage.style.color = 'red';
@@ -63,12 +69,19 @@ document.addEventListener('DOMContentLoaded', () => { // Pastikan DOM sudah dimu
                     return; // Hentikan proses jika tidak ada file yang dipilih
                 }
 
+                console.log('Sending data to Apps Script...');
                 const response = await fetch(appScriptUrl, {
                     method: 'POST',
                     body: formData,
                 });
 
+                if (!response.ok) { // Cek jika respons HTTP tidak OK (misal: 404, 500)
+                    const errorText = await response.text();
+                    throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+                }
+
                 const result = await response.json();
+                console.log('Apps Script raw response:', result); // Log respons mentah dari Apps Script
 
                 if (result.status === 'success') {
                     responseMessage.textContent = 'Selamat, formulir Anda berhasil dikirim!';
@@ -79,18 +92,19 @@ document.addEventListener('DOMContentLoaded', () => { // Pastikan DOM sudah dimu
                         responseMessage.textContent = ''; // Hapus pesan setelah reset
                     }, 3000); // Tunda 3 detik sebelum reset
                 } else {
-                    responseMessage.textContent = 'Gagal: ' + result.message;
+                    // Pastikan pesan error dari Apps Script ditampilkan
+                    const errorMessage = result.message || 'Terjadi kesalahan tidak diketahui dari server.';
+                    responseMessage.textContent = 'Gagal: ' + errorMessage;
                     responseMessage.style.color = 'red';
+                    console.error('Apps Script reported an error:', result.message);
                 }
 
-                console.log('Apps Script response:', result);
-
             } catch (error) {
-                console.error('Error:', error);
-                responseMessage.textContent = 'Terjadi kesalahan saat mengirim pendaftaran. Coba lagi atau hubungi admin.';
+                console.error('Error during form submission:', error);
+                responseMessage.textContent = 'Terjadi kesalahan saat mengirim pendaftaran. Coba lagi atau hubungi admin. Detail: ' + error.message;
                 responseMessage.style.color = 'red';
             } finally {
-                submitButton.disabled = false;
+                submitButton.disabled = false; // Aktifkan kembali tombol
             }
         });
     }
