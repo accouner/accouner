@@ -382,16 +382,17 @@
 
         .registration-form-content {
             max-height: 0;
-            overflow: hidden;
+            overflow: hidden; /* Pertahankan ini agar transisi bekerja */
             transition: max-height 0.5s ease-out, padding-top 0.5s ease-out, padding-bottom 0.5s ease-out;
             padding-top: 0;
             padding-bottom: 0;
         }
 
         .registration-form-content.active {
-            max-height: 500px; /* Nilai ini sudah disesuaikan sebelumnya */
+            /* MENINGKATKAN MAX-HEIGHT UNTUK MEMBERI RUANG PADA PESAN */
+            max-height: 700px; /* Ditingkatkan dari 500px, sesuaikan jika perlu */
             padding-top: 20px;
-            padding-bottom: 0px; /* Pastikan padding-bottom ini sangat kecil atau 0 */
+            padding-bottom: 0px;
         }
 
         /* Styling untuk form itu sendiri */
@@ -648,7 +649,7 @@
             }
 
             .registration-form-content.active {
-                max-height: 600px; /* Mungkin lebih rendah dari desktop */
+                max-height: 700px; /* Mungkin lebih rendah dari desktop, sesuaikan jika perlu */
             }
         }
     </style>
@@ -789,110 +790,120 @@
             section.classList.toggle('active');
             content.classList.toggle('active');
 
+            // Sembunyikan pesan respons saat formulir ditutup/dibuka
+            const responseMessage = document.getElementById('responseMessage');
+            if (responseMessage) {
+                responseMessage.classList.remove('show', 'success', 'error');
+                responseMessage.textContent = '';
+            }
+
             playSound();
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             const registrationForm = document.getElementById('registrationCustomForm');
-            // Ambil referensi tombol dan pesan respons
             const submitButton = document.getElementById('submitButton');
             const buttonContent = submitButton ? submitButton.querySelector('.button-content') : null;
             const responseMessage = document.getElementById('responseMessage');
 
-            if (registrationForm && submitButton && buttonContent && responseMessage) {
-                registrationForm.addEventListener('submit', async function(event) {
-                    event.preventDefault(); // Mencegah pengiriman formulir default
+            // Cek apakah semua elemen penting ditemukan
+            if (!registrationForm || !submitButton || !buttonContent || !responseMessage) {
+                console.error("Error: One or more required elements (form, button, button content, or response message) not found. Cannot proceed with form logic.");
+                return; // Hentikan eksekusi jika elemen tidak ditemukan
+            }
 
-                    // 1. **Mulai Efek Loading pada Tombol & Sembunyikan Pesan Lama**
-                    submitButton.disabled = true; // Nonaktifkan tombol
-                    submitButton.classList.add('loading'); // Tambahkan kelas loading untuk CSS
-                    if (buttonContent) buttonContent.textContent = 'Mengirim...'; // Ubah teks tombol
-                    responseMessage.classList.remove('show', 'success', 'error'); // Sembunyikan dan reset kelas
-                    responseMessage.textContent = ''; // Kosongkan teks pesan
+            registrationForm.addEventListener('submit', async function(event) {
+                event.preventDefault(); // Mencegah pengiriman formulir default
 
-                    const form = event.target;
-                    const fileInput = form.querySelector('input[name="ssBukti"]');
+                // 1. **Mulai Efek Loading pada Tombol & Sembunyikan Pesan Lama**
+                submitButton.disabled = true; // Nonaktifkan tombol
+                submitButton.classList.add('loading'); // Tambahkan kelas loading untuk CSS
+                if (buttonContent) buttonContent.textContent = 'Mengirim...'; // Ubah teks tombol
+                responseMessage.classList.remove('show', 'success', 'error'); // Sembunyikan dan reset kelas
+                responseMessage.textContent = ''; // Kosongkan teks pesan
 
-                    // --- INI URL WEB APP APPS SCRIPT ANDA ---
-                    const appScriptUrl = 'https://accouner.site/api/submit-form';
-                    // ----------------------------------------
+                const form = event.target;
+                const fileInput = form.querySelector('input[name="ssBukti"]');
 
-                    try {
-                        const formData = new FormData(form);
+                // --- INI URL WEB APP APPS SCRIPT ANDA ---
+                const appScriptUrl = 'https://accouner.site/api/submit-form';
+                // ----------------------------------------
 
-                        // Proses file menjadi Base64
-                        if (fileInput.files.length > 0) {
-                            const file = fileInput.files[0];
-                            const reader = new FileReader();
+                try {
+                    const formData = new FormData(form);
 
-                            const base64Data = await new Promise((resolve, reject) => {
-                                reader.onload = () => resolve(reader.result);
-                                reader.onerror = error => reject(error);
-                                reader.readAsDataURL(file); // Baca file sebagai Data URL (Base64 string)
-                            });
+                    // Proses file menjadi Base64
+                    if (fileInput.files.length > 0) {
+                        const file = fileInput.files[0];
+                        const reader = new FileReader();
 
-                            formData.append('Screenshot Bukti Kepemilikan Account BA_base64', base64Data);
-                            formData.append('Screenshot Bukemilikan Account BA_filename', file.name); // Perbaikan typo di 'Bukemilikan'
-                            formData.delete('ssBukti'); // Hapus input file asli agar tidak dikirim dua kali
-                        } else {
-                            // Validasi: File screenshot wajib diunggah
-                            responseMessage.textContent = 'Gagal: File screenshot wajib diunggah.';
-                            responseMessage.classList.add('show', 'error');
-                            // Kembali ke kondisi awal tombol (tanpa loading)
-                            submitButton.disabled = false;
-                            submitButton.classList.remove('loading');
-                            if (buttonContent) buttonContent.textContent = 'Daftar Sekarang';
-                            return; // Hentikan proses jika tidak ada file
-                        }
-
-                        // Kirim data ke Apps Script
-                        const response = await fetch(appScriptUrl, {
-                            method: 'POST',
-                            body: formData,
+                        const base64Data = await new Promise((resolve, reject) => {
+                            reader.onload = () => resolve(reader.result);
+                            reader.onerror = error => reject(error);
+                            reader.readAsDataURL(file); // Baca file sebagai Data URL (Base64 string)
                         });
 
-                        if (!response.ok) {
-                            const errorText = await response.text();
-                            throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
-                        }
-
-                        const result = await response.json();
-
-                        // 2. Tampilkan pesan berdasarkan respons dari Apps Script
-                        if (result.status === 'success') {
-                            responseMessage.textContent = 'Selamat, formulir Anda berhasil dikirim!';
-                            responseMessage.classList.add('show', 'success');
-                            // Reset formulir setelah sukses dengan penundaan
-                            setTimeout(() => {
-                                form.reset();
-                                responseMessage.classList.remove('show', 'success'); // Sembunyikan pesan setelah reset
-                                responseMessage.textContent = ''; // Kosongkan teks pesan
-                                submitButton.classList.remove('loading'); // Hapus efek loading
-                                if (buttonContent) buttonContent.textContent = 'Daftar Sekarang'; // Kembalikan teks tombol
-                            }, 3000); // Tunda 3 detik
-                        } else {
-                            const errorMessage = result.message || 'Terjadi kesalahan tidak diketahui dari server.';
-                            responseMessage.textContent = 'Gagal: ' + errorMessage;
-                            responseMessage.classList.add('show', 'error');
-                        }
-
-                    } catch (error) {
-                        // 3. Tangani kesalahan jaringan atau JavaScript
-                        responseMessage.textContent = 'Terjadi kesalahan saat mengirim. Coba lagi: ' + error.message;
+                        formData.append('Screenshot Bukti Kepemilikan Account BA_base64', base64Data);
+                        formData.append('Screenshot Bukti Kepemilikan Account BA_filename', file.name);
+                        formData.delete('ssBukti'); // Hapus input file asli agar tidak dikirim dua kali
+                    } else {
+                        // Validasi: File screenshot wajib diunggah
+                        responseMessage.textContent = 'Gagal: File screenshot wajib diunggah.';
                         responseMessage.classList.add('show', 'error');
-                        console.error('Error during form submission:', error);
-                    } finally {
-                        // 4. Pastikan tombol kembali normal jika bukan sukses (karena sukses ada timeout)
-                        if (!responseMessage.classList.contains('success')) {
-                            submitButton.disabled = false; // Aktifkan kembali tombol
-                            submitButton.classList.remove('loading'); // Hapus efek loading
-                            if (buttonContent) buttonContent.textContent = 'Daftar Sekarang'; // Kembalikan teks tombol
-                        }
+                        // Kembali ke kondisi awal tombol (tanpa loading)
+                        submitButton.disabled = false;
+                        submitButton.classList.remove('loading');
+                        if (buttonContent) buttonContent.textContent = 'Daftar Sekarang';
+                        return; // Hentikan proses jika tidak ada file
                     }
-                });
-            } else {
-                console.error("Error: One or more required elements (form, button, button content, or response message) not found.");
-            }
+
+                    // Kirim data ke Apps Script
+                    const response = await fetch(appScriptUrl, {
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+                    }
+
+                    const result = await response.json();
+
+                    // 2. Tampilkan pesan berdasarkan respons dari Apps Script
+                    if (result.status === 'success') {
+                        responseMessage.textContent = 'Selamat, formulir Anda berhasil dikirim!';
+                        responseMessage.classList.add('show', 'success');
+                        // TIDAK ADA setTimeout dan form.reset() di sini agar pesan tetap ada
+                        // dan form tetap berisi data yang telah dikirim.
+
+                        // Pastikan tombol kembali normal
+                        submitButton.disabled = false;
+                        submitButton.classList.remove('loading');
+                        if (buttonContent) buttonContent.textContent = 'Daftar Sekarang';
+
+                    } else {
+                        const errorMessage = result.message || 'Terjadi kesalahan tidak diketahui dari server.';
+                        responseMessage.textContent = 'Gagal: ' + errorMessage;
+                        responseMessage.classList.add('show', 'error');
+                        // Pastikan tombol kembali normal
+                        submitButton.disabled = false;
+                        submitButton.classList.remove('loading');
+                        if (buttonContent) buttonContent.textContent = 'Daftar Sekarang';
+                    }
+
+                } catch (error) {
+                    // 3. Tangani kesalahan jaringan atau JavaScript
+                    responseMessage.textContent = 'Terjadi kesalahan saat mengirim. Coba lagi: ' + error.message;
+                    responseMessage.classList.add('show', 'error');
+                    console.error('Error during form submission:', error);
+                    // Pastikan tombol kembali normal
+                    submitButton.disabled = false;
+                    submitButton.classList.remove('loading');
+                    if (buttonContent) buttonContent.textContent = 'Daftar Sekarang';
+                }
+                // Finally block tidak diperlukan lagi karena logika pengembalian tombol sudah diatur di setiap branch
+            });
         });
     </script>
 </body>
