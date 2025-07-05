@@ -594,8 +594,7 @@
             .registration-form-content.active {
                 max-height: 600px; /* Mungkin lebih rendah dari desktop */
             }
-        }
-    </style>
+        </style>
 </head>
 <body>
     <audio id="hoverSound" src="your-sound-file.mp3" preload="auto"></audio>
@@ -716,7 +715,7 @@
             const sound = document.getElementById("hoverSound");
             if (sound) {
                 sound.currentTime = 0;
-                sound.play();
+                sound.play().catch(e => console.warn("Audio play failed:", e));
             }
         }
 
@@ -732,36 +731,30 @@
         }
 
         // --- JavaScript untuk Pengiriman Formulir Kustom (dengan Base64) ---
-        // Periksa apakah DOM sudah siap
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('DOM Content Loaded. Initializing form script.'); // Tambahan log untuk debugging
             const registrationForm = document.getElementById('registrationCustomForm');
-
             if (registrationForm) {
-                console.log('Form found. Attaching submit event listener.'); // Tambahan log
                 registrationForm.addEventListener('submit', async function(event) {
                     event.preventDefault(); // Mencegah pengiriman formulir default
-                    console.log('Submit button clicked! Processing form submission.'); // Tambahan log
 
                     const form = event.target;
                     const submitButton = form.querySelector('button[type="submit"]');
+                    // Pastikan elemen responseMessage ada
                     const responseMessage = document.getElementById('responseMessage');
-                    const fileInput = form.querySelector('input[name="ssBukti"]'); // Pastikan name adalah "ssBukti"
+                    const fileInput = form.querySelector('input[name="ssBukti"]');
 
-                    // Reset pesan sebelumnya
-                    responseMessage.textContent = '';
-                    responseMessage.style.color = '';
-
+                    // 1. Reset pesan sebelumnya dan set status "Mengirim..."
+                    if (responseMessage) {
+                        responseMessage.textContent = 'Mengirim data...';
+                        responseMessage.style.color = '#007bff'; // Warna biru untuk loading
+                    }
                     submitButton.disabled = true; // Nonaktifkan tombol saat submit
-                    responseMessage.textContent = 'Mengirim data...';
-                    responseMessage.style.color = '#007bff'; // Warna biru untuk loading
 
                     // --- INI URL WEB APP APPS SCRIPT ANDA ---
                     const appScriptUrl = 'https://accouner.site/api/submit-form';
                     // ----------------------------------------
 
                     try {
-                        // Buat objek FormData untuk mengumpulkan data teks dari formulir
                         const formData = new FormData(form);
 
                         // Proses file menjadi Base64
@@ -779,53 +772,54 @@
                             formData.append('Screenshot Bukti Kepemilikan Account BA_filename', file.name);
                             formData.delete('ssBukti'); // Hapus input file asli agar tidak dikirim dua kali
                         } else {
-                            responseMessage.textContent = 'Gagal: File screenshot wajib diunggah.';
-                            responseMessage.style.color = 'red';
+                            if (responseMessage) {
+                                responseMessage.textContent = 'Gagal: File screenshot wajib diunggah.';
+                                responseMessage.style.color = 'red';
+                            }
                             submitButton.disabled = false;
-                            console.error('File screenshot not uploaded.'); // Log error
                             return; // Hentikan proses jika tidak ada file yang dipilih
                         }
 
-                        console.log('Sending data to Apps Script...');
+                        // Kirim data ke Apps Script
                         const response = await fetch(appScriptUrl, {
                             method: 'POST',
                             body: formData,
                         });
 
-                        if (!response.ok) { // Cek jika respons HTTP tidak OK (misal: 404, 500)
+                        if (!response.ok) {
                             const errorText = await response.text();
                             throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
                         }
 
                         const result = await response.json();
-                        console.log('Apps Script raw response:', result); // Log respons mentah dari Apps Script
 
-                        if (result.status === 'success') {
-                            responseMessage.textContent = 'Selamat, formulir Anda berhasil dikirim!';
-                            responseMessage.style.color = 'green';
-                            // Tambahkan penundaan sebelum mereset form agar user bisa melihat pesan sukses
-                            setTimeout(() => {
-                                form.reset(); // Reset formulir setelah sukses
-                                responseMessage.textContent = ''; // Hapus pesan setelah reset
-                            }, 3000); // Tunda 3 detik sebelum reset
-                        } else {
-                            // Pastikan pesan error dari Apps Script ditampilkan
-                            const errorMessage = result.message || 'Terjadi kesalahan tidak diketahui dari server.';
-                            responseMessage.textContent = 'Gagal: ' + errorMessage;
-                            responseMessage.style.color = 'red';
-                            console.error('Apps Script reported an error:', result.message);
+                        // 2. Tampilkan pesan berdasarkan respons dari Apps Script
+                        if (responseMessage) {
+                            if (result.status === 'success') {
+                                responseMessage.textContent = 'Selamat, formulir Anda berhasil dikirim!';
+                                responseMessage.style.color = 'green';
+                                // Reset formulir setelah sukses dengan penundaan
+                                setTimeout(() => {
+                                    form.reset();
+                                    responseMessage.textContent = ''; // Hapus pesan setelah reset
+                                }, 3000); // Tunda 3 detik
+                            } else {
+                                const errorMessage = result.message || 'Terjadi kesalahan tidak diketahui dari server.';
+                                responseMessage.textContent = 'Gagal: ' + errorMessage;
+                                responseMessage.style.color = 'red';
+                            }
                         }
-
                     } catch (error) {
+                        // 3. Tangani kesalahan jaringan atau JavaScript
+                        if (responseMessage) {
+                            responseMessage.textContent = 'Terjadi kesalahan saat mengirim pendaftaran. Coba lagi atau hubungi admin. Detail: ' + error.message;
+                            responseMessage.style.color = 'red';
+                        }
                         console.error('Error during form submission:', error);
-                        responseMessage.textContent = 'Terjadi kesalahan saat mengirim pendaftaran. Coba lagi atau hubungi admin. Detail: ' + error.message;
-                        responseMessage.style.color = 'red';
                     } finally {
-                        submitButton.disabled = false; // Aktifkan kembali tombol
+                        submitButton.disabled = false; // Aktifkan kembali tombol di akhir proses
                     }
                 });
-            } else {
-                console.error('Form with ID "registrationCustomForm" not found!'); // Log jika form tidak ditemukan
             }
         });
         // --- Akhir JavaScript Pengiriman Formulir Kustom ---
