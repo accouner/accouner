@@ -732,16 +732,21 @@
         }
 
         // --- JavaScript untuk Pengiriman Formulir Kustom (dengan Base64) ---
-        document.addEventListener('DOMContentLoaded', () => { // Pastikan DOM sudah dimuat
+        // Periksa apakah DOM sudah siap
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM Content Loaded. Initializing form script.'); // Tambahan log untuk debugging
             const registrationForm = document.getElementById('registrationCustomForm');
+
             if (registrationForm) {
+                console.log('Form found. Attaching submit event listener.'); // Tambahan log
                 registrationForm.addEventListener('submit', async function(event) {
                     event.preventDefault(); // Mencegah pengiriman formulir default
+                    console.log('Submit button clicked! Processing form submission.'); // Tambahan log
 
                     const form = event.target;
                     const submitButton = form.querySelector('button[type="submit"]');
                     const responseMessage = document.getElementById('responseMessage');
-                    const fileInput = form.querySelector('input[name="ssBukit"]'); // <-- Perhatikan potensi typo di sini!
+                    const fileInput = form.querySelector('input[name="ssBukti"]'); // Pastikan name adalah "ssBukti"
 
                     // Reset pesan sebelumnya
                     responseMessage.textContent = '';
@@ -777,6 +782,7 @@
                             responseMessage.textContent = 'Gagal: File screenshot wajib diunggah.';
                             responseMessage.style.color = 'red';
                             submitButton.disabled = false;
+                            console.error('File screenshot not uploaded.'); // Log error
                             return; // Hentikan proses jika tidak ada file yang dipilih
                         }
 
@@ -818,6 +824,8 @@
                         submitButton.disabled = false; // Aktifkan kembali tombol
                     }
                 });
+            } else {
+                console.error('Form with ID "registrationCustomForm" not found!'); // Log jika form tidak ditemukan
             }
         });
         // --- Akhir JavaScript Pengiriman Formulir Kustom ---
