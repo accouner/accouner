@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Panduan Mengamankan Akun</title>
+  <style>
+    :root {
+      --primary: #3498db;
+      --text-dark: #2c3e50;
+      --text-muted: #666;
+      --background: #f9f9f9;
+      --box-bg: #fff;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --highlight-bg: #e0f2f7; /* Warna latar belakang untuk sorotan */
+      --warning-color: #e74c3c;
+      --info-color: #2ecc71;
+      --dropdown-active-bg: #ffffff; /* Latar belakang untuk dropdown aktif */
+      --dropdown-active-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); /* Bayangan untuk dropdown aktif */
+    }
+
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--background);
+      color: #333;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 50px 25px 20px;
+      line-height: 1.7;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 3em;
+      border-bottom: 4px solid var(--primary);
+      padding-bottom: 20px;
+      margin-bottom: 50px;
+      font-weight: 800;
+      line-height: 1.2;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    h2 {
+      font-size: 1.8em;
+      color: var(--text-dark);
+      padding: 15px 20px;
+      margin-top: 40px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      background-color: var(--box-bg);
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease-in-out;
+      outline: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    h2:hover {
+      background-color: #eaf6ff;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      color: var(--primary);
+    }
+    
+    h2:active {
+        background-color: #eaf6ff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        color: var(--primary);
+    }
+
+    .dropdown-content {
+      display: none;
+      overflow: hidden;
+      padding-top: 15px;
+      transition: all 0.4s ease-in-out;
+    }
+
+    .dropdown-content.active {
+      display: block;
+      background-color: var(--dropdown-active-bg);
+      padding: 25px;
+      margin-top: -10px;
+      margin-bottom: 20px;
+      border-radius: 0 0 8px 8px;
+      box-shadow: var(--dropdown-active-shadow);
+      border-top: 1px solid #eee;
+    }
+
+    .note-box {
+      padding: 0;
+      margin: 20px 0;
+      font-size: 0.95em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .note-box.warning strong {
+      color: var(--warning-color);
+    }
+
+    .note-box.info strong {
+      color: var(--info-color);
+    }
+
+    .login-options-container {
+        margin-top: 15px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .login-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 15px;
+      border-bottom: 1px solid #eee;
+      background-color: var(--box-bg);
+    }
+
+    .login-option:last-child {
+      border-bottom: none;
+    }
+
+    .login-option:hover {
+      background-color: #f3faff;
+    }
+
+    .highlighted-option {
+      border: 2px solid var(--primary);
+      background-color: #eaf6ff;
+      border-radius: 8px;
+      padding: 10px 15px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .icon {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2em;
+      color: var(--primary);
+      margin-top: 2px;
+    }
+
+    .text-content {
+      flex-grow: 1;
+    }
+
+    .title {
+      font-weight: bold;
+      font-size: 0.95em;
+      color: #333;
+    }
+
+    .description {
+      font-size: 0.8em;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .highlight-word {
+      font-weight: bold;
+      background-color: var(--highlight-bg);
+      padding: 2px 4px;
+      border-radius: 3px;
+    }
+
+    .dropdown-arrow {
+      float: right;
+      transition: transform 0.3s ease;
+    }
+
+    .dropdown-arrow.rotated {
+      transform: rotate(180deg);
+    }
+
+    footer {
+        text-align: center;
+        margin-top: 20px;
+        border-top: 1px solid #eee;
+        color: var(--text-muted);
+        font-size: 0.9em;
+        padding-top: 10px;
+        padding-bottom: -100px;
+    }
+
+    /* CSS untuk floating translation widget */
+    #google_translate_element {
+        position: fixed;
+        bottom: 20px; /* Jarak dari bawah */
+        left: 20px;   /* Jarak dari kiri */
+        z-index: 1000; /* Pastikan di atas elemen lain */
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15); /* Tambahkan bayangan */
+        border-radius: 8px; /* Sudut membulat */
+        overflow: hidden; /* Pastikan konten tidak keluar dari radius */
+        background-color: white; /* Latar belakang untuk widget */
+        padding: 5px; /* Sedikit padding di sekitar widget */
+    }
+
+    /* Menyesuaikan tampilan dropdown Google Translate jika diperlukan */
+    /* Ini mungkin memerlukan penyesuaian lebih lanjut tergantung pada bagaimana widget dirender */
+    .goog-te-combo {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 5px 8px;
+        font-size: 0.9em;
+    }
+    .goog-te-gadget-simple {
+        border: none !important; /* Menghilangkan border bawaan widget */
+        background-color: transparent !important; /* Menghilangkan background bawaan */
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.2em;
+        margin-bottom: 40px;
+        white-space: normal;
+        line-height: 1.3;
+      }
+      h2 {
+        font-size: 1.6em;
+        padding: 12px 15px;
+        margin-top: 30px;
+      }
+      .title {
+        font-size: 0.9em;
+      }
+      .description {
+        font-size: 0.75em;
+      }
+      .dropdown-content.active {
+        padding: 15px;
+      }
+      .icon {
+        width: 20px;
+        height: 20px;
+        font-size: 1em;
+      }
+      .login-option, .highlighted-option {
+          padding: 8px 12px;
+      }
+      #google_translate_element {
+          bottom: 10px; /* Sedikit lebih dekat ke bawah di mobile */
+          left: 10px;   /* Sedikit lebih dekat ke kiri di mobile */
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 30px 15px 15px;
+      }
+      h1 {
+        font-size: 1.5em;
+        margin-bottom: 30px;
+        white-space: normal;
+        line-height: 1.3;
+      }
+      h2 {
+        font-size: 1.4em;
+        padding: 10px 12px;
+        margin-top: 25px;
+      }
+      .dropdown-content.active {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Panduan Mengamankan Akun</h1>
+
+  <p>Setelah Anda menerima <span class="highlight-word">data akun</span> dari <span class="highlight-word">Admin</span>, langkah pertama yang perlu dilakukan adalah <span class="highlight-word">mengamankan akun email (Gmail)</span> Anda terlebih dahulu. Setelah email dalam keadaan aman, barulah lanjutkan ke proses <span class="highlight-word">pengamanan akun X</span>.</p>
+  <p>Luangkan waktu untuk membaca <span class="highlight-word">panduan cara masuk ke akun Gmail</span> dan <span class="highlight-word">cara mengamankan akun</span>, agar terhindar dari <span class="highlight-word">batasan (limit) permintaan kode verifikasi</span>.</p>
+
+  <section>
+    <h2 id="gmailSectionToggle">
+      Cara Masuk ke Akun Gmail
+      <span class="dropdown-arrow">&#9660;</span>
+    </h2>
+
+    <div id="gmailContent" class="dropdown-content">
+      <ol>
+        <li>Buka <span class="highlight-word">browser</span> atau <span class="highlight-word">aplikasi Gmail</span>.</li>
+        <li>Masukkan <span class="highlight-word">email</span> dan <span class="highlight-word">password</span> yang telah diberikan oleh admin.</li>
+        <li>Jika diminta <span class="highlight-word">verifikasi</span>, pilih salah satu opsi yang tersedia di bawah ini.</li>
+      </ol>
+
+      <h4>Verifikasi dengan Nomor Telepon</h4>
+      <p>Jika saat login Anda diminta melakukan verifikasi nomor telepon:</p>
+      <ul>
+        <li><span class="highlight">Jangan langsung memilih</span> opsi "kirim kode ke nomor telepon".</li>
+        <li>Pilih opsi "<span class="highlight-word">Konfirmasi nomor telepon pemulihan</span>".</li>
+        <li>Kemudian masukkan <span class="highlight-word">nomor telepon yang sesuai</span> (tanyakan ke admin jika tidak tahu).</li>
+      </ul>
+      <small>Berikut adalah contoh tampilan opsinya:</small>
+
+      <div class="login-options-container">
+        <div class="login-option">
+          <span class="icon">&#128233;</span>
+          <div class="text-content">
+            <div class="title">Kode verifikasi dikirim ke •••••••••–••92</div>
+          </div>
+        </div>
+        <div class="login-option">
+          <span class="icon">&#128222;</span>
+          <div class="text-content">
+            <div class="title">Panggilan ke •••••••••–••92</div>
+          </div>
+        </div>
+        <div class="login-option">
+          <span class="icon">&#128187;</span>
+          <div class="text-content">
+            <div class="title">Gunakan perangkat lain untuk menyelesaikan login</div>
+          </div>
+        </div>
+        <div class="login-option highlighted-option">
+          <span class="icon">&#128222;</span>
+          <div class="text-content">
+            <div class="title">Konfirmasi nomor telepon pemulihan</div>
+          </div>
+        </div>
+        <div class="login-option">
+          <span class="icon">&#10067;</span>
+          <div class="text-content">
+            <div class="title">Dapatkan bantuan</div>
+          </div>
+        </div>
+      </div>
+
+      <h4>Verifikasi dengan Email Pemulihan</h4>
+      <p>Jika saat login Anda diminta verifikasi menggunakan email:</p>
+      <ul>
+        <li><span class="highlight">Jangan langsung memilih</span> opsi "kirim kode ke email".</li>
+        <li>Pilih opsi "<span class="highlight-word">Konfirmasi email pemulihan Anda</span>".</li>
+        <li>Kemudian masukkan <span class="highlight-word">alamat email yang sesuai</span> (tanyakan ke admin jika tidak tahu).</li>
+      </ul>
+      <small>Berikut adalah contoh tampilan opsinya:</small>
+
+      <div class="login-options-container">
+        <div class="login-option">
+          <span class="icon">&#9993;</span>
+          <div class="text-content">
+            <div class="title">Kode dikirim ke acc•••••••@gmail.com</div>
+          </div>
+        </div>
+        <div class="login-option">
+          <span class="icon">&#128187;</span>
+          <div class="text-content">
+            <div class="title">Gunakan perangkat lain untuk menyelesaikan login</div>
+          </div>
+        </div>
+        <div class="login-option highlighted-option">
+          <span class="icon">&#9993;</span>
+          <div class="text-content">
+            <div class="title">Konfirmasi email pemulihan Anda</div>
+          </div>
+        </div>
+        <div class="login-option">
+          <span class="icon">&#10067;</span>
+          <div class="text-content">
+            <div class="title">Dapatkan bantuan</div>
+          </div>
+        </div>
+      </div>
+
+      <p style="margin-top: 30px; font-style: italic; color: var(--text-muted);">
+        Langkah ini bertujuan untuk menghindari <span class="highlight-word">batas permintaan kode verifikasi</span>.
+        Jika terlalu sering meminta kode, <span class="highlight-word">nomor telepon</span> atau <span class="highlight-word">email pemulihan</span> bisa mencapai <span class="highlight-word">batas penggunaan (limit)</span> dan tidak dapat menerima kode lagi untuk sementara waktu.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2 id="secureAccountToggle">
+      Cara Mengamankan Akun
+      <span class="dropdown-arrow">&#9660;</span>
+    </h2>
+
+    <div id="secureAccountContent" class="dropdown-content">
+      <p>Untuk menjaga <span class="highlight-word">keamanan akun Gmail</span> Anda, lakukan <span class="highlight-word">langkah-langkah penting</span> berikut ini:</p>
+
+      <h4>1. Ganti Kata Sandi</h4>
+      <p><span class="highlight">Mengganti kata sandi dapat membantu mencegah orang lain mengakses akun Anda tanpa izin.</span></p>
+
+      <h5>Langkah-langkah:</h5>
+      <ol>
+        <li>Buka halaman <span class="highlight-word">keamanan Google</span>.</li>
+        <li>Pilih menu "<span class="highlight-word">Kata sandi</span>", lalu masukkan <span class="highlight-word">kata sandi saat ini</span>.</li>
+        <li>Jika diminta <span class="highlight-word">verifikasi</span>, prosesnya sama seperti saat login ke akun Gmail.</li>
+        <li>Jika memang harus meminta <span class="highlight-word">kode verifikasi</span>, pastikan terlebih dahulu Anda <span class="highlight">menghubungi admin</span> agar proses berjalan lancar dan tidak terjadi <span class="highlight-word">pengulangan permintaan kode</span>. <span class="highlight-word">Permintaan kode yang berulang</span> bisa menyebabkan <span class="highlight">batas (limit)</span> dan membuat <span class="highlight-word">nomor telepon</span> atau <span class="highlight-word">email pemulihan</span> <span class="highlight">tidak bisa menerima kode lagi untuk sementara waktu</span>.</li>
+      </ol>
+      <p>Setelah verifikasi berhasil, buat <span class="highlight-word">kata sandi baru</span> yang <span class="highlight">kuat dan mudah diingat</span>. Gunakan kombinasi <span class="highlight-word">huruf besar</span>, <span class="highlight-word">huruf kecil</span>, <span class="highlight-word">angka</span>, dan <span class="highlight-word">simbol</span> agar lebih aman.</p>
+
+      <h4>2. Periksa dan Perbarui Informasi Pemulihan</h4>
+      <p><span class="highlight">Informasi pemulihan seperti email dan nomor telepon sangat penting</span>, terutama jika Anda lupa <span class="highlight-word">kata sandi</span> atau perlu melakukan <span class="highlight-word">verifikasi identitas</span>.</p>
+
+      <h5>Yang perlu Anda lakukan:</h5>
+      <ol>
+        <li>Masuk ke <span class="highlight-word">pengaturan akun Google</span>.</li>
+        <li>Pastikan <span class="highlight">email pemulihan</span> dan <span class="highlight-word">nomor telepon yang terdaftar masih aktif dan dapat diakses</span>.</li>
+        <li>Ganti atau hapus informasi tersebut jika <span class="highlight">sudah tidak digunakan</span>.</li>
+      </ol>
+      <p>Jika Anda ingin mengganti atau menghapus <span class="highlight-word">informasi pemulihan</span>, kemungkinan akan diminta untuk melakukan <span class="highlight-word">verifikasi</span>. Ikuti panduan yang sama seperti saat masuk ke akun Gmail.</p>
+      <p>Jika memang harus meminta <span class="highlight-word">kode verifikasi</span>, silakan lakukan, namun sebaiknya <span class="highlight">hubungi admin terlebih dahulu</span> agar proses berjalan lancar dan tidak terjadi <span class="highlight-word">permintaan kode berulang</span>. <span class="highlight-word">Permintaan kode yang terlalu sering</span> dapat menyebabkan <span class="highlight-word">nomor telepon</span> atau <span class="highlight-word">email pemulihan</span> <span class="highlight-word">terkena limit (batas permintaan)</span> dan <span class="highlight-word">tidak dapat menerima kode untuk sementara waktu</span>.</p>
+
+      <h4>3. Keluar dari Perangkat yang Tidak Digunakan</h4>
+      <p>Jika akun Anda pernah digunakan di perangkat lain, sebaiknya <span class="highlight">keluarkan akses tersebut untuk menghindari penyalahgunaan</span>.</p>
+
+      <h5>Cara melakukannya:</h5>
+      <ol>
+        <li>Buka <span class="highlight-word">daftar perangkat yang terhubung ke akun Google Anda</span>.</li>
+        <li>Pilih perangkat yang <span class="highlight">mencurigakan</span> atau <span class="highlight">sudah tidak Anda gunakan</span>.</li>
+        <li>Klik <span class="highlight">“Keluar”</span> agar akses dihentikan. Langkah ini penting terutama jika Anda pernah login di <span class="highlight-word">komputer umum</span> atau <span class="highlight-word">perangkat milik orang lain</span>.</li>
+      </ol>
+    </div>
+  </section>
+
+  <p>Panduan pengamanan <span class="highlight-word">akun X</span> tidak dijelaskan secara rinci di sini karena tidak ada langkah krusial yang perlu diperhatikan.</p>
+  <p>Setelah <span class="highlight-word">akun email</span> Anda aman, cukup lakukan dua hal berikut:</p>
+  <ol>
+    <li><span class="highlight-word">Ganti kata sandi akun X</span>.</li>
+    <li>Periksa apakah ada <span class="highlight-word">aplikasi pihak ketiga</span> yang tertaut, dan <span class="highlight-word">hapus jika tidak dikenal</span>.</li>
+  </ol>
+  <p>Dengan langkah sederhana ini, <span class="highlight-word">akun Anda sudah dalam kondisi aman</span>.</p>
+
+  <footer>
+    ACCOUNT
+  </footer>
+
+  <div id="google_translate_element"></div>
+
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement(
+        {
+          pageLanguage: 'id', // Bahasa asli halaman
+          includedLanguages: 'en,th,fa,ja,id', // Bahasa yang ingin disertakan (Inggris, Thailand, Persia/Farsi, Jepang, Indonesia)
+          layout: google.translate.TranslateElement.InlineLayout.SIMPLE, // Tampilan widget
+          autoDisplay: false // Jangan tampilkan secara otomatis
+        },
+        'google_translate_element'
+      );
+    }
+  </script>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const gmailToggleHeader = document.getElementById('gmailSectionToggle');
+      const gmailDropdownContent = document.getElementById('gmailContent');
+      const gmailDropdownArrow = gmailToggleHeader.querySelector('.dropdown-arrow');
+      // Set initial state to collapsed for both sections
+      gmailDropdownContent.classList.remove('active');
+      gmailDropdownArrow.classList.remove('rotated');
+
+      gmailToggleHeader.addEventListener('click', function() {
+        gmailDropdownContent.classList.toggle('active');
+        gmailDropdownArrow.classList.toggle('rotated');
+      });
+
+      const secureAccountToggleHeader = document.getElementById('secureAccountToggle');
+      const secureAccountDropdownContent = document.getElementById('secureAccountContent');
+      const secureAccountDropdownArrow = secureAccountToggleHeader.querySelector('.dropdown-arrow');
+      // Set initial state to collapsed for both sections
+      secureAccountDropdownContent.classList.remove('active');
+      secureAccountDropdownArrow.classList.remove('rotated');
+
+      secureAccountToggleHeader.addEventListener('click', function() {
+        secureAccountDropdownContent.classList.toggle('active');
+        secureAccountDropdownArrow.classList.toggle('rotated');
+      });
+    });
+  </script>
+
+</body>
+</html>
