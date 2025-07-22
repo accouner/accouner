@@ -269,8 +269,7 @@
             display: block;
             text-align: left;
         }
-
-        /* ----- AKHIR PERUBAHAN UTAMA ----- */
+/* ----- AKHIR PERUBAHAN UTAMA ----- */
 
         footer {
             text-align: center;
@@ -471,8 +470,6 @@
         .form-group input[type="file"]::file-selector-button:hover {
             background-color: #ddd;
         }
-
-
         .registration-form-content button[type="submit"] {
             padding: 14px 30px;
             background: linear-gradient(90deg, #ff6f61, #e65c50);
@@ -569,6 +566,49 @@
             border: 1px solid #721c24;
         }
 
+        /* WhatsApp Button Styles */
+        .whatsapp-button-container {
+            text-align: center;
+            margin-top: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease-in-out, visibility 0s linear 0.5s;
+        }
+
+        .whatsapp-button-container.show {
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.5s ease-in-out, visibility 0s linear 0s;
+        }
+
+        .whatsapp-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 25px;
+            background: linear-gradient(90deg, #25D366, #128C7E); /* WhatsApp green gradient */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-family: 'Chewy', cursive;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(37, 211, 102, 0.4);
+        }
+
+        .whatsapp-button:hover {
+            background: linear-gradient(90deg, #128C7E, #25D366);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(37, 211, 102, 0.6);
+        }
+
+        .whatsapp-button i {
+            margin-right: 10px;
+            font-size: 1.3em;
+        }
+
 
         /* --- Media Queries untuk Responsivitas Desktop --- */
         @media (min-width: 768px) {
@@ -617,7 +657,8 @@
             /* Pastikan input file dan tombol submit membentang penuh (2 kolom) */
             .form-group.file-input-group,
             .registration-form-content button[type="submit"],
-            .response-message {
+            .response-message,
+            .whatsapp-button-container { /* Added for WhatsApp button */
                 grid-column: 1 / -1;
             }
 
@@ -819,6 +860,11 @@
                         <div class="loading-spinner"></div>
                     </button>
                     <p id="responseMessage" class="response-message"></p>
+                    <div id="whatsappButtonContainer" class="whatsapp-button-container">
+                        <a href="https://chat.whatsapp.com/HsRPjD17WOJKflZLKUk0cK?mode=r_t" target="_blank" class="whatsapp-button">
+                            <i class="fab fa-whatsapp"></i> Gabung Grup WhatsApp
+                        </a>
+                    </div>
                 </div>
             </form>
         </div>
@@ -850,11 +896,16 @@
             section.classList.toggle('active');
             content.classList.toggle('active');
 
-            // Sembunyikan pesan respons saat formulir ditutup/dibuka
+            // Sembunyikan pesan respons dan tombol WhatsApp saat formulir ditutup/dibuka
             const responseMessage = document.getElementById('responseMessage');
+            const whatsappButtonContainer = document.getElementById('whatsappButtonContainer');
+
             if (responseMessage) {
                 responseMessage.classList.remove('show', 'success', 'error');
                 responseMessage.textContent = '';
+            }
+            if (whatsappButtonContainer) {
+                whatsappButtonContainer.classList.remove('show');
             }
 
             playSound();
@@ -865,10 +916,11 @@
             const submitButton = document.getElementById('submitButton');
             const buttonContent = submitButton ? submitButton.querySelector('.button-content') : null;
             const responseMessage = document.getElementById('responseMessage');
+            const whatsappButtonContainer = document.getElementById('whatsappButtonContainer'); // Get the new container
 
             // Cek apakah semua elemen penting ditemukan
-            if (!registrationForm || !submitButton || !buttonContent || !responseMessage) {
-                console.error("Error: One or more required elements (form, button, button content, or response message) not found. Cannot proceed with form logic.");
+            if (!registrationForm || !submitButton || !buttonContent || !responseMessage || !whatsappButtonContainer) {
+                console.error("Error: One or more required elements (form, button, button content, response message, or WhatsApp button container) not found. Cannot proceed with form logic.");
                 return; // Hentikan eksekusi jika elemen tidak ditemukan
             }
 
@@ -881,6 +933,7 @@
                 if (buttonContent) buttonContent.textContent = 'Mengirim...'; // Ubah teks tombol
                 responseMessage.classList.remove('show', 'success', 'error'); // Sembunyikan dan reset kelas
                 responseMessage.textContent = ''; // Kosongkan teks pesan
+                whatsappButtonContainer.classList.remove('show'); // Hide WhatsApp button
 
                 const form = event.target;
                 const fileInput = form.querySelector('input[name="ssBukti"]');
@@ -935,6 +988,7 @@
                         responseMessage.textContent = 'Selamat, formulir Anda berhasil dikirim!';
                         responseMessage.classList.add('show', 'success');
                         form.reset(); // Mengosongkan semua input di formulir
+                        whatsappButtonContainer.classList.add('show'); // Show WhatsApp button on success
 
                         // Pastikan tombol kembali normal
                         submitButton.disabled = false;
