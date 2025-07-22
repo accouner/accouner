@@ -389,10 +389,10 @@
         }
 
         .registration-form-content.active {
-            /* Adjusted max-height to accommodate new elements */
-            max-height: 800px; /* Increased to give more space, adjust as needed */
+            /* PERUBAHAN UTAMA DI SINI: MENINGKATKAN MAX-HEIGHT */
+            max-height: 850px; /* Disesuaikan untuk memberikan ruang lebih pada tombol WhatsApp */
             padding-top: 20px;
-            padding-bottom: 20px; /* Added padding to bottom to ensure button visibility */
+            padding-bottom: 20px;
         }
 
         /* Styling untuk form itu sendiri */
@@ -571,7 +571,7 @@
         .whatsapp-button-container {
             text-align: center;
             margin-top: 20px;
-            margin-bottom: 10px; /* Added margin to the bottom */
+            margin-bottom: 20px; /* PERUBAHAN UTAMA DI SINI: MENAMBAH MARGIN BAWAH */
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.5s ease-in-out, visibility 0s linear 0.5s;
@@ -722,8 +722,8 @@
             }
 
             .registration-form-content.active {
-                /* Adjusted max-height for mobile too */
-                max-height: 800px; /* Increased, adjust as needed */
+                /* PERUBAHAN UTAMA DI SINI: MENINGKATKAN MAX-HEIGHT UNTUK MOBILE JUGA */
+                max-height: 850px; /* Disesuaikan, pastikan cukup untuk semua elemen */
             }
         }
 </style>
@@ -942,7 +942,7 @@
                 const fileInput = form.querySelector('input[name="ssBukti"]');
 
                 // --- INI URL WEB APP APPS SCRIPT ANDA ---
-                const appScriptUrl = 'https://accouner.site/api/submit-form';
+                const appScriptUrl = 'https://accouner.site/api/submit-form'; // <--- PASTIKAN INI URL YANG BENAR DAN TIDAK BERUBAH
                 // ----------------------------------------
 
                 try {
