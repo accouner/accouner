@@ -389,10 +389,11 @@
         }
 
         .registration-form-content.active {
-            /* PERUBAHAN UTAMA DI SINI: MENYESUAIKAN MAX-HEIGHT AGAR LEBIH RAPI */
-            max-height: 600px; /* Nilai yang lebih pas untuk menampung konten dan tombol WhatsApp */
+            /* PERUBAHAN UTAMA DI SINI: MENINGKATKAN MAX-HEIGHT SECUKUPNYA */
+            /* Ini harus cukup besar untuk menampung semua konten (form + pesan + tombol WA) */
+            max-height: 700px; /* Nilai yang lebih besar untuk akomodasi konten fleksibel */
             padding-top: 20px;
-            padding-bottom: 20px; /* Tetap pertahankan padding bawah */
+            padding-bottom: 20px; /* Pastikan ada padding bawah */
         }
 
         /* Styling untuk form itu sendiri */
@@ -535,7 +536,7 @@
         /* Styling untuk pesan respons yang muncul di bawah tombol */
         .response-message {
             text-align: center;
-            margin-top: 10px; /* Mengurangi margin top agar lebih dekat ke tombol */
+            margin-top: 20px; /* PERUBAHAN DI SINI: MENYESUAIKAN MARGIN ATAS */
             font-weight: bold;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             font-size: 1.05rem;
@@ -571,7 +572,7 @@
         .whatsapp-button-container {
             text-align: center;
             margin-top: 15px; /* PERUBAHAN UTAMA DI SINI: MENYESUAIKAN MARGIN ATAS */
-            margin-bottom: 5px; /* PERUBAHAN UTAMA DI SINI: MENYESUAIKAN MARGIN BAWAH */
+            margin-bottom: 0; /* Pastikan tidak ada margin bawah berlebih dari elemen ini */
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.5s ease-in-out, visibility 0s linear 0.5s;
@@ -723,7 +724,7 @@
 
             .registration-form-content.active {
                 /* PERUBAHAN UTAMA DI SINI: MENYESUAIKAN MAX-HEIGHT UNTUK MOBILE JUGA */
-                max-height: 600px; /* Disesuaikan, pastikan cukup untuk semua elemen */
+                max-height: 700px; /* Disesuaikan, pastikan cukup untuk semua elemen */
             }
         }
 </style>
